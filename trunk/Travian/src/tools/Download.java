@@ -9,12 +9,13 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
- *
+ * Encapsulates informations about specific downoad.
  * @author Kotuc
  */
-public class Download {
+public class Download  {
 
-    private URL sourceURL;
+//    private URL sourceURL;
+    private final Link link;
     private File targetFile;
     private long totalSize;
     private long currentSize;
@@ -25,27 +26,36 @@ public class Download {
      * @param sourceURL
      * @param targetFile
      */
-    public Download(URL sourceURL, File targetFile) {
-        this.sourceURL = sourceURL;
+//    public Download(URL sourceURL, File targetFile) {
+////        this.sourceURL = sourceURL;
+//        this.targetFile = targetFile;
+//    }
+
+    public Download(Link link, File targetFile) {
+        if (link==null) {
+            throw new NullPointerException("link");
+        }
+        this.link = link;
         this.targetFile = targetFile;
     }
 
     /**
-     * 
+     * Downloads file in current thread.
      * @throws java.io.IOException 
      */
-    public void downloadFile() throws IOException {
+    public void download() throws IOException {
 
         startTime = System.currentTimeMillis();
         
-        System.out.println("DOWNLOAD: " + sourceURL + " to " + targetFile);
+        System.out.println("DOWNLOAD: " + link.getUrl() + " to " + targetFile);
 
-        URLConnection conn = sourceURL.openConnection();
+        URLConnection conn = link.getUrl().openConnection();
 //        conn.connect();
         totalSize = conn.getContentLength();
 
         if ((targetFile.exists()) && (targetFile.length() == totalSize)) {
-            currentSize = totalSize;
+            currentSize = totalSize; // already downloaded
+            return;
         } else {
 
             File tmpfile = new File(targetFile.getCanonicalPath() + ".part");
@@ -62,10 +72,10 @@ public class Download {
 
 //                System.out.print("progress: " + currentSize + " of " + totalSize + "\r");
 
-//                try {
-//                    Thread.sleep(345);
-//                } catch (InterruptedException interruptedException) {
-//                }
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException interruptedException) {
+                }
 
             }
             source.close();
@@ -116,8 +126,14 @@ public class Download {
      * @return
      */
     public URL getSourceURL() {
-        return sourceURL;
+        return link.getUrl();
     }
+
+    public Link getLink() {
+        return link;
+    }
+
+
 
     /**
      * 
@@ -136,8 +152,9 @@ public class Download {
      * 
      * @return
      */
-    public long getSpeed() {
+    public long getSpeedBytesPerSecond() {
         return 1000*currentSize/(System.currentTimeMillis()-startTime);
     }
-    
+
+
 }

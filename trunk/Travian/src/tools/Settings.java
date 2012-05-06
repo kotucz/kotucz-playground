@@ -19,26 +19,27 @@ public class Settings {
     private static Properties properties;
     
     private static void init() {
-        try {
-            if (!new File(ROOT).exists()) {
-                firstUseSetup();
-            }
-            System.out.println("Root directory: "+ROOT);
-            properties = new Properties();
-            Runtime.getRuntime().addShutdownHook(new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        store();
-                    } catch (IOException ex) {
-                        Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            });
-            properties.load(new FileReader(propertiesFile));
-        } catch (IOException ex) {
-            Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        throw new IllegalStateException("");
+//        try {
+//            if (!new File(ROOT).exists()) {
+//                firstUseSetup();
+//            }
+//            System.out.println("Root directory: "+ROOT);
+//            properties = new Properties();
+//            Runtime.getRuntime().addShutdownHook(new Thread() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        store();
+//                    } catch (IOException ex) {
+//                        Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//            });
+//            properties.load(new FileReader(propertiesFile));
+//        } catch (IOException ex) {
+//            Logger.getLogger(Settings.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     public static void store() throws IOException {

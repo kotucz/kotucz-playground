@@ -34,7 +34,9 @@ public class DownloaderPanel extends JPanel {
         spane.setViewportView(panel);
                        
         add(spane, BorderLayout.CENTER);
-            
+
+//        panel.add(new JPanel(), 0);
+
         new Timer().schedule(new TimerTask() {
 
             @Override

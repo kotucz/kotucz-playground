@@ -6,10 +6,13 @@
 package tools;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.border.BevelBorder;
-
 
 /**
  *
@@ -37,9 +40,9 @@ public class DownPanel extends javax.swing.JPanel {
     private void myInitComponents() {
 
         setBorder(new BevelBorder(BevelBorder.RAISED));
-        
+
         setLayout(new BorderLayout());
-        
+
         progressBar = new JProgressBar();
         fileLabel = new JLabel();
         progressLabel = new JLabel();
@@ -47,21 +50,43 @@ public class DownPanel extends javax.swing.JPanel {
         add(fileLabel, BorderLayout.NORTH);
         add(progressBar, BorderLayout.CENTER);
         add(progressLabel, BorderLayout.SOUTH);
-        
-                    
+
+        JButton butt = new JButton("detail");
+        butt.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                showDetails();
+            }
+
+        });
+        add(butt, BorderLayout.EAST);
     }
-    
-    String units(long dataSize) {
+    private static JFrame jFrame = new JFrame("Test");
+    private static DownloadInfoPanel dip = new DownloadInfoPanel();
+
+    static {
+        jFrame.add(dip);
+        jFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    }
+
+    private void showDetails() {
+        dip.show(download);
+        jFrame.pack();
+        jFrame.setVisible(true);
+    }
+
+    static String units(long dataSize) {
         int tire = 0;
 //        dataSize/=8;
-        while (dataSize>10000) {
-            dataSize/=1024;
+        while (dataSize > 20000) {
+            dataSize /= 1024;
             tire++;
         }
-        String[] marks = new String[] {"B", "KB", "MB", "GB", "TB"};
-        return ""+dataSize+marks[tire];
+        String[] marks = new String[]{"B", "KB", "MB", "GB", "TB"};
+        return "" + dataSize + marks[tire];
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -74,29 +99,16 @@ public class DownPanel extends javax.swing.JPanel {
         fileLabel = new javax.swing.JLabel();
         progressLabel = new javax.swing.JLabel();
 
+        setLayout(new java.awt.BorderLayout());
+        add(progressBar, java.awt.BorderLayout.CENTER);
+
         fileLabel.setText("jLabel1");
+        add(fileLabel, java.awt.BorderLayout.PAGE_START);
 
         progressLabel.setText("jLabel1");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(fileLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
-            .addComponent(progressBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
-            .addComponent(progressLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(fileLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(progressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        add(progressLabel, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
+
     @Override
     public void repaint() {
         if (progressBar != null) {
@@ -109,8 +121,8 @@ public class DownPanel extends javax.swing.JPanel {
             if (download.completed()) {
                 progressLabel.setText("" + units(download.getTotalSize()) + " completed");
             } else {
-                progressLabel.setText("" + units(download.getCurrentSize()) + " of " + units(download.getTotalSize())+
-                        "; speed: "+units(download.getSpeed())+"/s");
+                progressLabel.setText("" + units(download.getCurrentSize()) + " of " + units(download.getTotalSize())
+                        + "; speed: " + units(download.getSpeedBytesPerSecond()) + "/s");
             }
         }
         super.repaint();

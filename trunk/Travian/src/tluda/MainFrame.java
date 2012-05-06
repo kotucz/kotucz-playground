@@ -5,11 +5,14 @@
  */
 package tluda;
 
+import java.io.File;
 import tools.Downloader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import tools.Download;
+import tools.Link;
 import tools.Page;
 
 /**
@@ -133,7 +136,7 @@ public class MainFrame extends javax.swing.JFrame implements Runnable{
                 try {
                     canceled = false;
                     cancelButton.setEnabled(true);
-                    downloader.downloadFile(fileAddressField.getText(), filenameField.getText());
+                    new Download(new Link(new URL(fileAddressField.getText())), new File(filenameField.getText())).download();
                 } catch (Exception ex) {
                     Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -145,7 +148,7 @@ public class MainFrame extends javax.swing.JFrame implements Runnable{
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
 
-            Page page = Page.getPage(new URL(addressField.getText()), "");
+            Page page = Page.getPage(new URL(addressField.getText()));
 
 //            Collection<URL> pageLinks = page.findOpenWindowLinks();
 //

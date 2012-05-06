@@ -71,7 +71,7 @@ public class BrowserFrame extends javax.swing.JFrame {
 
     private void addressFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressFieldActionPerformed
         try {
-            Page page = Page.getPage(new URL(addressField.getText()), "");
+            Page page = Page.getPage(new URL(addressField.getText()));
 //            htmlPane.setContentType("text/html");
             htmlPane.setText(page.getContent());
         } catch (Exception ex) {
