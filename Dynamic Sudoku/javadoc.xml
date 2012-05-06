@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="javadoc">
+<target name="javadoc">
+<javadoc access="public" author="true" classpath="C:\Program Files\Java\jre1.5.0_06\lib\ext\vecmath.jar;dist/Dynamic_Sudoku.jar" destdir="doc" doctitle="Java Fotbal" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="dynamicsudoku" source="1.5" sourcepath="src" splitindex="true" use="true" version="true"/>
+</target>
+</project>

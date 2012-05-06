@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import tools.DownloaderPanel;
+import tools.Link;
 import tools.Page;
 import tools.Settings;
 
@@ -48,7 +49,7 @@ public class DownloadBot implements Runnable {
         });
 
     }
-    private File downloadedBooksFile = Settings.getFile("downloaded.links");
+    private File downloadedBooksFile = new File("./downloaded.links");
 
     private void loadDownloadedPages() {
         downloaded = new Bookmarks();
@@ -133,10 +134,10 @@ public class DownloadBot implements Runnable {
                     count++;
                     System.out.println("vidLink " + count + ": " + vidLink);
                     try {
-                        Download down = new Download(vidLink, getTargetFile(vidLink));
+                        Download down = new Download(new Link(vidLink), getTargetFile(vidLink));
                         if (down != null) {
                             downloaderPanel.add(new DownPanel(down));
-                            down.downloadFile();
+                            down.download();
                             System.out.println(down + " complete");
                         }
                     } catch (Exception ex) {

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="dist/Dynamic_Sudoku.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre1.5.0_06/lib/ext/vecmath.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

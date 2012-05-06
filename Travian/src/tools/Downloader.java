@@ -8,10 +8,8 @@
  */
 package tools;
 
-import java.net.*;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,68 +17,56 @@ import java.util.logging.Logger;
  *
  * @author Kotuc
  */
-public class Downloader {
+public class Downloader implements Runnable {
 
-    private List<Download> downloads = new ArrayList<Download>();
-    private int maxParalellDownloads = 2;
-
+    private final BlockingQueue<Download> queue = new LinkedBlockingQueue<Download>();
+    private int maxParalellDownloads = 1;
     private int downloadsNow = 0;
-    
+    private final Object lock = new Object();
+
     public void append(Download download) {
-        downloads.add(download);
+        queue.add(download);
     }
 
     public void run() {
         while (true) {
-            
-            if (downloadsNow<maxParalellDownloads) {
-                // startNewDownload();
-            }
-            
             try {
-                Thread.sleep(1000);
+                while (downloadsNow >= maxParalellDownloads) {
+                    synchronized (lock) {
+                        lock.wait();
+                    }
+                }
+                startNewDownload();
             } catch (InterruptedException ex) {
                 Logger.getLogger(Downloader.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    /**
-     * 
-     * @param address
-     * @param directory
-     * @return
-     * @throws java.lang.Exception
-     * 
-     * @deprecated
-     * 
-     */
-    public Download downloadFile(String address, String directory) throws Exception {
+    private void startNewDownload() throws InterruptedException {
+        // wait for queue to fill and start downloading
+        final Download take = queue.take();
+        // fill slot
+        downloadsNow++;
 
-        URL sourceURL = new URL(address);
+        new Thread() {
 
-        String filename = new File(address).getName();
-
-        File targetFile = new File(directory, filename);
-
-        System.out.println("TARGET: " + targetFile);
-
-        final Download download = new Download(sourceURL, targetFile);
-
-//        new Thread() {
-//
-//            @Override
-//            public void run() {
-//                try {
-//                    download.downloadFile();
-//                } catch (Exception ex) {
-//                    ex.printStackTrace();
-//                }
-//            }
-//            
-//        }.start();
-
-        return download;
-
+            @Override
+            public void run() {
+                try {
+                    take.download();
+                } catch (Exception ex) {
+                    queue.add(take);
+                    Logger.getLogger(Downloader.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    // empty slot
+                    downloadsNow--;
+                    System.out.println(take + " DONE");
+                    synchronized (lock) {
+                        lock.notifyAll();
+                    }
+                }
+            }
+        }.start();
     }
 }

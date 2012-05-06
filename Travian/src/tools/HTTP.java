@@ -26,7 +26,9 @@ public class HTTP {
 
     private static CookieStore cookiesStore = new MyCookieStore();
 
-    public static String getSource(URL url, String postdata) throws IOException {
+//    public static String getSource(URL url) throws IOException {
+    public static String getSource(URL url, PostData postdatat) throws IOException {
+    
 
         String server = url.getHost();
 //        System.out.println("server: " + server);
@@ -39,12 +41,15 @@ public class HTTP {
 
         // Send data
         URLConnection conn = url.openConnection();
-        conn.setDoOutput(true);
+        
 // sending cookies
         conn.setRequestProperty("Cookie", cookies);
 
 // sending form data POST method
-        if ((postdata != null) && (postdata.length() > 0)) {
+        
+        if (postdatat != null) {
+            String postdata = postdatat.toString();
+            conn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
             wr.write(postdata);
             wr.flush();
@@ -55,8 +60,9 @@ public class HTTP {
         String inCookies = conn.getRequestProperty("Set-Cookie");
         if (inCookies!=null) {
             for (String cook1: inCookies.split(";")) {
-                String cookieName = cook1.split("=")[0];
-                String cookieValue = cook1.split("=")[1];
+                final String[] split = cook1.split("=");
+                String cookieName = split[0];
+                String cookieValue = split[1];
                 System.out.println("name:" + cookieName + " value:" + cookieValue);
                 cookiesStore.add(URI.create(server), new HttpCookie(cookieName, cookieValue));
             }         
@@ -67,7 +73,7 @@ public class HTTP {
 //            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
         String line;
-        StringBuffer content = new StringBuffer();
+        StringBuilder content = new StringBuilder();
         while ((line = rd.readLine()) != null) {
             content.append(line + "\n");
         }
