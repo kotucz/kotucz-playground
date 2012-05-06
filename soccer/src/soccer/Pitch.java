@@ -86,8 +86,6 @@ implements KeyListener, MouseListener, Runnable {
 		
 		newDuel(team1index, team2index);
 
-
-
 	}
 
 	static AudioClip kickClip, melodyClip, goalClip;
@@ -356,10 +354,6 @@ implements KeyListener, MouseListener, Runnable {
 	}
 
 
-        static void playClip(AudioClip ac) {
-            if (ac!=null) ac.play();
-        }
-        
 //	enum Action {
 //	NEW_VERT, 
 //SELECT_VERT,
