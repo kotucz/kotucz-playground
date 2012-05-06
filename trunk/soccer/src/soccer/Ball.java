@@ -48,7 +48,7 @@ public class Ball extends P {
 		speed = Math.min(speed, MAX_SPEED);
 		
 		if (vl>speed) {
-			if (isOriginal()) Pitch.playClip(Pitch.kickClip);
+			if (isOriginal()) Pitch.kickClip.play();
 			v.scale(speed/(vl));
 		}
 
@@ -84,7 +84,7 @@ public class Ball extends P {
 						if (x>320) Pitch.team1.score++;
 						else Pitch.team2.score++;
 
-						Pitch.playClip(Pitch.goalClip);
+						Pitch.goalClip.play();
 					}
 
 				}
@@ -118,7 +118,7 @@ public class Ball extends P {
 							Pitch.team1.score++;
 						else
 							Pitch.team2.score++;
-						Pitch.playClip(Pitch.goalClip);
+						Pitch.goalClip.play();
 					}
 
 
