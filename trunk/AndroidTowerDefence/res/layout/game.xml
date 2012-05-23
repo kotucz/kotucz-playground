@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  
+     <cz.kotuc.android.towerdefence.GameView
+      android:id="@+id/lunar"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent" android:focusable="true" android:focusableInTouchMode="true" android:clickable="true" android:hapticFeedbackEnabled="true" android:longClickable="true" android:onClick="agadgadg"/>
+     <RelativeLayout android:id="@+id/relativeLayout1" android:layout_height="fill_parent" android:layout_width="fill_parent">
+         <Button android:id="@+id/gameButton1" android:text="Build" android:layout_width="wrap_content" android:layout_height="wrap_content" android:width="100px" android:height="100px" android:layout_alignParentRight="true" android:layout_alignParentBottom="true"></Button>
+         <RelativeLayout android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_centerInParent="true" android:id="@+id/towerEditView" android:visibility="gone">
+             <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/upgradeButton" android:width="100px" android:height="100px" android:text="Upgrade"></Button>
+             <Button android:id="@+id/sellButton" android:text="Sell" android:layout_height="wrap_content" android:layout_width="wrap_content" android:width="100px" android:height="100px" android:layout_toRightOf="@+id/upgradeButton"></Button>
+         </RelativeLayout>
+         <TextView android:layout_width="wrap_content" android:text="TextView" android:layout_height="wrap_content" android:typeface="normal" android:layout_alignParentRight="true" android:textStyle="bold" android:textSize="50px" android:id="@+id/cashTextView"></TextView>
+     </RelativeLayout>
+  
+</FrameLayout>
