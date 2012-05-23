@@ -1,0 +1,3 @@
+                         Formely known as HyperGame
+Intended to use for path planning an physics simulation for robotic competition Eurobot  2011 
+                        
