@@ -55,9 +55,9 @@ import com.jme3.scene.shape.Sphere;
 import com.jme3.scene.shape.Sphere.TextureMode;
 import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.texture.Texture;
-import com.jme3.texture.Texture.WrapMode;
-import kotucz.village.Multitexture;
+import kotucz.village.tiles.Multitexture;
 import kotucz.village.MyBox;
+import kotucz.village.tiles.TileGrid;
 
 /**
  *
@@ -65,6 +65,8 @@ import kotucz.village.MyBox;
  */
 public class MyGame extends SimpleApplication {
 
+    public static final Vector3f UP = new Vector3f(0, 0, 1);
+    
     static float bLength = 1f;
     static float bWidth = 1f;
     static float bHeight = 1f;
@@ -106,15 +108,17 @@ public class MyGame extends SimpleApplication {
 //        brick.scaleTextureCoordinates(new Vector2f(1f, 1f));
 
         getFlyByCamera().setMoveSpeed(50);
+        getFlyByCamera().setUpVector(UP);
 
         initMaterial();
 //        initWall();
         initBoxes();
 //        initFloor();
+        initGrid();
         initCrossHairs();
-        this.cam.setLocation(new Vector3f(0, 6f, 6f));
-        cam.lookAt(Vector3f.ZERO, new Vector3f(0, 1, 0));
-        cam.setFrustumFar(15);
+        this.cam.setLocation(new Vector3f(8, -8, 8f));
+        cam.lookAt(new Vector3f(8, 8, 0), UP);
+        cam.setFrustumFar(50);
         inputManager.addMapping("shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addListener(actionListener, "shoot");
         inputManager.addMapping("gc", new KeyTrigger(KeyInput.KEY_X));
@@ -161,6 +165,16 @@ public class MyGame extends SimpleApplication {
 
             this.rootNode.attachChild(reBoxg);
         }
+        
+        
+        {
+            Geometry reBoxg = new Geometry("brick3", box);
+            reBoxg.setMaterial(mat16);
+            reBoxg.setLocalTranslation(new Vector3f(0, 3, 0));
+
+            this.rootNode.attachChild(reBoxg);
+        }
+        
         {
             Geometry reBoxg = new Geometry("brick2", brick);
             reBoxg.setMaterial(mat);
@@ -186,6 +200,14 @@ public class MyGame extends SimpleApplication {
             startpt = -startpt;
             height += 2 * bHeight;
         }
+    }
+    
+    public void initGrid() {
+        final Geometry geometry = new Geometry("grid", new TileGrid());
+        geometry.setMaterial(mat3);
+        geometry.setShadowMode(ShadowMode.Receive);
+        geometry.setLocalTranslation(new Vector3f(0, 0, 0));
+        this.rootNode.attachChild(geometry);
     }
 
     public void initFloor() {
@@ -213,7 +235,7 @@ public class MyGame extends SimpleApplication {
         mat.setTexture("ColorMap", tex);
 
 //        mat2 = mat;
-        mat3 = mat;
+//        mat3 = mat;
 
         mat16 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         TextureKey key2 = new TextureKey("Textures/tex16.png");
@@ -223,12 +245,14 @@ public class MyGame extends SimpleApplication {
         tex2.setMagFilter(Texture.MagFilter.Nearest);
         mat16.setTexture("ColorMap", tex2);
 //
-//        mat3 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-//        TextureKey key3 = new TextureKey("Textures/tex1.png");
-//        key3.setGenerateMips(true);
-//        Texture tex3 = assetManager.loadTexture(key3);
+        
+        mat3 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        TextureKey key3 = new TextureKey("Textures/terr16.png");
+        key3.setGenerateMips(true);
+        Texture tex3 = assetManager.loadTexture(key3);
+        tex2.setMagFilter(Texture.MagFilter.Nearest);
 //        tex3.setWrap(WrapMode.Repeat);
-//        mat3.setTexture("ColorMap", tex3);
+        mat3.setTexture("ColorMap", tex3);
     }
 
     public void addBox(Vector3f ori, AbstractBox box) {

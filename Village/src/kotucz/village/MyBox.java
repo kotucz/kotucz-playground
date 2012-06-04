@@ -1,5 +1,6 @@
 package kotucz.village;
 
+import kotucz.village.tiles.Subtexture;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.VertexBuffer.Type;
 import com.jme3.scene.shape.AbstractBox;

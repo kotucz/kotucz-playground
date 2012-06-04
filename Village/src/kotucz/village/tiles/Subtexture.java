@@ -1,4 +1,4 @@
-package kotucz.village;
+package kotucz.village.tiles;
 
 /**
  *
@@ -6,10 +6,10 @@ package kotucz.village;
  */
 public class Subtexture {
 
-    float startU;   //     X
-    float endU;
-    float startV;   //     Y 
-    float endV;
+    public float startU;   //     X
+    public float endU;
+    public float startV;   //     Y 
+    public float endV;
 
     public Subtexture(float startU, float startV, float endU, float endV) {
         this.startU = startU;

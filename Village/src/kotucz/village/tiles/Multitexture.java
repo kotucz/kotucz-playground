@@ -1,4 +1,4 @@
-package kotucz.village;
+package kotucz.village.tiles;
 
 /**
  *
