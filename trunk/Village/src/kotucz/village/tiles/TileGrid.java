@@ -21,7 +21,7 @@ public class TileGrid extends AbstractBox {
     // evry tile has two triangles - 6 vertices
     private final short[] GEOMETRY_INDICES_DATA = new short[6*numtiles]; 
 //    {
-//        2, 1, 0, 3, 2, 0, // back
+//      `  2, 1, 0, 3, 2, 0, // back
 //        6, 5, 4, 7, 6, 4, // right
 //        10, 9, 8, 11, 10, 8, // front
 //        14, 13, 12, 15, 14, 12, // left
@@ -46,9 +46,12 @@ public class TileGrid extends AbstractBox {
 //        1, 0, 0, 0, 0, 1, 1, 1 // bottom
 //    };
 
-
+    public void setTexture(int x, int y, int tex) {
+      setTexture(index(x, y), mtex.getTex(tex)); 
+      
+    }    
+        
     public void setTexture(int face, Subtexture s) {
-
 
 
 //        float startU = 0.5f;   //     X
@@ -57,13 +60,11 @@ public class TileGrid extends AbstractBox {
 //        float startV = 0;   //     Y 
 //        float endV = 0.5f;     
 
-
-
         final float[] texs = new float[]{
-            s.endU, s.startV,
             s.startU, s.startV,
-            s.startU, s.endV,
-            s.endU, s.endV
+            s.endU, s.startV,
+            s.endU, s.endV,
+            s.startU, s.endV
         };
 
         int off = 8 * face;
@@ -114,9 +115,9 @@ public class TileGrid extends AbstractBox {
 
 
     protected void duUpdateGeometryIndices() {
-        if (getBuffer(Type.Index) == null) {
-            setBuffer(Type.Index, 3, BufferUtils.createShortBuffer(GEOMETRY_INDICES_DATA));
-        }
+//        if (getBuffer(Type.Index) == null) {
+           
+//        }
     }
 
 //    protected void duUpdateGeometryNormals() {
@@ -127,7 +128,7 @@ public class TileGrid extends AbstractBox {
 
     protected void duUpdateGeometryTextures() {
 //        if (getBuffer(Type.TexCoord) == null){
-        setBuffer(Type.TexCoord, 2, BufferUtils.createFloatBuffer(GEOMETRY_TEXTURE_DATA));
+       
 //        }
     }
 
@@ -179,6 +180,7 @@ public class TileGrid extends AbstractBox {
 
         }
 
+         setBuffer(Type.Index, 3, BufferUtils.createShortBuffer(GEOMETRY_INDICES_DATA));
 
         {
             FloatBuffer positionBuffer = BufferUtils.createVector3Buffer(4 * numtiles);
@@ -191,6 +193,8 @@ public class TileGrid extends AbstractBox {
             setBuffer(Type.Normal, 3, normalbuffer);
         }
 
+         setBuffer(Type.TexCoord, 2, BufferUtils.createFloatBuffer(GEOMETRY_TEXTURE_DATA));
+        
         updateBound();
     }
 
