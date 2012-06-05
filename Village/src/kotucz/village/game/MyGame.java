@@ -59,6 +59,7 @@ import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.texture.Texture;
 import kotucz.village.tiles.Multitexture;
 import kotucz.village.MyBox;
+import kotucz.village.tiles.NodedefTileGrid;
 import kotucz.village.tiles.PathNetwork;
 import kotucz.village.tiles.RoadTileGrid;
 import kotucz.village.tiles.TileGrid;
@@ -221,7 +222,7 @@ public class MyGame extends SimpleApplication {
 
             PathNetwork pnet = new PathNetwork(16, 16);
 
-            final Geometry geometry = new Geometry("grid16", new RoadTileGrid(pnet));
+            final Geometry geometry = new Geometry("grid16", new NodedefTileGrid(pnet));
             geometry.setMaterial(matwtr);
             geometry.setShadowMode(ShadowMode.Receive);
             geometry.setLocalTranslation(new Vector3f(0, 0, 0.0005f));
@@ -293,7 +294,7 @@ public class MyGame extends SimpleApplication {
         {
             matwtr = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 //            TextureKey key4 = new TextureKey("Textures/road16.png");
-            TextureKey key4 = new TextureKey("Textures/watr16.png");
+            TextureKey key4 = new TextureKey("Textures/watrnodes16.png");
 //            TextureKey key3 = new TextureKey("Textures/tex16.png");
 //            key3.setGenerateMips(true);`
             Texture tex4 = assetManager.loadTexture(key4);
