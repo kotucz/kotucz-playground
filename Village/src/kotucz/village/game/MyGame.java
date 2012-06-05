@@ -45,8 +45,10 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.AbstractBox;
@@ -57,6 +59,8 @@ import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.texture.Texture;
 import kotucz.village.tiles.Multitexture;
 import kotucz.village.MyBox;
+import kotucz.village.tiles.PathNetwork;
+import kotucz.village.tiles.RoadTileGrid;
 import kotucz.village.tiles.TileGrid;
 
 /**
@@ -66,13 +70,14 @@ import kotucz.village.tiles.TileGrid;
 public class MyGame extends SimpleApplication {
 
     public static final Vector3f UP = new Vector3f(0, 0, 1);
-    
     static float bLength = 1f;
     static float bWidth = 1f;
     static float bHeight = 1f;
     Material mat;
     Material mat16;
-    Material mat3;
+    Material matgrass;
+    Material matroad;
+    Material matwtr;
     BasicShadowRenderer bsr;
     private static Sphere bullet;
     private static MyBox box;
@@ -96,13 +101,13 @@ public class MyGame extends SimpleApplication {
         bullet.setTextureMode(TextureMode.Projected);
         bulletCollisionShape = new SphereCollisionShape(0.4f);
 
-        Multitexture mtex = new Multitexture(16*4, 16*4);
+        Multitexture mtex = new Multitexture(16 * 4, 16 * 4);
 //        mtex.createSubtexture(0, 16, 16, 32);
-        
+
         box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
-        
+
         box.setTexture(4, mtex.createSubtexture(0, 16, 16, 32));
-        
+
         brick = new Box(Vector3f.ZERO, new Vector3f(1, 1, 1));
 //        brick = new Box(Vector3f.ZERO, new Vector3f(1, 1, 1));
 //        brick.scaleTextureCoordinates(new Vector2f(1f, 1f));
@@ -165,8 +170,8 @@ public class MyGame extends SimpleApplication {
 
             this.rootNode.attachChild(reBoxg);
         }
-        
-        
+
+
         {
             Geometry reBoxg = new Geometry("brick3", box);
             reBoxg.setMaterial(mat16);
@@ -174,7 +179,7 @@ public class MyGame extends SimpleApplication {
 
             this.rootNode.attachChild(reBoxg);
         }
-        
+
         {
             Geometry reBoxg = new Geometry("brick2", brick);
             reBoxg.setMaterial(mat);
@@ -201,13 +206,42 @@ public class MyGame extends SimpleApplication {
             height += 2 * bHeight;
         }
     }
-    
+
     public void initGrid() {
-        final Geometry geometry = new Geometry("grid", new TileGrid());
-        geometry.setMaterial(mat3);
-        geometry.setShadowMode(ShadowMode.Receive);
-        geometry.setLocalTranslation(new Vector3f(0, 0, 0));
-        this.rootNode.attachChild(geometry);
+        {
+            final Geometry geometry = new Geometry("grid", new TileGrid());
+            geometry.setMaterial(matgrass);
+            geometry.setShadowMode(ShadowMode.Receive);
+            geometry.setLocalTranslation(new Vector3f(0, 0, 0.f));
+            this.rootNode.attachChild(geometry);
+        }
+
+
+        {
+
+            PathNetwork pnet = new PathNetwork(16, 16);
+
+            final Geometry geometry = new Geometry("grid16", new RoadTileGrid(pnet));
+            geometry.setMaterial(matwtr);
+            geometry.setShadowMode(ShadowMode.Receive);
+            geometry.setLocalTranslation(new Vector3f(0, 0, 0.0005f));
+            this.rootNode.attachChild(geometry);
+        }
+        {
+
+
+            PathNetwork pnet = new PathNetwork(16, 16);
+
+            final Geometry geometry = new Geometry("roadgrid", new RoadTileGrid(pnet));
+            geometry.setMaterial(matroad);
+            geometry.setShadowMode(ShadowMode.Receive);
+            geometry.setLocalTranslation(new Vector3f(0, 0, 0.001f));
+            geometry.setQueueBucket(Bucket.Transparent);
+            this.rootNode.attachChild(geometry);
+        }
+
+
+
     }
 
     public void initFloor() {
@@ -215,7 +249,7 @@ public class MyGame extends SimpleApplication {
         floorBox.scaleTextureCoordinates(new Vector2f(3, 6));
 
         Geometry floor = new Geometry("floor", floorBox);
-        floor.setMaterial(mat3);
+        floor.setMaterial(matgrass);
         floor.setShadowMode(ShadowMode.Receive);
         floor.setLocalTranslation(0, -0.1f, 0);
         floor.addControl(new RigidBodyControl(new BoxCollisionShape(new Vector3f(10f, 0.1f, 5f)), 0));
@@ -224,35 +258,62 @@ public class MyGame extends SimpleApplication {
     }
 
     public void initMaterial() {
-        mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        TextureKey key = new TextureKey("Textures/tex1.png");
+        {
+            mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            TextureKey key = new TextureKey("Textures/tex1.png");
 //        key.setTextureTypeHint(Texture.Type.TwoDimensionalArray);       
-        key.setGenerateMips(true);
+            key.setGenerateMips(true);
 //        key.setAnisotropy();
-        Texture tex = assetManager.loadTexture(key);
-        tex.setMagFilter(Texture.MagFilter.Nearest);
+            Texture tex = assetManager.loadTexture(key);
+            tex.setMagFilter(Texture.MagFilter.Nearest);
 //        tex.setMinFilter(Texture.MinFilter.BilinearNoMipMaps);
-        mat.setTexture("ColorMap", tex);
-
+            mat.setTexture("ColorMap", tex);
+        }
 //        mat2 = mat;
 //        mat3 = mat;
+        {
+            mat16 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            TextureKey key2 = new TextureKey("Textures/tex16.png");
+//            key2.setGenerateMips(true);
 
-        mat16 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        TextureKey key2 = new TextureKey("Textures/tex16.png");
-        key2.setGenerateMips(true);       
-       
-        Texture tex2 = assetManager.loadTexture(key2);        
-        tex2.setMagFilter(Texture.MagFilter.Nearest);
-        mat16.setTexture("ColorMap", tex2);
-//
-        
-        mat3 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        TextureKey key3 = new TextureKey("Textures/terr16.png");
-        key3.setGenerateMips(true);
-        Texture tex3 = assetManager.loadTexture(key3);
-        tex2.setMagFilter(Texture.MagFilter.Nearest);
+            Texture tex2 = assetManager.loadTexture(key2);
+            tex2.setMagFilter(Texture.MagFilter.Nearest);
+            mat16.setTexture("ColorMap", tex2);
+        }
+        {
+            matgrass = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            TextureKey key3 = new TextureKey("Textures/gras16.png");
+//            key3.setGenerateMips(true);
+
+            Texture tex3 = assetManager.loadTexture(key3);
+            tex3.setMagFilter(Texture.MagFilter.Nearest);
+
+            matgrass.setTexture("ColorMap", tex3);
+        }
+        {
+            matwtr = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+//            TextureKey key4 = new TextureKey("Textures/road16.png");
+            TextureKey key4 = new TextureKey("Textures/watr16.png");
+//            TextureKey key3 = new TextureKey("Textures/tex16.png");
+//            key3.setGenerateMips(true);`
+            Texture tex4 = assetManager.loadTexture(key4);
+            tex4.setMagFilter(Texture.MagFilter.Nearest);
 //        tex3.setWrap(WrapMode.Repeat);
-        mat3.setTexture("ColorMap", tex3);
+            matwtr.setTexture("ColorMap", tex4);
+            matwtr.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+        }
+        {
+            matroad = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            TextureKey key4 = new TextureKey("Textures/road16.png");
+//            TextureKey key4 = new TextureKey("Textures/watr16.png");
+//            TextureKey key3 = new TextureKey("Textures/tex16.png");
+//            key3.setGenerateMips(true);`
+            Texture tex4 = assetManager.loadTexture(key4);
+            tex4.setMagFilter(Texture.MagFilter.Nearest);
+//        tex3.setWrap(WrapMode.Repeat);
+            matroad.setTexture("ColorMap", tex4);
+            matroad.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+        }
     }
 
     public void addBox(Vector3f ori, AbstractBox box) {

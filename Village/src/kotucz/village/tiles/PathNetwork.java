@@ -34,21 +34,46 @@ public class PathNetwork {
     private final RoadPoint[][] roadpoints;
     private int widthx;
     private int widthy;
-    private Land3D land;
-    private TileLayer layer;
+//    private Land3D land;
+//    private TileLayer layer;
+    
+    
+//    public PathNetwork(Land3D land) {
+//        this.land = land;
+//        this.widthx = land.getTilesx() + 1;
+//        this.widthy = land.getTilesy() + 1;
+//        this.roadpoints = new RoadPoint[widthx][widthy];
+////        this.layer = layer;
+////        roadTextures();
+//    }
 
-    public PathNetwork(Land3D land, TileLayer layer) {
-        this.land = land;
-        this.widthx = land.getTilesx() + 1;
-        this.widthy = land.getTilesy() + 1;
+    public PathNetwork(int sx, int sy) {
+//        this.land = land;
+        this.widthx = sx;
+        this.widthy = sy;
         this.roadpoints = new RoadPoint[widthx][widthy];
-        this.layer = layer;
+//        this.layer = layer;
 //        roadTextures();
-    }
+        
+        
+        final Random random = new Random();
+        
+        for (int i = 0; i < 100; i++) {
 
+            roadpoints[random.nextInt(widthx)][random.nextInt(widthy)] = new RoadPoint(null);
+            
+//            TextureSelect textureSelect = selects[i];
+            
+        }
+        
+        generateRandomWalk(random);
+    }
+    
     public void addPoint(int x, int y) {
+        System.out.println("add point "+x+", "+y);
 //        RoadPoint roadPoint = new RoadPoint(land.new Point3d(x, y, 0));
-        RoadPoint roadPoint = new RoadPoint(land.getHeighmap().get(x, y));
+//        RoadPoint roadPoint = new RoadPoint(land.getHeighmap().get(x, y));
+        RoadPoint roadPoint = new RoadPoint(null);
         roadpoints[x][y] = roadPoint;
         for (Dir dir : Dir.values()) {
             RoadPoint point = getPoint(x + dir.dx, y + dir.dy);
@@ -61,16 +86,40 @@ public class PathNetwork {
         correctRoadTile(x - 1, y);
         correctRoadTile(x - 1, y - 1);
         correctRoadTile(x, y - 1);
+
     }
 
+    
+    /**
+     * works on vertices
+     * @param x
+     * @param y 
+     */
     public void correctRoadTile(int x, int y) {
 //        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
 //            return;
 //        }
         int hash = ((getPoint(x, y) != null) ? 8 : 0) + ((getPoint(x + 1, y) != null) ? 4 : 0) + ((getPoint(x + 1, y + 1) != null) ? 2 : 0) + ((getPoint(x, y + 1) != null) ? 1 : 0);
-        layer.selectTexture(x, y, selects[hash]);
+//        layer.selectTexture(x, y, selects[hash]);
     }
 
+    public int getRoadTileHash(int x, int y) {
+//        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
+//            return;
+//        }
+        
+                
+        if (getPoint(x, y) == null) {
+            return 0;
+        }
+        
+        int hash = ((getPoint(x + 1, y) != null) ? 1 : 0) +
+                   ((getPoint(x , y + 1) != null) ? 2 : 0) +
+                   ((getPoint(x - 1, y) != null) ? 4 : 0) + 
+                   ((getPoint(x, y - 1) != null) ? 8 : 0);
+        return hash;
+    }
+    
     void generateRandomWalk(Random random) {
 //        Random random = new Random();
         int x = random.nextInt(widthx);
@@ -147,8 +196,8 @@ public class PathNetwork {
 //                }
 //            }
 //        }
-        for (int x = 0; x < land.getTilesx(); x++) {
-            for (int y = 0; y < land.getTilesy(); y++) {
+        for (int x = 0; x < widthx; x++) {
+            for (int y = 0; y < widthy; y++) {
 //                int hash = (roads[x][y] * 8) +
 //                (roads[x + 1][y] * 4) +
 //                        (roads[x + 1][y + 1] * 2) +
