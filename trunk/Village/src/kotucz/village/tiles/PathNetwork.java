@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import javax.vecmath.Point3d;
+import kotucz.village.Dir;
 
 
 /**
@@ -58,7 +59,7 @@ public class PathNetwork {
         
         final Random random = new Random();
         
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 80; i++) {
 
             roadpoints[random.nextInt(widthx)][random.nextInt(widthy)] = new RoadPoint(null);
             
@@ -76,7 +77,7 @@ public class PathNetwork {
         RoadPoint roadPoint = new RoadPoint(null);
         roadpoints[x][y] = roadPoint;
         for (Dir dir : Dir.values()) {
-            RoadPoint point = getPoint(x + dir.dx, y + dir.dy);
+            RoadPoint point = getPoint(x + dir.dx(), y + dir.dy());
             if (point != null) {
                 point.incidents.add(roadPoint);
                 roadPoint.incidents.add(point);
@@ -103,6 +104,18 @@ public class PathNetwork {
 //        layer.selectTexture(x, y, selects[hash]);
     }
 
+    public int getFlatTileHash(int x, int y) {
+//        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
+//            return;
+//        }
+        int hash = ((getPoint(x, y) != null) ? 1 : 0)
+                + ((getPoint(x + 1, y) != null) ? 2 : 0)
+                + ((getPoint(x + 1, y + 1) != null) ? 4 : 0)
+                + ((getPoint(x, y + 1) != null) ? 8 : 0);
+//        layer.selectTexture(x, y, selects[hash]);
+        return hash;
+    }
+    
     public int getRoadTileHash(int x, int y) {
 //        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
 //            return;
@@ -228,29 +241,5 @@ public class PathNetwork {
         }
     }
 
-    enum Dir {
-
-        E(1, 0),
-        NE(1, 1),
-        N(0, 1),
-        NW(-1, 1),
-        W(-1, 0),
-        SW(-1, -1),
-        S(0, -1),
-        SE(1, -1);
-        private final int dx, dy;
-
-        public int dx() {
-            return dx;
-        }
-
-        public int dy() {
-            return dy;
-        }
-
-        private Dir(int dx, int dy) {
-            this.dx = dx;
-            this.dy = dy;
-        }
-    }
+  
 }
