@@ -57,17 +57,22 @@ public class PathNetwork {
 //        roadTextures();
         
         
-        final Random random = new Random();
         
-        for (int i = 0; i < 80; i++) {
+        
+        
+        
+//        generateRandomWalk(random);
+    }
+    
+    public void randomlySelect(int s) {
+        final Random random = new Random();
+        for (int i = 0; i < s; i++) {
 
             roadpoints[random.nextInt(widthx)][random.nextInt(widthy)] = new RoadPoint(null);
             
 //            TextureSelect textureSelect = selects[i];
             
         }
-        
-        generateRandomWalk(random);
     }
     
     public void addPoint(int x, int y) {
