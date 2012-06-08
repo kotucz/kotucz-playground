@@ -62,10 +62,12 @@ import com.jme3.scene.shape.Sphere;
 import com.jme3.scene.shape.Sphere.TextureMode;
 import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.texture.Texture;
+import java.util.Random;
 import kotucz.village.tiles.Multitexture;
 import kotucz.village.MyBox;
 import kotucz.village.tiles.LinearGrid;
 import kotucz.village.tiles.PathNetwork;
+import kotucz.village.tiles.SelectGrid;
 import kotucz.village.tiles.TileGrid;
 
 /**
@@ -96,8 +98,10 @@ public class MyGame extends SimpleApplication {
     private BulletAppState bulletAppState;
     Geometry mark;
     Node shootables;
-    
+    final LinearGrid lingrid = new LinearGrid(16, 16);
 
+    SelectGrid selectGrid;
+    
     public static void main(String args[]) {
         MyGame f = new MyGame();
         f.start();
@@ -242,7 +246,8 @@ public class MyGame extends SimpleApplication {
                 int x = (int) Math.floor(contactPoint.x);
                 int y = (int) Math.floor(contactPoint.y);
                 selectTileGrid.setTexture(x, y, 1);
-                selectTileGrid.updateGeometry();
+                selectGrid.add(x, y);
+                selectGrid.updateGrid();
             }
 
         } else {
@@ -305,7 +310,7 @@ public class MyGame extends SimpleApplication {
 //            geometry.setLocalTranslation(new Vector3f(0, 0, 0.f));
 //            this.rootNode.attachChild(geometry);
             
-             final Geometry geometry = new TileGrid(new LinearGrid(16, 16), matgrass, this).getGeometry();
+             final Geometry geometry = new TileGrid(lingrid, matgrass, this).getGeometry();
 //            geometry.setMaterial(matwtr);
 //            geometry.setShadowMode(ShadowMode.Receive);
             geometry.setLocalTranslation(new Vector3f(0, 0, 0.0000f));
@@ -321,23 +326,27 @@ public class MyGame extends SimpleApplication {
 
 
 //            final Geometry geometry = new Geometry("grid16", new NodedefTileGrid(pnet));
-            final Geometry geometry = new TileGrid(new LinearGrid(16, 16), matwtr, this).getGeometry();
+            final Geometry geometry = new TileGrid(lingrid, matwtr, this).getGeometry();
 //            geometry.setMaterial(matwtr);
 //            geometry.setShadowMode(ShadowMode.Receive);
-            geometry.setLocalTranslation(new Vector3f(0, 0, 0.0005f));
+            geometry.setLocalTranslation(new Vector3f(0, 0, 0.5f));
             this.rootNode.attachChild(geometry);
         }
         {
 
 
-            PathNetwork pnet = new PathNetwork(16, 16);
-            pnet.randomlySelect(80);
-            TileGrid tileGrid = new TileGrid(new LinearGrid(16, 16), matroad, this);
+            
+
+            TileGrid tileGrid = new TileGrid(lingrid, matroad, this);
+            PathNetwork pnet = new PathNetwork(tileGrid);
+//            pnet.randomlySelect(80); 
+            pnet.generateRandomWalk(new Random());
+            pnet.setInto();
             
             final Geometry geometry = tileGrid.getGeometry();
             geometry.setMaterial(matroad);
             geometry.setShadowMode(ShadowMode.Receive);
-            geometry.setLocalTranslation(new Vector3f(0, 0, 0.001f));
+            geometry.setLocalTranslation(new Vector3f(0, 0, 1f));
             geometry.setQueueBucket(Bucket.Transparent);
             this.rootNode.attachChild(geometry);
         }
@@ -346,29 +355,23 @@ public class MyGame extends SimpleApplication {
         {
 
 
-            PathNetwork pnet = new PathNetwork(16, 16);
-            pnet.randomlySelect(20);
-            selectTileGrid = new TileGrid(new LinearGrid(16, 16), matsel, this);
-
+//            PathNetwork pnet = new PathNetwork(16, 16);
+//            pnet.randomlySelect(20);
+            
+            selectTileGrid = new TileGrid(lingrid, matsel, this);
+//            selectGrid = new SelectGrid(selectTileGrid);
+            
             selgeom = selectTileGrid.getGeometry();
 //            selgeom.setMaterial(matsel);
 //            selgeom.setShadowMode(ShadowMode.Receive);
-            selgeom.setLocalTranslation(new Vector3f(0, 0, 0.0015f));
+            selgeom.setLocalTranslation(new Vector3f(0, 0, 1.5f));
 //            selgeom.setQueueBucket(Bucket.Transparent);
             this.shootables.attachChild(selgeom);
         }
     }
     Geometry selgeom;
 
-    private void initSuperGrid() {
-        
-        TileGrid grid = new TileGrid(new LinearGrid(16, 16), mat16, this);
-        
-        grid.getGeometry().setLocalTranslation(new Vector3f(0, 0, 0.001f));
-            
-        this.rootNode.attachChild(grid.getGeometry());
-        
-    }
+
     
     public void initFloor() {
         Box floorBox = new Box(Vector3f.ZERO, 10f, 0.1f, 5f);

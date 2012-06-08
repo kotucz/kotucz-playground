@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.Set;
 import javax.vecmath.Point3d;
 import kotucz.village.Dir;
+import kotucz.village.Dir4;
 
 
 /**
@@ -32,7 +33,10 @@ public class PathNetwork {
         new TextureSelect(4, 0, 8, 1, 2, 0),
         new TextureSelect(4, 0, 8, 1, 3, 0),
         new TextureSelect(5, 0, 8, 1, 0, 0)};
-    private final RoadPoint[][] roadpoints;
+    private final GenericGrid<RoadPoint> roadpoints;
+    
+    private TileGrid tilegrid;
+    
     private int widthx;
     private int widthy;
 //    private Land3D land;
@@ -48,11 +52,12 @@ public class PathNetwork {
 ////        roadTextures();
 //    }
 
-    public PathNetwork(int sx, int sy) {
+    public PathNetwork(TileGrid grid) {
 //        this.land = land;
-        this.widthx = sx;
-        this.widthy = sy;
-        this.roadpoints = new RoadPoint[widthx][widthy];
+        this.tilegrid = grid;
+        this.widthx = tilegrid.lingrid.sizeX;
+        this.widthy = tilegrid.lingrid.sizeY;
+        this.roadpoints = new GenericGrid<RoadPoint>(tilegrid.lingrid);
 //        this.layer = layer;
 //        roadTextures();
         
@@ -68,7 +73,7 @@ public class PathNetwork {
         final Random random = new Random();
         for (int i = 0; i < s; i++) {
 
-            roadpoints[random.nextInt(widthx)][random.nextInt(widthy)] = new RoadPoint(null);
+            roadpoints.set(random.nextInt(tilegrid.lingrid.getTotalNum()), new RoadPoint(null));
             
 //            TextureSelect textureSelect = selects[i];
             
@@ -80,7 +85,7 @@ public class PathNetwork {
 //        RoadPoint roadPoint = new RoadPoint(land.new Point3d(x, y, 0));
 //        RoadPoint roadPoint = new RoadPoint(land.getHeighmap().get(x, y));
         RoadPoint roadPoint = new RoadPoint(null);
-        roadpoints[x][y] = roadPoint;
+        roadpoints.set(x, y, roadPoint);
         for (Dir dir : Dir.values()) {
             RoadPoint point = getPoint(x + dir.dx(), y + dir.dy());
             if (point != null) {
@@ -95,6 +100,13 @@ public class PathNetwork {
 
     }
 
+    public void setInto() {
+        for (Tile t:tilegrid.lingrid) {
+            tilegrid.setTexture(t.x, t.y, getRoadTileHash(t.x, t.y));
+        }
+        tilegrid.updateTexture();
+    }
+    
     
     /**
      * works on vertices
@@ -109,7 +121,7 @@ public class PathNetwork {
 //        layer.selectTexture(x, y, selects[hash]);
     }
 
-    public int getFlatTileHash(int x, int y) {
+    public int getFlatNodeTileHash(int x, int y) {
 //        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
 //            return;
 //        }
@@ -119,7 +131,7 @@ public class PathNetwork {
                 + ((getPoint(x, y + 1) != null) ? 8 : 0);
 //        layer.selectTexture(x, y, selects[hash]);
         return hash;
-    }
+    }           
     
     public int getRoadTileHash(int x, int y) {
 //        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
@@ -138,13 +150,16 @@ public class PathNetwork {
         return hash;
     }
     
-    void generateRandomWalk(Random random) {
+    public void generateRandomWalk(Random random) {
 //        Random random = new Random();
         int x = random.nextInt(widthx);
         int y = random.nextInt(widthy);
 //        for (int i = 0; i < random.nextInt(20); i++) {
         for (int i = 0; i < widthx; i++) {
-            Dir dir = Dir.values()[random.nextInt(8)];
+//            Dir dir = Dir.values()[random.nextInt(8)];
+            Dir4 dir = Dir4.values()[random.nextInt(4)];
+            
+            
             final int nextInt = random.nextInt(20);
             for (int j = 0; j < nextInt; j++) {
 //            for (int j = 0; j < 10; j++) {
@@ -168,7 +183,7 @@ public class PathNetwork {
         if ((x < 0) || (y < 0) || (widthx <= x) || (widthy <= y)) {
             return null;
         }
-        return roadpoints[x][y];
+        return roadpoints.get(x, y);
     }
 
     public boolean isAreaFree(double cx, double cy, double wx, double wy) {
@@ -193,37 +208,37 @@ public class PathNetwork {
     }
 
     public void removePoint(int x, int y) {
-        RoadPoint roadPoint = roadpoints[x][y];
-        for (RoadPoint roadPoint1 : roadPoint.incidents) {
-            roadPoint1.incidents.remove(roadPoint1);
+        RoadPoint roadPoint = roadpoints.get(x, y);
+        for (RoadPoint otherPoint : roadPoint.incidents) {
+            otherPoint.incidents.remove(roadPoint);
         }
-        roadpoints[x][y] = null;
-        correctRoadTile(x, y);
-        correctRoadTile(x - 1, y);
-        correctRoadTile(x - 1, y - 1);
-        correctRoadTile(x, y - 1);
+        roadpoints.set(x, y, null);
+//        correctRoadTile(x, y);
+//        correctRoadTile(x - 1, y);
+//        correctRoadTile(x - 1, y - 1);
+//        correctRoadTile(x, y - 1);
     }
 
-    void roadTextures() {
-//        int[][] roads = new int[widthx + 1][widthy + 1];
-//
-//        for (int x = 0; x < widthx + 1; x++) {
-//            for (int y = 0; y < widthy + 1; y++) {
-//                if (Math.random() < 0.3) {
-//                    roads[x][y] = 1;
-//                }
+//    void roadTextures() {
+////        int[][] roads = new int[widthx + 1][widthy + 1];
+////
+////        for (int x = 0; x < widthx + 1; x++) {
+////            for (int y = 0; y < widthy + 1; y++) {
+////                if (Math.random() < 0.3) {
+////                    roads[x][y] = 1;
+////                }
+////            }
+////        }
+//        for (int x = 0; x < widthx; x++) {
+//            for (int y = 0; y < widthy; y++) {
+////                int hash = (roads[x][y] * 8) +
+////                (roads[x + 1][y] * 4) +
+////                        (roads[x + 1][y + 1] * 2) +
+////                (roads[x][y + 1] * 1);
+//                correctRoadTile(x, y);
 //            }
 //        }
-        for (int x = 0; x < widthx; x++) {
-            for (int y = 0; y < widthy; y++) {
-//                int hash = (roads[x][y] * 8) +
-//                (roads[x + 1][y] * 4) +
-//                        (roads[x + 1][y + 1] * 2) +
-//                (roads[x][y + 1] * 1);
-                correctRoadTile(x, y);
-            }
-        }
-    }
+//    }
 
     public class RoadPoint {
 
