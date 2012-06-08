@@ -4,6 +4,7 @@ import com.jme3.material.Material;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
+import java.util.Iterator;
 import java.util.Random;
 import kotucz.village.game.MyGame;
 
@@ -29,12 +30,7 @@ public class TileGrid {
 
         this.meshGrid = new MeshTileGrid(lingrid);
 
-        Random r = new Random();
 
-        for (int i = 0; i < lingrid.getTotalNum(); i++) {
-//            setTexture(i, mtex.getTex(i)createSubtexture(16*(i%3), 16*(i%3), 16*(i%3)+16, 16*(i%3)+16));                
-            meshGrid.setTexture(i, mtex.getTex(r.nextInt(16)));
-        }
 
 //                    PathNetwork pnet = new PathNetwork(16, 16);
 //            pnet.randomlySelect(80);
@@ -47,6 +43,15 @@ public class TileGrid {
 
 
     }
+    
+    public void genRandom() {
+        Random r = new Random();
+
+        for (int i = 0; i < lingrid.getTotalNum(); i++) {
+//            setTexture(i, mtex.getTex(i)createSubtexture(16*(i%3), 16*(i%3), 16*(i%3)+16, 16*(i%3)+16));                
+            meshGrid.setTexture(i, mtex.getTex(r.nextInt(16)));
+        }
+    }
 
     public Geometry getGeometry() {
         return geometry;
@@ -56,7 +61,9 @@ public class TileGrid {
         meshGrid.setTexture(x, y, mtex.getTex(tex));
     }
 
-    public void updateGeometry() {
-        meshGrid.updateGeometry();
+    public void updateTexture() {
+        meshGrid.updateTexture();
     }
+
+   
 }
