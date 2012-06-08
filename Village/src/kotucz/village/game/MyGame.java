@@ -359,9 +359,12 @@ public class MyGame extends SimpleApplication {
 //            pnet.randomlySelect(20);
             
             selectTileGrid = new TileGrid(lingrid, matsel, this);
-//            selectGrid = new SelectGrid(selectTileGrid);
+            selectGrid = new SelectGrid(selectTileGrid);
+            selectGrid.updateGrid();
             
             selgeom = selectTileGrid.getGeometry();
+            selgeom.setName("selgrid");
+            
 //            selgeom.setMaterial(matsel);
 //            selgeom.setShadowMode(ShadowMode.Receive);
             selgeom.setLocalTranslation(new Vector3f(0, 0, 1.5f));

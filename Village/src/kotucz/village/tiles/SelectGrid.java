@@ -29,8 +29,8 @@ public class SelectGrid {
 //        }
 
 
-        if (contains(x, y)) {
-            return 0;
+        if (!contains(x, y)) {
+            return 15;
         }
 
         int hash = ((contains(x + 1, y)) ? 1 : 0)
