@@ -64,9 +64,8 @@ import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.texture.Texture;
 import kotucz.village.tiles.Multitexture;
 import kotucz.village.MyBox;
-import kotucz.village.tiles.NodedefTileGrid;
+import kotucz.village.tiles.LinearGrid;
 import kotucz.village.tiles.PathNetwork;
-import kotucz.village.tiles.RoadTileGrid;
 import kotucz.village.tiles.TileGrid;
 
 /**
@@ -75,6 +74,10 @@ import kotucz.village.tiles.TileGrid;
  */
 public class MyGame extends SimpleApplication {
 
+    
+   
+
+    
     public static final Vector3f UP = new Vector3f(0, 0, 1);
     static float bLength = 1f;
     static float bWidth = 1f;
@@ -99,7 +102,7 @@ public class MyGame extends SimpleApplication {
         MyGame f = new MyGame();
         f.start();
     }
-    private RoadTileGrid selectTileGrid;
+    private TileGrid selectTileGrid;
 
     @Override
     public void simpleInitApp() {
@@ -125,7 +128,15 @@ public class MyGame extends SimpleApplication {
         brick = new Box(Vector3f.ZERO, new Vector3f(1, 1, 1));
 //        brick = new Box(Vector3f.ZERO, new Vector3f(1, 1, 1));
 //        brick.scaleTextureCoordinates(new Vector2f(1f, 1f));
+        
 
+//         {
+//              float frustumSize = 1;
+//        cam.setParallelProjection(true);
+//        float aspect = (float) cam.getWidth() / cam.getHeight();
+//        cam.setFrustum(-1000, 1000, -aspect * frustumSize, aspect * frustumSize, frustumSize, -frustumSize);
+//        }
+        
         getFlyByCamera().setMoveSpeed(50);
         getFlyByCamera().setUpVector(UP);
 
@@ -158,7 +169,7 @@ public class MyGame extends SimpleApplication {
         super.simpleUpdate(tpf);
     
         
-       pick();
+//        pick();
     
     }
     
@@ -288,23 +299,31 @@ public class MyGame extends SimpleApplication {
 
     public void initGrid() {
         {
-            final Geometry geometry = new Geometry("grid", new TileGrid());
-            geometry.setMaterial(matgrass);
-            geometry.setShadowMode(ShadowMode.Receive);
-            geometry.setLocalTranslation(new Vector3f(0, 0, 0.f));
+//            final Geometry geometry = new Geometry("grid", new MeshTileGrid());
+//            geometry.setMaterial(matgrass);
+//            geometry.setShadowMode(ShadowMode.Receive);
+//            geometry.setLocalTranslation(new Vector3f(0, 0, 0.f));
+//            this.rootNode.attachChild(geometry);
+            
+             final Geometry geometry = new TileGrid(new LinearGrid(16, 16), matgrass, this).getGeometry();
+//            geometry.setMaterial(matwtr);
+//            geometry.setShadowMode(ShadowMode.Receive);
+            geometry.setLocalTranslation(new Vector3f(0, 0, 0.0000f));
             this.rootNode.attachChild(geometry);
+            
         }
 
 
         {
 
-            PathNetwork pnet = new PathNetwork(16, 16);
-            pnet.randomlySelect(40);
+//            PathNetwork pnet = new PathNetwork(16, 16);
+//            pnet.randomlySelect(40);
 
 
-            final Geometry geometry = new Geometry("grid16", new NodedefTileGrid(pnet));
-            geometry.setMaterial(matwtr);
-            geometry.setShadowMode(ShadowMode.Receive);
+//            final Geometry geometry = new Geometry("grid16", new NodedefTileGrid(pnet));
+            final Geometry geometry = new TileGrid(new LinearGrid(16, 16), matwtr, this).getGeometry();
+//            geometry.setMaterial(matwtr);
+//            geometry.setShadowMode(ShadowMode.Receive);
             geometry.setLocalTranslation(new Vector3f(0, 0, 0.0005f));
             this.rootNode.attachChild(geometry);
         }
@@ -313,8 +332,9 @@ public class MyGame extends SimpleApplication {
 
             PathNetwork pnet = new PathNetwork(16, 16);
             pnet.randomlySelect(80);
-
-            final Geometry geometry = new Geometry("roadgrid", new RoadTileGrid(pnet));
+            TileGrid tileGrid = new TileGrid(new LinearGrid(16, 16), matroad, this);
+            
+            final Geometry geometry = tileGrid.getGeometry();
             geometry.setMaterial(matroad);
             geometry.setShadowMode(ShadowMode.Receive);
             geometry.setLocalTranslation(new Vector3f(0, 0, 0.001f));
@@ -328,18 +348,28 @@ public class MyGame extends SimpleApplication {
 
             PathNetwork pnet = new PathNetwork(16, 16);
             pnet.randomlySelect(20);
-            selectTileGrid = new RoadTileGrid(pnet);
+            selectTileGrid = new TileGrid(new LinearGrid(16, 16), matsel, this);
 
-            selgeom = new Geometry("selgrid", selectTileGrid);
-            selgeom.setMaterial(matsel);
-            selgeom.setShadowMode(ShadowMode.Receive);
+            selgeom = selectTileGrid.getGeometry();
+//            selgeom.setMaterial(matsel);
+//            selgeom.setShadowMode(ShadowMode.Receive);
             selgeom.setLocalTranslation(new Vector3f(0, 0, 0.0015f));
-            selgeom.setQueueBucket(Bucket.Transparent);
+//            selgeom.setQueueBucket(Bucket.Transparent);
             this.shootables.attachChild(selgeom);
         }
     }
     Geometry selgeom;
 
+    private void initSuperGrid() {
+        
+        TileGrid grid = new TileGrid(new LinearGrid(16, 16), mat16, this);
+        
+        grid.getGeometry().setLocalTranslation(new Vector3f(0, 0, 0.001f));
+            
+        this.rootNode.attachChild(grid.getGeometry());
+        
+    }
+    
     public void initFloor() {
         Box floorBox = new Box(Vector3f.ZERO, 10f, 0.1f, 5f);
         floorBox.scaleTextureCoordinates(new Vector2f(3, 6));

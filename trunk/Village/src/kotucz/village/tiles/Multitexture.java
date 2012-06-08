@@ -8,7 +8,8 @@ public class Multitexture {
 
     int width;
     int height;
-
+    
+    
     public Multitexture(int width, int height) {
         this.width = width;
         this.height = height;
@@ -45,4 +46,11 @@ public class Multitexture {
                 (float) endX / width,
                 (float) (height - startY) / height);
     }
+
+    
+    int numx;
+    int numy;
+
+    
+    
 }
