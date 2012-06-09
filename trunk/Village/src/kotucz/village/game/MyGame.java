@@ -65,6 +65,7 @@ import com.jme3.texture.Texture;
 import java.util.Random;
 import kotucz.village.tiles.Multitexture;
 import kotucz.village.MyBox;
+import kotucz.village.build.Building;
 import kotucz.village.tiles.LinearGrid;
 import kotucz.village.tiles.PathNetwork;
 import kotucz.village.tiles.Pos;
@@ -95,7 +96,7 @@ public class MyGame extends SimpleApplication {
     private BitmapText actionText;
     private BulletAppState bulletAppState;
     Geometry mark;
-    Node shootables;
+    Node selectables;
     final LinearGrid lingrid = new LinearGrid(16, 16);
     SelectGrid selectGrid;
 
@@ -116,8 +117,8 @@ public class MyGame extends SimpleApplication {
         bullet.setTextureMode(TextureMode.Projected);
         bulletCollisionShape = new SphereCollisionShape(0.4f);
 
-        shootables = new Node("Shootables");
-        rootNode.attachChild(shootables);
+        selectables = new Node("Shootables");
+        rootNode.attachChild(selectables);
 
         Multitexture mtex = new Multitexture(16 * 4, 16 * 4);
 //        mtex.createSubtexture(0, 16, 16, 32);
@@ -209,6 +210,12 @@ public class MyGame extends SimpleApplication {
             if (name.equals("Shoot") && !keyPressed) {
                 pick();
                 if (currentAction != null) {
+                    
+                    if (currentAction.current != null) {
+                        Building building = new Building(currentAction.current, mat16);
+                        selectables.attachChild(building.getNode());
+                    }
+                    
                     currentAction.cancel();
                     currentAction = null;
                 }
@@ -230,7 +237,7 @@ public class MyGame extends SimpleApplication {
         // 2. Aim the ray from cam loc to cam direction.
         Ray ray = new Ray(cam.getLocation(), cam.getDirection());
         // 3. Collect intersections between Ray and Shootables in results list.
-        shootables.collideWith(ray, results);
+        selectables.collideWith(ray, results);
         // 4. Print the results
         System.out.println("----- Collisions? " + results.size() + "-----");
         for (int i = 0; i < results.size(); i++) {
@@ -254,6 +261,8 @@ public class MyGame extends SimpleApplication {
             mark.setLocalTranslation(closest.getContactPoint());
             rootNode.attachChild(mark);
 
+            System.out.println("Test user value: " + closest.getGeometry().getUserData("test"));
+            
             if ("selgrid".equals(closest.getGeometry().getName())) {
                 Vector3f contactPoint = closest.getContactPoint();
                 int x = (int) Math.floor(contactPoint.x);
@@ -384,7 +393,7 @@ public class MyGame extends SimpleApplication {
 //            selgeom.setShadowMode(ShadowMode.Receive);
             selgeom.setLocalTranslation(new Vector3f(0, 0, 0.004f));
 //            selgeom.setQueueBucket(Bucket.Transparent);
-            this.shootables.attachChild(selgeom);
+            this.selectables.attachChild(selgeom);
         }
     }
     Geometry selgeom;
