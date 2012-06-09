@@ -64,17 +64,18 @@ import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.texture.Texture;
 
 import java.util.Random;
+
 import kotucz.village.tiles.Multitexture;
-import kotucz.village.MyBox;
+import kotucz.village.common.MyBox;
 import kotucz.village.build.Building;
 import kotucz.village.tiles.LinearGrid;
 import kotucz.village.transport.PathNetwork;
 import kotucz.village.tiles.Pos;
 import kotucz.village.tiles.SelectGrid;
 import kotucz.village.tiles.TileGrid;
+import kotucz.village.transport.Vehicle;
 
 /**
- *
  * @author double1984
  */
 public class MyGame extends SimpleApplication {
@@ -89,6 +90,7 @@ public class MyGame extends SimpleApplication {
     Material matroad;
     Material matwtr;
     Material matsel;
+    Material matveh;
     BasicShadowRenderer bsr;
     private static Sphere bullet;
     private static MyBox box;
@@ -100,12 +102,17 @@ public class MyGame extends SimpleApplication {
     Node selectables;
     final LinearGrid lingrid = new LinearGrid(16, 16);
     SelectGrid selectGrid;
+    private PathNetwork pnet;
 
     public static void main(String args[]) {
         MyGame f = new MyGame();
         f.start();
     }
+
     private TileGrid selectTileGrid;
+
+    Vehicle car;
+
 
     @Override
     public void simpleInitApp() {
@@ -143,8 +150,6 @@ public class MyGame extends SimpleApplication {
 //        cam.setFrustum(-1000, 1000, -aspect * frustumSize, aspect * frustumSize, frustumSize, -frustumSize);
 //        }
 
-        getFlyByCamera().setMoveSpeed(50);
-        getFlyByCamera().setUpVector(UP);
 
         initMaterial();
 //        initWall();
@@ -156,13 +161,28 @@ public class MyGame extends SimpleApplication {
         initKeys();       // load custom key mappings
         initMark();       // a red sphere to mark the hit
 
-        this.cam.setLocation(new Vector3f(8, -8, 8f));
-        cam.lookAt(new Vector3f(8, 8, 0), UP);
-        cam.setFrustumFar(50);
+
+        Player player = new Player("Kotuc", null, 10000);
+
+        car = new Vehicle(player, Vehicle.Type.SKODA120, new Vector3f(4, 4, 0), matveh, pnet);
+        selectables.attachChild(car.getNode());
+
+
+        {
+            // setup camera
+            getFlyByCamera().setMoveSpeed(50);
+            getFlyByCamera().setUpVector(UP);
+
+            this.cam.setLocation(new Vector3f(8, -8, 8f));
+            cam.lookAt(new Vector3f(8, 8, 0), UP);
+            cam.setFrustumFar(50);
+        }
+
         inputManager.addMapping("shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addListener(actionListener, "shoot");
         inputManager.addMapping("gc", new KeyTrigger(KeyInput.KEY_X));
         inputManager.addListener(actionListener, "gc");
+
 
         rootNode.setShadowMode(ShadowMode.Off);
         bsr = new BasicShadowRenderer(assetManager, 256);
@@ -186,11 +206,14 @@ public class MyGame extends SimpleApplication {
 
         }
 
+//        car.act(tpf);
+
     }
 
     private PhysicsSpace getPhysicsSpace() {
         return bulletAppState.getPhysicsSpace();
     }
+
     private ActionListener actionListener = new ActionListener() {
 
         public void onAction(String name, boolean keyPressed, float tpf) {
@@ -214,12 +237,12 @@ public class MyGame extends SimpleApplication {
             if (name.equals("Shoot") && !keyPressed) {
                 pick();
                 if (currentAction != null) {
-                    
+
                     if (currentAction.current != null) {
                         Building building = new Building(currentAction.current, mat16);
                         selectables.attachChild(building.getNode());
                     }
-                    
+
                     currentAction.cancel();
                     currentAction = null;
                 }
@@ -253,7 +276,6 @@ public class MyGame extends SimpleApplication {
             System.out.println("  You shot " + hit + " at " + pt + ", " + dist + " wu away.");
 
 
-
         }
 
 
@@ -266,7 +288,7 @@ public class MyGame extends SimpleApplication {
             rootNode.attachChild(mark);
 
             System.out.println("Test user value: " + closest.getGeometry().getUserData("test"));
-            
+
             if ("selgrid".equals(closest.getGeometry().getName())) {
                 Vector3f contactPoint = closest.getContactPoint();
                 int x = (int) Math.floor(contactPoint.x);
@@ -363,10 +385,8 @@ public class MyGame extends SimpleApplication {
         {
 
 
-
-
             TileGrid tileGrid = new TileGrid(lingrid, matroad, this);
-            PathNetwork pnet = new PathNetwork(tileGrid);
+            pnet = new PathNetwork(tileGrid);
 //            pnet.randomlySelect(80); 
             pnet.generateRandomWalk(new Random());
             pnet.updateTextures();
@@ -400,6 +420,7 @@ public class MyGame extends SimpleApplication {
             this.selectables.attachChild(selgeom);
         }
     }
+
     Geometry selgeom;
 
     public void initFloor() {
@@ -484,6 +505,19 @@ public class MyGame extends SimpleApplication {
             matsel.setTexture("ColorMap", tex4);
             matsel.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
         }
+        {
+            matveh = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            TextureKey key4 = new TextureKey("Textures/veh256.png");
+//            TextureKey key4 = new TextureKey("Textures/watr16.png");
+//            TextureKey key3 = new TextureKey("Textures/tex16.png");
+//            key3.setGenerateMips(true);`
+            Texture tex4 = assetManager.loadTexture(key4);
+            tex4.setMagFilter(Texture.MagFilter.Nearest);
+//        tex3.setWrap(WrapMode.Repeat);
+            matveh.setTexture("ColorMap", tex4);
+            matveh.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+        }
+
     }
 
     public void addBox(Vector3f ori, AbstractBox box) {
@@ -533,12 +567,14 @@ public class MyGame extends SimpleApplication {
             score.setLocalTranslation( // center
                     10,
                     settings.getHeight()
-                    - 10, 0);
+                            - 10, 0);
             guiNode.attachChild(score);
         }
     }
 
-    /** Declaring the "Shoot" action and mapping to its triggers. */
+    /**
+     * Declaring the "Shoot" action and mapping to its triggers.
+     */
     private void initKeys() {
         inputManager.addMapping("Shoot",
                 new KeyTrigger(KeyInput.KEY_SPACE), // trigger 1: spacebar
@@ -546,7 +582,9 @@ public class MyGame extends SimpleApplication {
         inputManager.addListener(actionListener, "Shoot");
     }
 
-    /** A red ball that marks the last spot that was "hit" by the "shot". */
+    /**
+     * A red ball that marks the last spot that was "hit" by the "shot".
+     */
     protected void initMark() {
         Sphere sphere = new Sphere(30, 30, 0.2f);
         mark = new Geometry("BOOM!", sphere);
@@ -554,6 +592,7 @@ public class MyGame extends SimpleApplication {
         mark_mat.setColor("Color", ColorRGBA.Red);
         mark.setMaterial(mark_mat);
     }
+
     MyAction currentAction;
 
     class MyAction {

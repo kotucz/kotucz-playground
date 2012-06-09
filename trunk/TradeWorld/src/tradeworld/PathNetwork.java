@@ -14,7 +14,23 @@ import tradeworld.graphics.TextureSelect;
  */
 public class PathNetwork {
 
-    final TextureSelect[] selects = new TextureSelect[]{new TextureSelect(0, 0, 8, 1, 0, 0), new TextureSelect(1, 0, 8, 1, 2, 0), new TextureSelect(1, 0, 8, 1, 1, 0), new TextureSelect(2, 0, 8, 1, 2, 0), new TextureSelect(1, 0, 8, 1, 0, 0), new TextureSelect(3, 0, 8, 1, 1, 0), new TextureSelect(2, 0, 8, 1, 1, 0), new TextureSelect(4, 0, 8, 1, 0, 0), new TextureSelect(1, 0, 8, 1, 3, 0), new TextureSelect(2, 0, 8, 1, 3, 0), new TextureSelect(3, 0, 8, 1, 0, 0), new TextureSelect(4, 0, 8, 1, 1, 0), new TextureSelect(2, 0, 8, 1, 0, 0), new TextureSelect(4, 0, 8, 1, 2, 0), new TextureSelect(4, 0, 8, 1, 3, 0), new TextureSelect(5, 0, 8, 1, 0, 0)};
+    final TextureSelect[] selects = new TextureSelect[]{
+        new TextureSelect(0, 0, 8, 1, 0, 0),
+        new TextureSelect(1, 0, 8, 1, 2, 0),
+        new TextureSelect(1, 0, 8, 1, 1, 0),
+        new TextureSelect(2, 0, 8, 1, 2, 0),
+        new TextureSelect(1, 0, 8, 1, 0, 0),
+        new TextureSelect(3, 0, 8, 1, 1, 0),
+        new TextureSelect(2, 0, 8, 1, 1, 0),
+        new TextureSelect(4, 0, 8, 1, 0, 0),
+        new TextureSelect(1, 0, 8, 1, 3, 0),
+        new TextureSelect(2, 0, 8, 1, 3, 0),
+        new TextureSelect(3, 0, 8, 1, 0, 0),
+        new TextureSelect(4, 0, 8, 1, 1, 0),
+        new TextureSelect(2, 0, 8, 1, 0, 0),
+        new TextureSelect(4, 0, 8, 1, 2, 0),
+        new TextureSelect(4, 0, 8, 1, 3, 0),
+        new TextureSelect(5, 0, 8, 1, 0, 0)};
     private final RoadPoint[][] roadpoints;
     private int widthx;
     private int widthy;

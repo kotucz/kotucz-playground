@@ -23,7 +23,8 @@ public class Player {
         this.color = color;
         this.cash = cash;
 //        this.world = world;
-        this.id = new PlayerId(color.getRGB());
+//        this.id = new PlayerId(color.getRGB());
+        this.id = new PlayerId(1);
     }
 
     public void pay(long amount) {

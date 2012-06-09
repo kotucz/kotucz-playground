@@ -1,7 +1,8 @@
 package kotucz.village.transport;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+
+import com.jme3.math.Vector3f;
+
 import java.util.LinkedList;
 
 /**
@@ -11,29 +12,29 @@ import java.util.LinkedList;
 public class Trajectory {
 
     private final LinkedList<RoadPoint> path;
-    private final LinkedList<Point3d> points;
-    private final LinkedList<Vector3d> vectors;
+    private final LinkedList<Vector3f> points;
+    private final LinkedList<Vector3f> vectors;
 //    private final double hand = 0.25; // hand right positive
 
     public Trajectory(LinkedList<RoadPoint> path) {
         this(path, 0);
     }
 
-    public Trajectory(LinkedList<RoadPoint> path, double hand) {
+    public Trajectory(LinkedList<RoadPoint> path, float hand) {
         this.path = path;
 
-        this.points = new LinkedList<Point3d>();
+        this.points = new LinkedList<Vector3f>();
         for (int i = 0; i < path.size(); i++) {
             points.add(toHandPoint(i, hand));
         }
 
-        this.vectors = new LinkedList<Vector3d>();
+        this.vectors = new LinkedList<Vector3f>();
         for (int i = 0; i < path.size(); i++) {
-//            Point3d pos1 = pointClamp(i - 1);
-            Point3d pos1 = pointClamp(i);
-            Point3d pos2 = pointClamp(i + 1);
-            Vector3d vec = new Vector3d(pos2);
-            vec.sub(pos1);
+//            Vector3f pos1 = pointClamp(i - 1);
+            Vector3f pos1 = pointClamp(i);
+            Vector3f pos2 = pointClamp(i + 1);
+            Vector3f vec = new Vector3f(pos2);
+            vec.subtract(pos1);
             if (vec.lengthSquared() > 0.001) {
                 vec.normalize();
             }
@@ -41,50 +42,50 @@ public class Trajectory {
         }
     }
 
-    public Point3d getPoint(double t) {
+    public Vector3f getPoint(float t) {
         int floor = (int) Math.floor(t);
 
         t -= floor;
 
-        Point3d pos0 = pointClamp(floor);
-        Point3d pos1 = pointClamp(floor + 1);
-        Vector3d vec0 = vecClamp(floor);
-        Vector3d vec1 = vecClamp(floor + 1);
+        Vector3f pos0 = pointClamp(floor);
+        Vector3f pos1 = pointClamp(floor + 1);
+        Vector3f vec0 = vecClamp(floor);
+        Vector3f vec1 = vecClamp(floor + 1);
 
-        double[] w = getWeights(t);
+        float[] w = getWeights(t);
 
-        return new Point3d(
+        return new Vector3f(
                 w[0] * pos0.x + w[1] * pos1.x + w[2] * vec0.x + w[3] * vec1.x,
                 w[0] * pos0.y + w[1] * pos1.y + w[2] * vec0.y + w[3] * vec1.y,
                 w[0] * pos0.z + w[1] * pos1.z + w[2] * vec0.z + w[3] * vec1.z);
 
         // linear
-//        Point3d pos0 = new Point3d(pointClamp(floor));
-//        Point3d pos1 = pointClamp(floor + 1);
+//        Vector3f pos0 = new Vector3f(pointClamp(floor));
+//        Vector3f pos1 = pointClamp(floor + 1);
 
 //        pos0.interpolate(pos1, t);
 //        return pos0;
     }
 
-    private Point3d pointClamp(int i) {
+    private Vector3f pointClamp(int i) {
         return points.get(clamp(i));
     }
 
-    private Vector3d vecClamp(int i) {
+    private Vector3f vecClamp(int i) {
         return vectors.get(clamp(i));
     }
 
     /**
      *  @return point shifted to the hand side from path
      */
-    Point3d toHandPoint(int i, double hand) {
-        Point3d pos1 = path.get(clamp(i - 1)).getPos();
-        Point3d pos2 = path.get(clamp(i + 1)).getPos();
-        Vector3d vec = new Vector3d(pos2.y - pos1.y, pos1.x - pos2.x, 0);
-        Point3d pos = new Point3d(path.get(clamp(i)).getPos());
+    Vector3f toHandPoint(int i, float hand) {
+        Vector3f pos1 = path.get(clamp(i - 1)).getPos();
+        Vector3f pos2 = path.get(clamp(i + 1)).getPos();
+        Vector3f vec = new Vector3f(pos2.y - pos1.y, pos1.x - pos2.x, 0);
+        Vector3f pos = new Vector3f(path.get(clamp(i)).getPos());
         if (vec.lengthSquared() > 0.1) {
             vec.normalize();
-            vec.scale(hand);
+            vec.mult(hand);
 
             pos.add(vec);
         }
@@ -95,11 +96,11 @@ public class Trajectory {
         return Math.max(0, Math.min(i, path.size() - 1));
     }
 
-    public Vector3d getVector(double t) {
+    public Vector3f getVector(float t) {
         int floor = (int) Math.floor(t);
 
-        Vector3d vec1 = new Vector3d(vectors.get(clamp(floor)));
-        Vector3d vec2 = vectors.get(clamp(floor + 1));
+        Vector3f vec1 = new Vector3f(vectors.get(clamp(floor)));
+        Vector3f vec2 = vectors.get(clamp(floor + 1));
 
         vec1.interpolate(vec2, t - floor);
 
@@ -112,9 +113,9 @@ public class Trajectory {
      * @param t
      * @return p0, p1, v0, v1
      */
-    private double[] getWeights(double t) {
+    private float[] getWeights(float t) {
         // hermit
-        return new double[]{
+        return new float[]{
                     2 * t * t * t - 3 * t * t + 1,
                     -2 * t * t * t + 3 * t * t,
                     1 * t * t * t - 2 * t * t + 1 * t,

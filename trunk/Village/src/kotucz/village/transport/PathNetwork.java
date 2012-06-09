@@ -3,11 +3,11 @@ package kotucz.village.transport;
 
 
 import java.util.Random;
-import javax.vecmath.Point3d;
-import kotucz.village.Dir;
-import kotucz.village.Dir4;
+
+import com.jme3.math.Vector3f;
+import kotucz.village.common.Dir;
+import kotucz.village.common.Dir4;
 import kotucz.village.tiles.*;
-import kotucz.village.transport.RoadPoint;
 
 
 /**
@@ -182,7 +182,7 @@ public class PathNetwork {
         }
     }
 
-    public RoadPoint getPoint(Point3d point) {
+    public RoadPoint getPoint(Vector3f point) {
         return getPoint((int) Math.round(point.x), (int) Math.round(point.y));
     }
 

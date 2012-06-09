@@ -1,15 +1,23 @@
-package kotucz.village;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package kotucz.village.common;
 
 /**
  *
  * @author Kotuc
  */
-public enum Dir4 {
+public enum Dir {
 
         E(1, 0),
+        NE(1, 1),
         N(0, 1),
+        NW(-1, 1),
         W(-1, 0),
-        S(0, -1);
+        SW(-1, -1),
+        S(0, -1),
+        SE(1, -1);
         private final int dx, dy;
 
         public int dx() {
@@ -20,7 +28,7 @@ public enum Dir4 {
             return dy;
         }
 
-        private Dir4(int dx, int dy) {
+        private Dir(int dx, int dy) {
             this.dx = dx;
             this.dy = dy;
         }
