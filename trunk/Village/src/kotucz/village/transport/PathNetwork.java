@@ -1,13 +1,13 @@
-package kotucz.village.tiles;
+package kotucz.village.transport;
 
 
 
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 import javax.vecmath.Point3d;
 import kotucz.village.Dir;
 import kotucz.village.Dir4;
+import kotucz.village.tiles.*;
+import kotucz.village.transport.RoadPoint;
 
 
 /**
@@ -37,10 +37,14 @@ public class PathNetwork {
     
     private final GenericGrid<RoadPoint> roadpoints;
     
-    private TileGrid tilegrid;
+    private final TileGrid tilegrid;
     
-    private int widthx;
-    private int widthy;
+    private final int widthx;
+    private final int widthy;
+
+    LinearGrid lingrid;
+
+
 //    private Land3D land;
 //    private TileLayer layer;
     
@@ -57,9 +61,10 @@ public class PathNetwork {
     public PathNetwork(TileGrid grid) {
 //        this.land = land;
         this.tilegrid = grid;
-        this.widthx = tilegrid.lingrid.sizeX;
-        this.widthy = tilegrid.lingrid.sizeY;
-        this.roadpoints = new GenericGrid<RoadPoint>(tilegrid.lingrid);
+        this.lingrid = tilegrid.getLingrid();
+        this.widthx = lingrid.getSizeX();
+        this.widthy = lingrid.getSizeY();
+        this.roadpoints = new GenericGrid<RoadPoint>(lingrid);
 //        this.layer = layer;
 //        roadTextures();
         
@@ -75,7 +80,7 @@ public class PathNetwork {
         final Random random = new Random();
         for (int i = 0; i < s; i++) {
 
-            roadpoints.set(random.nextInt(tilegrid.lingrid.getTotalNum()), new RoadPoint(null));
+            roadpoints.set(random.nextInt(lingrid.getTotalNum()), new RoadPoint(null));
             
 //            TextureSelect textureSelect = selects[i];
             
@@ -102,8 +107,8 @@ public class PathNetwork {
 
     }
 
-    public void setInto() {
-        for (Tile t:tilegrid.lingrid) {
+    public void updateTextures() {
+        for (Tile t:lingrid) {
             tilegrid.setTexture(t.x, t.y, getRoadTileHash(t.x, t.y));
         }
         tilegrid.updateTexture();
@@ -181,6 +186,10 @@ public class PathNetwork {
         return getPoint((int) Math.round(point.x), (int) Math.round(point.y));
     }
 
+    public RoadPoint getPoint(Pos pos) {
+        return getPoint(pos.x , pos.y);
+    }
+
     public RoadPoint getPoint(int x, int y) {
         if ((x < 0) || (y < 0) || (widthx <= x) || (widthy <= y)) {
             return null;
@@ -242,26 +251,5 @@ public class PathNetwork {
 //        }
 //    }
 
-    public class RoadPoint {
 
-        final Point3d pos;
-        Set<RoadPoint> incidents = new HashSet<RoadPoint>();
-
-        public RoadPoint(Point3d pos) {
-            this.pos = pos;
-        }
-
-        public Point3d getPos() {
-            return pos;
-        }
-
-        @Override
-        public String toString() {
-//            return this.pos + "@" + super.toString().split("@")[1];
-            return "(" + pos.x + "," + pos.y + ")";
-
-        }
-    }
-
-  
 }

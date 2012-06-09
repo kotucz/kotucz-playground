@@ -5,6 +5,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import kotucz.village.MyBox;
+import kotucz.village.game.Player;
 import kotucz.village.tiles.Pos;
 
 /**
@@ -23,6 +24,7 @@ public class Building {
         {
             MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
             Geometry reBoxg = new Geometry("brick3", box);
+            reBoxg.setUserData("test", "budova13654");
             reBoxg.setMaterial(mat16);
             reBoxg.setLocalTranslation(new Vector3f(0, 0, 0));
 
@@ -56,10 +58,9 @@ public class Building {
         return node;
     }
     
-    
-    
-    
-    
-    
-    
+    Player owner;
+
+    public Player getOwner() {
+        return owner;
+    }
 }
