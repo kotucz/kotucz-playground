@@ -41,7 +41,7 @@ public class Vehicle {
 
     final Node node = new Node("Vozidlo");
 
-    public Vehicle(Player owner, Type type, Vector3f pos, Material mat, PathNetwork network) {
+    public Vehicle(Player owner, Type type, RoadPoint pos, Material mat, PathNetwork network) {
         this.type = type;
         this.name = type.toString();
         this.owner = owner;
@@ -49,7 +49,7 @@ public class Vehicle {
 
         this.fuel = 2000;
 
-        this.pos = pos;
+        this.pos = pos.getPos();
 
         {
             MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
@@ -115,7 +115,9 @@ public class Vehicle {
         //  System.out.println("" + this + " " + state);
         switch (state) {
             case RANDOM:
-                destLong = network.randomRoadPoint();
+                if (path == null) {
+                    destLong = network.randomRoadPoint();
+                }
                 if (travelTo(destLong)) {
                     path = null;
                 }
@@ -175,6 +177,7 @@ public class Vehicle {
 //            path = null;
 //        }
 //        model.refresh();
+        updateModel();
     }
 
     /**
@@ -230,7 +233,7 @@ public class Vehicle {
 
         t += 0.02;
 
-//        setPos(trajectory.getPoint(t));
+        this.pos = trajectory.getPoint(t);
 
 //        Vector3d vec = trajectory.getVector(t);
 //        double angle = Math.atan2(vec.y, vec.x);

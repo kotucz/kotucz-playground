@@ -80,18 +80,25 @@ public class PathNetwork {
         final Random random = new Random();
         for (int i = 0; i < s; i++) {
 
-            roadpoints.set(random.nextInt(lingrid.getTotalNum()), new RoadPoint(null));
+            int index = random.nextInt(lingrid.getTotalNum());
+
+            roadpoints.set(index, createRoadPoint(lingrid.getPos(index)));
             
 //            TextureSelect textureSelect = selects[i];
             
         }
+    }
+
+    RoadPoint createRoadPoint(Pos pos) {
+//        return new RoadPoint(new Vector3f(pos.x+0.5f, pos.y+0.5f, 0));
+        return new RoadPoint(new Vector3f(pos.x, pos.y, 0));
     }
     
     public void addPoint(int x, int y) {
         System.out.println("add point "+x+", "+y);
 //        RoadPoint roadPoint = new RoadPoint(land.new Point3d(x, y, 0));
 //        RoadPoint roadPoint = new RoadPoint(land.getHeighmap().get(x, y));
-        RoadPoint roadPoint = new RoadPoint(null);
+        RoadPoint roadPoint = createRoadPoint(new Pos(x, y));
         roadpoints.set(x, y, roadPoint);
         for (Dir dir : Dir.values()) {
             RoadPoint point = getPoint(x + dir.dx(), y + dir.dy());
@@ -208,7 +215,7 @@ public class PathNetwork {
         return true;
     }
 
-    RoadPoint randomRoadPoint() {
+    public RoadPoint randomRoadPoint() {
         Random random = new Random();
         while (true) {
             RoadPoint rp = getPoint(random.nextInt(widthx), random.nextInt(widthy));

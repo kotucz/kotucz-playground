@@ -1,5 +1,7 @@
 package kotucz.village.transport;
 
+import com.google.common.base.Preconditions;
+
 import java.util.*;
 
 /**
@@ -15,12 +17,14 @@ public class PathFinding {
     }
 
     public List<RoadPoint> aStar(RoadPoint start, RoadPoint dest) {
-        if (start == null) {
-            throw new NullPointerException("start null");
-        }
-        if (dest == null) {
-            throw new NullPointerException("dest null");
-        }
+        Preconditions.checkNotNull(start, "start");
+        Preconditions.checkNotNull(dest, "dest");
+//        if (start == null) {
+//            throw new NullPointerException("start null");
+//        }
+//        if (dest == null) {
+//            throw new NullPointerException("dest null");
+//        }
         System.out.println("aStar " + start + " " + dest);
         Set<RoadPoint> solved = new HashSet<RoadPoint>();
         Set<RoadPoint> visited = new HashSet<RoadPoint>();
