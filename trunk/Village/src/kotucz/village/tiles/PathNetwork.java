@@ -33,6 +33,8 @@ public class PathNetwork {
         new TextureSelect(4, 0, 8, 1, 2, 0),
         new TextureSelect(4, 0, 8, 1, 3, 0),
         new TextureSelect(5, 0, 8, 1, 0, 0)};
+    
+    
     private final GenericGrid<RoadPoint> roadpoints;
     
     private TileGrid tilegrid;
