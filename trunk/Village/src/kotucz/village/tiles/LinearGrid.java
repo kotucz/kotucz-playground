@@ -69,5 +69,9 @@ public final class LinearGrid implements Iterable<Tile>  {
         };
     }
     
-    
+    public Pos getPos(int index) {
+        return new Pos(getX(index), getY(index));
+    }
+
+
 }

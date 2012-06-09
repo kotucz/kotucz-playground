@@ -164,7 +164,7 @@ public class MyGame extends SimpleApplication {
 
         Player player = new Player("Kotuc", null, 10000);
 
-        car = new Vehicle(player, Vehicle.Type.SKODA120, new Vector3f(4, 4, 0), matveh, pnet);
+        car = new Vehicle(player, Vehicle.Type.SKODA120, pnet.randomRoadPoint(), matveh, pnet);
         selectables.attachChild(car.getNode());
 
 
@@ -206,7 +206,7 @@ public class MyGame extends SimpleApplication {
 
         }
 
-//        car.act(tpf);
+        car.act(tpf);
 
     }
 
