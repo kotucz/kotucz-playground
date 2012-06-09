@@ -10,7 +10,7 @@ import java.util.Set;
 public class SelectGrid {
 
     private final TileGrid tilegrid;
-    final Set<Pos> set = new HashSet<Pos>();
+    public final Set<Pos> set = new HashSet<Pos>();
 
     public SelectGrid(TileGrid tilegrid) {
         this.tilegrid = tilegrid;
@@ -47,43 +47,6 @@ public class SelectGrid {
     public boolean add(int x, int y) {
         return set.add(new Pos(x, y));
     }
-
     
     
-    public final class Pos {
-
-        final int x;
-        final int y;
-
-        public Pos(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            final Pos other = (Pos) obj;
-            if (this.x != other.x) {
-                return false;
-            }
-            if (this.y != other.y) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 3;
-            hash = 59 * hash + this.x;
-            hash = 59 * hash + this.y;
-            return hash;
-        }
-    }
 }

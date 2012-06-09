@@ -67,6 +67,7 @@ import kotucz.village.tiles.Multitexture;
 import kotucz.village.MyBox;
 import kotucz.village.tiles.LinearGrid;
 import kotucz.village.tiles.PathNetwork;
+import kotucz.village.tiles.Pos;
 import kotucz.village.tiles.SelectGrid;
 import kotucz.village.tiles.TileGrid;
 
@@ -76,10 +77,6 @@ import kotucz.village.tiles.TileGrid;
  */
 public class MyGame extends SimpleApplication {
 
-    
-   
-
-    
     public static final Vector3f UP = new Vector3f(0, 0, 1);
     static float bLength = 1f;
     static float bWidth = 1f;
@@ -95,13 +92,13 @@ public class MyGame extends SimpleApplication {
     private static MyBox box;
     private static Box brick;
     private static SphereCollisionShape bulletCollisionShape;
+    private BitmapText actionText;
     private BulletAppState bulletAppState;
     Geometry mark;
     Node shootables;
     final LinearGrid lingrid = new LinearGrid(16, 16);
-
     SelectGrid selectGrid;
-    
+
     public static void main(String args[]) {
         MyGame f = new MyGame();
         f.start();
@@ -121,7 +118,7 @@ public class MyGame extends SimpleApplication {
 
         shootables = new Node("Shootables");
         rootNode.attachChild(shootables);
-        
+
         Multitexture mtex = new Multitexture(16 * 4, 16 * 4);
 //        mtex.createSubtexture(0, 16, 16, 32);
 
@@ -132,7 +129,7 @@ public class MyGame extends SimpleApplication {
         brick = new Box(Vector3f.ZERO, new Vector3f(1, 1, 1));
 //        brick = new Box(Vector3f.ZERO, new Vector3f(1, 1, 1));
 //        brick.scaleTextureCoordinates(new Vector2f(1f, 1f));
-        
+
 
 //         {
 //              float frustumSize = 1;
@@ -140,7 +137,7 @@ public class MyGame extends SimpleApplication {
 //        float aspect = (float) cam.getWidth() / cam.getHeight();
 //        cam.setFrustum(-1000, 1000, -aspect * frustumSize, aspect * frustumSize, frustumSize, -frustumSize);
 //        }
-        
+
         getFlyByCamera().setMoveSpeed(50);
         getFlyByCamera().setUpVector(UP);
 
@@ -171,15 +168,20 @@ public class MyGame extends SimpleApplication {
     @Override
     public void simpleUpdate(float tpf) {
         super.simpleUpdate(tpf);
-    
-        
-//        pick();
-    
-    }
-    
-    
 
- 
+
+        actionText.setText("Jelito " + System.currentTimeMillis());
+
+//        currentAction = new MyAction();
+
+        if (currentAction != null) {
+
+            currentAction.current = pick();
+            currentAction.updateGui();
+
+        }
+
+    }
 
     private PhysicsSpace getPhysicsSpace() {
         return bulletAppState.getPhysicsSpace();
@@ -206,12 +208,23 @@ public class MyGame extends SimpleApplication {
             }
             if (name.equals("Shoot") && !keyPressed) {
                 pick();
+                if (currentAction != null) {
+                    currentAction.cancel();
+                    currentAction = null;
+                }
+            }
+            if (name.equals("Shoot") && keyPressed) {
+                final Pos pick = pick();
+                if (pick != null) {
+                    currentAction = new MyAction();
+                    currentAction.start = pick;
+                }
             }
 
         }
     };
 
-    void pick() {
+    Pos pick() {
         // 1. Reset results list.
         CollisionResults results = new CollisionResults();
         // 2. Aim the ray from cam loc to cam direction.
@@ -245,15 +258,17 @@ public class MyGame extends SimpleApplication {
                 Vector3f contactPoint = closest.getContactPoint();
                 int x = (int) Math.floor(contactPoint.x);
                 int y = (int) Math.floor(contactPoint.y);
-                selectTileGrid.setTexture(x, y, 1);
-                selectGrid.add(x, y);
-                selectGrid.updateGrid();
+//                selectTileGrid.setTexture(x, y, 1);
+//                selectGrid.add(x, y);
+//                selectGrid.updateGrid();
+                return new Pos(x, y);
             }
 
         } else {
             // No hits? Then remove the red mark.
             rootNode.detachChild(mark);
         }
+        return null;
     }
 
     public void initBoxes() {
@@ -309,13 +324,13 @@ public class MyGame extends SimpleApplication {
 //            geometry.setShadowMode(ShadowMode.Receive);
 //            geometry.setLocalTranslation(new Vector3f(0, 0, 0.f));
 //            this.rootNode.attachChild(geometry);
-            
-             final Geometry geometry = new TileGrid(lingrid, matgrass, this).getGeometry();
+
+            final Geometry geometry = new TileGrid(lingrid, matgrass, this).getGeometry();
 //            geometry.setMaterial(matwtr);
 //            geometry.setShadowMode(ShadowMode.Receive);
-            geometry.setLocalTranslation(new Vector3f(0, 0, 0.0000f));
+            geometry.setLocalTranslation(new Vector3f(0, 0, 0.001f));
             this.rootNode.attachChild(geometry);
-            
+
         }
 
 
@@ -329,25 +344,25 @@ public class MyGame extends SimpleApplication {
             final Geometry geometry = new TileGrid(lingrid, matwtr, this).getGeometry();
 //            geometry.setMaterial(matwtr);
 //            geometry.setShadowMode(ShadowMode.Receive);
-            geometry.setLocalTranslation(new Vector3f(0, 0, 0.5f));
+            geometry.setLocalTranslation(new Vector3f(0, 0, 0.002f));
             this.rootNode.attachChild(geometry);
         }
         {
 
 
-            
+
 
             TileGrid tileGrid = new TileGrid(lingrid, matroad, this);
             PathNetwork pnet = new PathNetwork(tileGrid);
 //            pnet.randomlySelect(80); 
             pnet.generateRandomWalk(new Random());
             pnet.setInto();
-            
+
             final Geometry geometry = tileGrid.getGeometry();
             geometry.setMaterial(matroad);
-            geometry.setShadowMode(ShadowMode.Receive);
-            geometry.setLocalTranslation(new Vector3f(0, 0, 1f));
-            geometry.setQueueBucket(Bucket.Transparent);
+//            geometry.setShadowMode(ShadowMode.Receive);
+            geometry.setLocalTranslation(new Vector3f(0, 0, 0.003f));
+//            geometry.setQueueBucket(Bucket.Transparent);
             this.rootNode.attachChild(geometry);
         }
 
@@ -357,25 +372,23 @@ public class MyGame extends SimpleApplication {
 
 //            PathNetwork pnet = new PathNetwork(16, 16);
 //            pnet.randomlySelect(20);
-            
+
             selectTileGrid = new TileGrid(lingrid, matsel, this);
             selectGrid = new SelectGrid(selectTileGrid);
             selectGrid.updateGrid();
-            
+
             selgeom = selectTileGrid.getGeometry();
             selgeom.setName("selgrid");
-            
+
 //            selgeom.setMaterial(matsel);
 //            selgeom.setShadowMode(ShadowMode.Receive);
-            selgeom.setLocalTranslation(new Vector3f(0, 0, 1.5f));
+            selgeom.setLocalTranslation(new Vector3f(0, 0, 0.004f));
 //            selgeom.setQueueBucket(Bucket.Transparent);
             this.shootables.attachChild(selgeom);
         }
     }
     Geometry selgeom;
 
-
-    
     public void initFloor() {
         Box floorBox = new Box(Vector3f.ZERO, 10f, 0.1f, 5f);
         floorBox.scaleTextureCoordinates(new Vector2f(3, 6));
@@ -490,13 +503,26 @@ public class MyGame extends SimpleApplication {
 
     protected void initCrossHairs() {
         guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
-        BitmapText ch = new BitmapText(guiFont, false);
-        ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
-        ch.setText("+"); // crosshairs
-        ch.setLocalTranslation( // center
-                settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
-                settings.getHeight() / 2 + ch.getLineHeight() / 2, 0);
-        guiNode.attachChild(ch);
+        {
+            BitmapText ch = new BitmapText(guiFont, false);
+            ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
+            ch.setText("+"); // crosshairs
+            ch.setLocalTranslation( // center
+                    settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
+                    settings.getHeight() / 2 + ch.getLineHeight() / 2, 0);
+            guiNode.attachChild(ch);
+        }
+        {
+            actionText = new BitmapText(guiFont, false);
+            BitmapText score = actionText;
+            score.setSize(guiFont.getCharSet().getRenderedSize() * 2);
+            score.setText("Bingo"); // crosshairs
+            score.setLocalTranslation( // center
+                    10,
+                    settings.getHeight()
+                    - 10, 0);
+            guiNode.attachChild(score);
+        }
     }
 
     /** Declaring the "Shoot" action and mapping to its triggers. */
@@ -514,5 +540,28 @@ public class MyGame extends SimpleApplication {
         Material mark_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mark_mat.setColor("Color", ColorRGBA.Red);
         mark.setMaterial(mark_mat);
+    }
+    MyAction currentAction;
+
+    class MyAction {
+
+        Pos start;
+        Pos current;
+
+        void updateGui() {
+            selectGrid.set.clear();
+            selectGrid.add(start.x, start.y);
+            if (current != null) {
+                selectGrid.add(current.x, current.y);
+                selectGrid.add(current.x, current.y + 1);
+                selectGrid.add(current.x + 1, current.y + 1);
+            }
+            selectGrid.updateGrid();
+        }
+
+        void cancel() {
+            selectGrid.set.clear();
+            selectGrid.updateGrid();
+        }
     }
 }
