@@ -1,6 +1,7 @@
 package kotucz.village.transport;
 
-import javax.vecmath.Point3d;
+import com.jme3.math.Vector3f;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,21 +14,21 @@ import java.util.Set;
 */
 public class RoadPoint {
 
-    final Point3d pos;
+    final Vector3f pos;
     Set<RoadPoint> incidents = new HashSet<RoadPoint>();
 
-    public RoadPoint(Point3d pos) {
+    public RoadPoint(Vector3f pos) {
         this.pos = pos;
     }
 
-    public Point3d getPos() {
+    public Vector3f getPos() {
         return pos;
     }
 
     @Override
     public String toString() {
 //            return this.pos + "@" + super.toString().split("@")[1];
-        return "(" + pos.x + "," + pos.y + ")";
+        return "(" + pos + ")";
 
     }
 }

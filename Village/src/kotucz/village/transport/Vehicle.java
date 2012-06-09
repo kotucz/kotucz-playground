@@ -1,21 +1,27 @@
 package kotucz.village.transport;
 
-import kotucz.village.build.Building;
+import com.jme3.material.Material;
+import com.jme3.math.Quaternion;
+import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Node;
+import kotucz.village.common.MyBox;
+import kotucz.village.game.MyGame;
 import kotucz.village.game.Player;
+import kotucz.village.tiles.LinearGrid;
+import kotucz.village.tiles.Multitexture1;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
  * @author Kotuc
  */
 public class Vehicle {
 
     private RoadPoint destLong;
-//    private Point3d destShort = new Point3d();
+    //    private Vector3f destShort = new Vector3f();
     private LinkedList<RoadPoint> path = null;// new LinkedList<RoadPoint>();
     private long fuel;
     protected final Payload payload;
@@ -30,12 +36,41 @@ public class Vehicle {
     private Player owner;
     private String name;
 
-    public Vehicle(Player owner, Type type, Point3d point) {
+    Vector3f pos;
+    float heading;
+
+    final Node node = new Node("Vozidlo");
+
+    public Vehicle(Player owner, Type type, Vector3f pos, Material mat, PathNetwork network) {
         this.type = type;
         this.name = type.toString();
         this.owner = owner;
+        this.network = network;
 
         this.fuel = 2000;
+
+        this.pos = pos;
+
+        {
+            MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
+            Geometry reBoxg = new Geometry("kapota", box);
+            reBoxg.setUserData("test", "auto13654");
+            reBoxg.setMaterial(mat);
+            reBoxg.setLocalTranslation(new Vector3f(0, 0, 0));
+            Multitexture1 mtex = new Multitexture1(new LinearGrid(4, 4));
+            box.setTexture(MyBox.FACE_FRONT, mtex.getTex(3));
+            box.setTexture(MyBox.FACE_RIGHT, mtex.getTex(0));
+            box.setTexture(MyBox.FACE_BACK, mtex.getTex(4));
+            box.setTexture(MyBox.FACE_BOTTOM, mtex.getTex(5));
+            box.setTexture(MyBox.FACE_TOP, mtex.getTex(2));
+            box.setTexture(MyBox.FACE_LEFT, mtex.getTex(1));
+            reBoxg.setQueueBucket(RenderQueue.Bucket.Transparent);
+
+            node.attachChild(reBoxg);
+        }
+
+
+        updateModel();
 
 //        this.model = new Vehicle3D(this);
 //        this.setPos(point);
@@ -143,7 +178,6 @@ public class Vehicle {
     }
 
     /**
-     *
      * @param point
      * @return true when reached, false during way
      */
@@ -183,10 +217,11 @@ public class Vehicle {
 //        RoadPoint curr = roadNetwork.getPoint(
 //                (int) Math.round(pos.x),
 //                (int) Math.round(pos.y));
-        RoadPoint curr = network.getPoint(this.getPos());
+        RoadPoint curr = network.getPoint(this.pos);
         return pathFinding.aStar(curr, target);
     }
-    private double t;
+
+    private float t;
 
     public boolean followTrajectory() {
         if (t > trajectory.length()) {
@@ -211,7 +246,7 @@ public class Vehicle {
 
         double lookAhead = 1;
 
-        Point3d tgt = new Point3d(path.peek().getPos());
+        Vector3f tgt = new Vector3f(path.peek().getPos());
 
 //        if (pos.distance(tgt) < lookAhead && path.size() > 1) {
 //            if (pos.distance(tgt) > 0.5) {
@@ -233,7 +268,7 @@ public class Vehicle {
      * @param speed
      * @return true if reached destination; false otherwise
      */
-    public boolean navigateLocal(Point3d dest, double speed) {
+    public boolean navigateLocal(Vector3f dest, double speed) {
 //        if (dest == null) {
 //            return true;
 //        }
@@ -276,20 +311,20 @@ public class Vehicle {
         throw new UnsupportedOperationException("obsollette or uncomment");
     }
 
-    public Point3d getPos() {
+    public Vector3f getPos() {
         if (trajectory == null) {
-            return getPos();
+            return pos;
         }
         return trajectory.getPoint(t);
     }
 
-    public double getAngle() {
-        if (trajectory == null) {
-            return 0;
-        }
-        Vector3d vec = trajectory.getVector(t);
-        return Math.atan2(vec.y, vec.x);
-    }
+//    public float getAngle() {
+//        if (trajectory == null) {
+//            return 0;
+//        }
+////        Vector3f vec = trajectory.getVector(t);
+////        return Math.atan2(vec.y, vec.x);
+//    }
 
     public String getModelName() {
         return type.modelName;
@@ -350,6 +385,18 @@ public class Vehicle {
         }
     }
 
+    public void updateModel() {
+        node.setLocalTranslation(pos);
+
+        float heading = 0;
+
+        Quaternion rotation = new Quaternion();
+        rotation.fromAngleAxis(heading, MyGame.UP);
+
+        node.setLocalRotation(rotation);
+    }
+
+
     @Override
     public String toString() {
         return type + " (" + owner + ")";
@@ -393,5 +440,9 @@ public class Vehicle {
         LOADING,
         GO_FOR_UNLOAD,
         UNLOADING;
+    }
+
+    public Node getNode() {
+        return node;
     }
 }

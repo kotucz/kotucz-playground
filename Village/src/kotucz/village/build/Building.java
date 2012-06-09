@@ -4,7 +4,7 @@ import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
-import kotucz.village.MyBox;
+import kotucz.village.common.MyBox;
 import kotucz.village.game.Player;
 import kotucz.village.tiles.Pos;
 

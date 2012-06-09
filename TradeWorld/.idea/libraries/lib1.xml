@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="lib1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/lib/j3dutils.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/vecmath.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/jinput-test.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/stack-alloc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/jinput.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/jbullet.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/lwjgl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/asm-all-3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/j3dcore.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/Loader3DS1_2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/lwjgl_util.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/swing-layout-1.0.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
