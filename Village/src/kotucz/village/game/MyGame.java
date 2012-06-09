@@ -31,6 +31,7 @@
  */
 package kotucz.village.game;
 
+import com.jme3.asset.plugins.FileLocator;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.TextureKey;
@@ -52,7 +53,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -62,12 +62,13 @@ import com.jme3.scene.shape.Sphere;
 import com.jme3.scene.shape.Sphere.TextureMode;
 import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.texture.Texture;
+
 import java.util.Random;
 import kotucz.village.tiles.Multitexture;
 import kotucz.village.MyBox;
 import kotucz.village.build.Building;
 import kotucz.village.tiles.LinearGrid;
-import kotucz.village.tiles.PathNetwork;
+import kotucz.village.transport.PathNetwork;
 import kotucz.village.tiles.Pos;
 import kotucz.village.tiles.SelectGrid;
 import kotucz.village.tiles.TileGrid;
@@ -109,13 +110,16 @@ public class MyGame extends SimpleApplication {
     @Override
     public void simpleInitApp() {
 
+        assetManager.registerLocator("assets/", FileLocator.class);
+
         bulletAppState = new BulletAppState();
         bulletAppState.setThreadingType(BulletAppState.ThreadingType.PARALLEL);
-        stateManager.attach(bulletAppState);
+//        stateManager.attach(bulletAppState);
 
         bullet = new Sphere(32, 32, 0.4f, true, false);
         bullet.setTextureMode(TextureMode.Projected);
-        bulletCollisionShape = new SphereCollisionShape(0.4f);
+//        bulletCollisionShape = new SphereCollisionShape(0.4f);
+
 
         selectables = new Node("Shootables");
         rootNode.attachChild(selectables);
@@ -196,7 +200,7 @@ public class MyGame extends SimpleApplication {
                 bulletg.setShadowMode(ShadowMode.CastAndReceive);
                 bulletg.setLocalTranslation(cam.getLocation());
 
-                SphereCollisionShape bulletCollisionShape = new SphereCollisionShape(0.4f);
+//                SphereCollisionShape bulletCollisionShape = new SphereCollisionShape(0.4f);
 //                RigidBodyControl bulletNode = new BombControl(assetManager, bulletCollisionShape, 1);
 //                RigidBodyControl bulletNode = new RigidBodyControl(bulletCollisionShape, 1);
 //                bulletNode.setLinearVelocity(cam.getDirection().mult(25));
@@ -365,7 +369,7 @@ public class MyGame extends SimpleApplication {
             PathNetwork pnet = new PathNetwork(tileGrid);
 //            pnet.randomlySelect(80); 
             pnet.generateRandomWalk(new Random());
-            pnet.setInto();
+            pnet.updateTextures();
 
             final Geometry geometry = tileGrid.getGeometry();
             geometry.setMaterial(matroad);

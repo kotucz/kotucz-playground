@@ -57,6 +57,10 @@ public class TileGrid {
         return geometry;
     }
 
+    public LinearGrid getLingrid() {
+        return lingrid;
+    }
+
     public void setTexture(int x, int y, int tex) {
         meshGrid.setTexture(x, y, mtex.getTex(tex));
     }
