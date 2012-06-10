@@ -13,7 +13,6 @@ import kotucz.village.tiles.LinearGrid;
 import kotucz.village.tiles.Multitexture1;
 import kotucz.village.tiles.Pos;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -21,17 +20,11 @@ import java.util.List;
  */
 public class Vehicle {
 
-    private RoadPoint destLong;
+
     //    private Vector3f destShort = new Vector3f();
-    private LinkedList<RoadPoint> path = null;// new LinkedList<RoadPoint>();
+
     private long fuel;
     protected final Payload payload;
-    private State state = State.RANDOM;
-    private Depot srcDepot;
-    private RoadPoint srcRoadPoint;
-    private Depot destDepot;
-    private RoadPoint destRoadPoint;
-    private Trajectory trajectory;
     private PathNetwork network;
     protected final Type type;
     private Player owner;
@@ -41,6 +34,7 @@ public class Vehicle {
     float heading;
 
     final Node node = new Node("Vozidlo");
+    private final VehicleBehavior behavior = new VehicleBehavior(this);
 
     public Vehicle(Player owner, Type type, RoadPoint pos, Material mat, PathNetwork network) {
         this.type = type;
@@ -84,21 +78,14 @@ public class Vehicle {
     }
 
     public void setSrcDepot(Depot srcDepot) {
-        this.srcDepot = srcDepot;
-        this.srcRoadPoint = getNetwork().getPoint(srcDepot.getEntrance());
+        behavior.setSrcDepot(srcDepot);
     }
 
     public void setDestDepot(Depot destDepot) {
-        this.destDepot = destDepot;
-        this.destRoadPoint = getNetwork().getPoint(destDepot.getEntrance());
-        this.path = null;
-        setState(State.GO_FOR_LOAD);
+        behavior.setDestDepot(destDepot);
     }
 
-    void setState(State state) {
-        this.state = state;
-        System.out.println("" + this + " " + state);
-    }
+
 
 //    @Override
 //    public void addingTo(World world) {
@@ -117,71 +104,12 @@ public class Vehicle {
 
     public void act(float time) {
         //  System.out.println("" + this + " " + state);
-        switch (state) {
-            case RANDOM:
-                if (path == null) {
-                    destLong = network.randomRoadPoint();
-                }
-                if (travelTo(destLong, time)) {
-                    path = null;
-                }
-                break;
-            case WAIT:
-                // TODO uncomment/fix
-//                for (Building building : getWorld().getBuildings()) {
-//                    if (building instanceof Depot) {
-//                        if (srcDepot == null) {
-//                            setSrcDepot((Depot) building);
-//                        } else {
-//                            // second depot
-//                            setDestDepot((Depot) building);
-//                        }
-//                    }
-//                }
-                if (destDepot != null) {
-                    setState(State.GO_FOR_LOAD);
-                    System.out.println("Depos found " + srcRoadPoint + " -> " + destRoadPoint);
-                } else {
-                    srcDepot = null;
-                }
-                break;
-            case GO_FOR_LOAD:
-                if (travelTo(srcRoadPoint, time)) {
-                    this.path = null;
-                    // reset path
-                    setState(State.LOADING);
-                    srcDepot.addVehicle(this);
-                }
-                break;
-            case LOADING:
-                if (srcDepot.requestLoadVehicle(this, Goods.Type.WOOD, srcDepot.getOwner())) {
-//                    destLong = null; // dest depot
-                    setState(State.GO_FOR_UNLOAD);
-                    srcDepot.removeVehicle(this);
-                }
-                break;
-            case GO_FOR_UNLOAD:
-                if (travelTo(destRoadPoint, time)) {
-                    this.path = null;
-                    // reset path
-                    setState(State.UNLOADING);
-                    destDepot.addVehicle(this);
-                }
-                break;
-            case UNLOADING:
-                if (destDepot.requestUnloadVehicle(this, Goods.Type.WOOD, destDepot.getOwner())) {
-//                    destLong = null; // next depot
-                    setState(State.GO_FOR_LOAD);
-                    destDepot.removeVehicle(this);
-                }
-                break;
-        }
-//        if (travelTo(destLong)) {
+        //        if (travelTo(destLong)) {
 //            destLong = getWorld().getRoadNetwork().randomRoadPoint();
 //            path = null;
 //        }
 //        model.refresh();
-        updateModel();
+        behavior.act(time);
     }
 
     /**
@@ -192,58 +120,24 @@ public class Vehicle {
 //        if (point.getPosVector().distance(vector) < type.getSpeed()) {
 //            return true;
 //        }
-        if (path == null) {
-            // create new path
-//            destLong = getWorld().getRoadNetwork().randomRoadPoint();
-            List<RoadPoint> findPath = findPath(point);
-            if (findPath != null) {
-                int i = 0;
-                // debug trace path
-//                for (RoadPoint roadPoint : findPath) {
-//                    getWorld().showNotification(
-//                            Notification3D.createTextNotification("R" + i, new Color3f(1, 0, 0)),
-//                            roadPoint.getPosVector());
-//                    i++;
-//                }
-                this.path = new LinkedList<RoadPoint>();
-                this.path.addAll(findPath);
-//                this.trajectory = new SplineTrajectory(path, (Element.ROAD.equals(type.element) ? 0.25 : 0));
-                this.trajectory = new Trajectory(path);
-                this.t = 0;
-            } else {
-                System.err.println("Path not found !");
-                return false;
-            }
-        }
-        return followTrajectory(time);
-//        return followPath();
+        //        return followPath();
+        return behavior.travelTo(point, time);
     }
 
     public List<RoadPoint> findPath(RoadPoint target) {
-        PathFinding pathFinding = new PathFinding(network);
-//        RoadPoint curr = roadNetwork.getPoint(
+        //        RoadPoint curr = roadNetwork.getPoint(
 //                (int) Math.round(vector.x),
 //                (int) Math.round(vector.y));
-        RoadPoint curr = network.getPoint(this.pos);
-        return pathFinding.aStar(curr, target);
+        return behavior.findPath(target);
     }
 
-    private float t;
-
     public boolean followTrajectory(float time) {
-        if (t > trajectory.length()) {
-            return true;
-        }
 
-        t += time;
-
-        this.pos = trajectory.getPoint(t);
-
-//        Vector3d vec = trajectory.getVector(t);
+        //        Vector3d vec = trajectory.getVector(t);
 //        double angle = Math.atan2(vec.y, vec.x);
 //        model.setAngle(angle);
 
-        return false;
+        return behavior.followTrajectory(time);
     }
 
     public Pos getP() {
@@ -251,25 +145,14 @@ public class Vehicle {
     }
 
     public boolean followPath() {
-        if (path.isEmpty()) {
-            return true;
-        }
 
-        double lookAhead = 1;
-
-        Vector3f tgt = new Vector3f(path.peek().getPosVector());
-
-//        if (vector.distance(tgt) < lookAhead && path.size() > 1) {
+        //        if (vector.distance(tgt) < lookAhead && path.size() > 1) {
 //            if (vector.distance(tgt) > 0.5) {
 //                tgt.interpolate(path.get(1).getPosVector(), (vector.distance(tgt) / lookAhead));
 //            }
 //        }
 
-        if (navigateLocal(tgt, 0.02)) {
-            RoadPoint poll = path.poll(); // remove
-        }
-
-        return false;
+        return behavior.followPath();
     }
 
     /**
@@ -319,14 +202,14 @@ public class Vehicle {
 //        spentFuel();
 //
 //        return false;
-        throw new UnsupportedOperationException("obsollette or uncomment");
+        return behavior.navigateLocal(dest, speed);
     }
 
     public Vector3f getPos() {
-        if (trajectory == null) {
+        if (behavior.trajectory == null) {
             return pos;
         }
-        return trajectory.getPoint(t);
+        return behavior.trajectory.getPoint(behavior.t);
     }
 
 //    public float getAngle() {
@@ -381,29 +264,22 @@ public class Vehicle {
         return payload;
     }
 
-    private PathNetwork getNetwork() {
+    public PathNetwork getNetwork() {
         return network;
     }
 
     public String getStatusMessage() {
-        switch (state) {
-            case GO_FOR_LOAD:
-                return "Heading to src " + srcDepot;
-            case GO_FOR_UNLOAD:
-                return "Heading to dest " + destDepot;
-            default:
-                return state.toString();
-        }
+        return behavior.getStatusMessage();
     }
 
     public void updateModel() {
 
-        if (trajectory != null) {
+        if (behavior.trajectory != null) {
 //            this.pos = trajectory.getPoint(t);
 //            node.setLocalTranslation(pos);
-            Vector3f point = trajectory.getPoint(t);
+            Vector3f point = behavior.trajectory.getPoint(behavior.t);
             this.pos = point;
-            System.out.println(""+this.name+" "+t+" "+point);
+            System.out.println(""+this.name+" "+ behavior.t +" "+point);
             node.setLocalTranslation(point);
 
         }
@@ -419,8 +295,8 @@ public class Vehicle {
 //        tra
 
 
-        if (trajectory != null) {
-            Vector3f vec = trajectory.getVector(t);
+        if (behavior.trajectory != null) {
+            Vector3f vec = behavior.trajectory.getVector(behavior.t);
 //
 
 
@@ -439,6 +315,10 @@ public class Vehicle {
     @Override
     public String toString() {
         return type + " (" + owner + ")";
+    }
+
+    public void setPos(Vector3f point) {
+
     }
 
     public enum Type {
@@ -469,16 +349,6 @@ public class Vehicle {
     public enum Element {
 
         ROAD, TRAIN, WATTER, AIR;
-    }
-
-    enum State {
-
-        RANDOM,
-        WAIT,
-        GO_FOR_LOAD,
-        LOADING,
-        GO_FOR_UNLOAD,
-        UNLOADING;
     }
 
     public Node getNode() {

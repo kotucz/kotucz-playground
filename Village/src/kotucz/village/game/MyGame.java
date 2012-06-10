@@ -69,6 +69,7 @@ import kotucz.village.tiles.Multitexture;
 import kotucz.village.common.MyBox;
 import kotucz.village.build.Building;
 import kotucz.village.tiles.LinearGrid;
+import kotucz.village.transport.BlockingTraffic;
 import kotucz.village.transport.PathNetwork;
 import kotucz.village.tiles.Pos;
 import kotucz.village.tiles.SelectGrid;
@@ -112,7 +113,9 @@ public class MyGame extends SimpleApplication {
 
     private TileGrid selectTileGrid;
 
-    List<Vehicle> cars = new ArrayList<Vehicle>();
+
+    BlockingTraffic traffic;
+
 
 
     @Override
@@ -144,6 +147,7 @@ public class MyGame extends SimpleApplication {
 //        brick.scaleTextureCoordinates(new Vector2f(1f, 1f));
 
 
+
 //         {
 //              float frustumSize = 1;
 //        cam.setParallelProjection(true);
@@ -165,12 +169,15 @@ public class MyGame extends SimpleApplication {
 
         Player player = new Player("Kotuc", null, 10000);
 
+        traffic = new BlockingTraffic(pnet);
+
 
         for (int i = 0; i < 50; i++) {
             Vehicle car = new Vehicle(player, Vehicle.Type.SKODA120, pnet.randomRoadPoint(), matveh, pnet);
             selectables.attachChild(car.getNode());
-            cars.add(car);
+            traffic.cars.add(car);
         }
+
 
 
         {
@@ -211,12 +218,7 @@ public class MyGame extends SimpleApplication {
         currentAction.updateGui();
 
 
-        for (Vehicle car : cars) {
-            car.act(tpf);
-            selectGrid.add(car.getP());
-
-
-        }
+        traffic.update(tpf);
 
         selectGrid.updateGrid();
 
