@@ -10,34 +10,38 @@ import java.util.Random;
 
 
 /**
- *
  * @author Kotuc
  */
 public class PathNetwork {
 
     final TextureSelect[] selects = new TextureSelect[]{
-        new TextureSelect(0, 0, 8, 1, 0, 0),
-        new TextureSelect(1, 0, 8, 1, 2, 0),
-        new TextureSelect(1, 0, 8, 1, 1, 0),
-        new TextureSelect(2, 0, 8, 1, 2, 0),
-        new TextureSelect(1, 0, 8, 1, 0, 0),
-        new TextureSelect(3, 0, 8, 1, 1, 0),
-        new TextureSelect(2, 0, 8, 1, 1, 0),
-        new TextureSelect(4, 0, 8, 1, 0, 0),
-        new TextureSelect(1, 0, 8, 1, 3, 0),
-        new TextureSelect(2, 0, 8, 1, 3, 0),
-        new TextureSelect(3, 0, 8, 1, 0, 0),
-        new TextureSelect(4, 0, 8, 1, 1, 0),
-        new TextureSelect(2, 0, 8, 1, 0, 0),
-        new TextureSelect(4, 0, 8, 1, 2, 0),
-        new TextureSelect(4, 0, 8, 1, 3, 0),
-        new TextureSelect(5, 0, 8, 1, 0, 0)};
-    
-    
+            new TextureSelect(0, 0, 8, 1, 0, 0),
+            new TextureSelect(1, 0, 8, 1, 2, 0),
+            new TextureSelect(1, 0, 8, 1, 1, 0),
+            new TextureSelect(2, 0, 8, 1, 2, 0),
+            new TextureSelect(1, 0, 8, 1, 0, 0),
+            new TextureSelect(3, 0, 8, 1, 1, 0),
+            new TextureSelect(2, 0, 8, 1, 1, 0),
+            new TextureSelect(4, 0, 8, 1, 0, 0),
+            new TextureSelect(1, 0, 8, 1, 3, 0),
+            new TextureSelect(2, 0, 8, 1, 3, 0),
+            new TextureSelect(3, 0, 8, 1, 0, 0),
+            new TextureSelect(4, 0, 8, 1, 1, 0),
+            new TextureSelect(2, 0, 8, 1, 0, 0),
+            new TextureSelect(4, 0, 8, 1, 2, 0),
+            new TextureSelect(4, 0, 8, 1, 3, 0),
+            new TextureSelect(5, 0, 8, 1, 0, 0)};
+
+    /*
+     if true - road is shifted by 0.5 0.5 so that it is in the middle of tiles
+     */
+    final boolean centeroffset = true;
+
+
     private final GenericGrid<RoadPoint> roadpoints;
-    
+
     private final TileGrid tilegrid;
-    
+
     private final int widthx;
     private final int widthy;
 
@@ -48,8 +52,8 @@ public class PathNetwork {
 
 //    private Land3D land;
 //    private TileLayer layer;
-    
-    
+
+
 //    public PathNetwork(Land3D land) {
 //        this.land = land;
 //        this.widthx = land.getTilesx() + 1;
@@ -68,15 +72,11 @@ public class PathNetwork {
         this.roadpoints = new GenericGrid<RoadPoint>(lingrid);
 //        this.layer = layer;
 //        roadTextures();
-        
-        
-        
-        
-        
-        
+
+
 //        generateRandomWalk(random);
     }
-    
+
     public void randomlySelect(int s) {
         final Random random = new Random();
         for (int i = 0; i < s; i++) {
@@ -84,19 +84,22 @@ public class PathNetwork {
             int index = random.nextInt(lingrid.getTotalNum());
 
             roadpoints.set(index, createRoadPoint(lingrid.getPos(index)));
-            
+
 //            TextureSelect textureSelect = selects[i];
-            
+
         }
     }
 
     RoadPoint createRoadPoint(Pos pos) {
-//        return new RoadPoint(new Vector3f(pos.x+0.5f, pos.y+0.5f, 0));
-        return new RoadPoint(new Vector3f(pos.x, pos.y, 0));
+        if (centeroffset) {
+            return new RoadPoint(pos, new Vector3f(pos.x + 0.5f, pos.y + 0.5f, 0));
+        } else {
+            return new RoadPoint(pos, new Vector3f(pos.x, pos.y, 0));
+        }
     }
-    
+
     public void addPoint(int x, int y) {
-        System.out.println("add point "+x+", "+y);
+        System.out.println("add point " + x + ", " + y);
 //        RoadPoint roadPoint = new RoadPoint(land.new Point3d(x, y, 0));
 //        RoadPoint roadPoint = new RoadPoint(land.getHeighmap().get(x, y));
         RoadPoint roadPoint = createRoadPoint(new Pos(x, y));
@@ -116,17 +119,18 @@ public class PathNetwork {
     }
 
     public void updateTextures() {
-        for (Tile t:lingrid) {
+        for (Tile t : lingrid) {
             tilegrid.setTexture(t.x, t.y, getRoadTileHash(t.x, t.y));
         }
         tilegrid.updateTexture();
     }
-    
-    
+
+
     /**
      * works on vertices
+     *
      * @param x
-     * @param y 
+     * @param y
      */
     public void correctRoadTile(int x, int y) {
 //        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
@@ -146,25 +150,25 @@ public class PathNetwork {
                 + ((getPoint(x, y + 1) != null) ? 8 : 0);
 //        layer.selectTexture(x, y, selects[hash]);
         return hash;
-    }           
-    
+    }
+
     public int getRoadTileHash(int x, int y) {
 //        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
 //            return;
 //        }
-        
-                
+
+
         if (getPoint(x, y) == null) {
             return 0;
         }
-        
+
         int hash = ((getPoint(x + 1, y) != null) ? 1 : 0) +
-                   ((getPoint(x , y + 1) != null) ? 2 : 0) +
-                   ((getPoint(x - 1, y) != null) ? 4 : 0) + 
-                   ((getPoint(x, y - 1) != null) ? 8 : 0);
+                ((getPoint(x, y + 1) != null) ? 2 : 0) +
+                ((getPoint(x - 1, y) != null) ? 4 : 0) +
+                ((getPoint(x, y - 1) != null) ? 8 : 0);
         return hash;
     }
-    
+
     public void generateRandomWalk(Random random) {
 //        Random random = new Random();
         int x = random.nextInt(widthx);
@@ -173,8 +177,8 @@ public class PathNetwork {
         for (int i = 0; i < widthx; i++) {
 //            Dir8 dir = Dir8.values()[random.nextInt(8)];
             Dir dir = neighbouring.randomDir(random);
-            
-            
+
+
             final int nextInt = random.nextInt(20);
             for (int j = 0; j < nextInt; j++) {
 //            for (int j = 0; j < 10; j++) {
@@ -191,11 +195,16 @@ public class PathNetwork {
     }
 
     public RoadPoint getPoint(Vector3f point) {
-        return getPoint((int) Math.round(point.x), (int) Math.round(point.y));
+
+        if (centeroffset) {
+            return getPoint((int) Math.floor(point.x), (int) Math.floor(point.y));
+        } else {
+            return getPoint((int) Math.round(point.x), (int) Math.round(point.y));
+        }
     }
 
     public RoadPoint getPoint(Pos pos) {
-        return getPoint(pos.x , pos.y);
+        return getPoint(pos.x, pos.y);
     }
 
     public RoadPoint getPoint(int x, int y) {

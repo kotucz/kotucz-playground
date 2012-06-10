@@ -186,20 +186,20 @@ public class Depot extends Building {
     public Pos getEntrance() {
 //        Pos point = new Pos(getType().getWidthx() / 2.0 - 1.0, -getType().getWidthy() / 2.0, 0);
         Pos point = new Pos(0, 0);
-//        point.add(getPos());
+//        point.add(getPosVector());
         return point;
     }
 
     public void addStorage(Storage storage) {
 
-        //System.out.println("" + getPos().distanceTo(storage.getPos()));
-//        if (getPos().distance(storage.getPos()) <= Building.STORAGE_RADIUS) {
+        //System.out.println("" + getPosVector().distanceTo(storage.getPosVector()));
+//        if (getPosVector().distance(storage.getPosVector()) <= Building.STORAGE_RADIUS) {
 //            storages.add(storage);
 //            Collections.sort(storages, new Comparator<Storage>() {
 //
 //                public int compare(Storage o1, Storage o2) {
-//                    double dst1 = getPos().distance(o1.getPos());
-//                    double dst2 = getPos().distance(o2.getPos());
+//                    double dst1 = getPosVector().distance(o1.getPosVector());
+//                    double dst2 = getPosVector().distance(o2.getPosVector());
 //                    if (o1.equals(o2)) {
 //                        return 0;
 //                    } else {

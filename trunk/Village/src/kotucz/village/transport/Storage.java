@@ -15,7 +15,7 @@ public class Storage extends Building {
 
     public Storage(Player owner, Point3d pos, int capacity) {
                           super(null, null);
-//        super(Building.Type.STORAGE, owner, pos);
+//        super(Building.Type.STORAGE, owner, vector);
         payload = new Payload(capacity);
         payload.addGoods(new Goods(Goods.Type.PETROL, 20, owner)); //TODO: To remove - onlz for testing
 

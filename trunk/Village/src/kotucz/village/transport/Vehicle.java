@@ -49,7 +49,7 @@ public class Vehicle {
 
         this.fuel = 2000;
 
-        this.pos = pos.getPos();
+        this.pos = pos.getPosVector();
 
         {
 //            MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
@@ -186,7 +186,7 @@ public class Vehicle {
      * @return true when reached, false during way
      */
     public boolean travelTo(RoadPoint point, float time) {
-//        if (point.getPos().distance(pos) < type.getSpeed()) {
+//        if (point.getPosVector().distance(vector) < type.getSpeed()) {
 //            return true;
 //        }
         if (path == null) {
@@ -199,12 +199,12 @@ public class Vehicle {
 //                for (RoadPoint roadPoint : findPath) {
 //                    getWorld().showNotification(
 //                            Notification3D.createTextNotification("R" + i, new Color3f(1, 0, 0)),
-//                            roadPoint.getPos());
+//                            roadPoint.getPosVector());
 //                    i++;
 //                }
                 this.path = new LinkedList<RoadPoint>();
                 this.path.addAll(findPath);
-//                this.trajectory = new Trajectory(path, (Element.ROAD.equals(type.element) ? 0.25 : 0));
+//                this.trajectory = new SplineTrajectory(path, (Element.ROAD.equals(type.element) ? 0.25 : 0));
                 this.trajectory = new Trajectory(path);
                 this.t = 0;
             } else {
@@ -219,8 +219,8 @@ public class Vehicle {
     public List<RoadPoint> findPath(RoadPoint target) {
         PathFinding pathFinding = new PathFinding(network);
 //        RoadPoint curr = roadNetwork.getPoint(
-//                (int) Math.round(pos.x),
-//                (int) Math.round(pos.y));
+//                (int) Math.round(vector.x),
+//                (int) Math.round(vector.y));
         RoadPoint curr = network.getPoint(this.pos);
         return pathFinding.aStar(curr, target);
     }
@@ -250,11 +250,11 @@ public class Vehicle {
 
         double lookAhead = 1;
 
-        Vector3f tgt = new Vector3f(path.peek().getPos());
+        Vector3f tgt = new Vector3f(path.peek().getPosVector());
 
-//        if (pos.distance(tgt) < lookAhead && path.size() > 1) {
-//            if (pos.distance(tgt) > 0.5) {
-//                tgt.interpolate(path.get(1).getPos(), (pos.distance(tgt) / lookAhead));
+//        if (vector.distance(tgt) < lookAhead && path.size() > 1) {
+//            if (vector.distance(tgt) > 0.5) {
+//                tgt.interpolate(path.get(1).getPosVector(), (vector.distance(tgt) / lookAhead));
 //            }
 //        }
 
@@ -279,10 +279,10 @@ public class Vehicle {
 //
 //        Vector3d vec = new Vector3d(dest);
 //
-//        vec.sub(pos);
+//        vec.sub(vector);
 //        if (vec.lengthSquared() <= speed * speed) {
-//            pos.set(dest);
-//            model.setPos(pos);
+//            vector.set(dest);
+//            model.setPos(vector);
 //            return true;
 //        }
 //
@@ -306,8 +306,8 @@ public class Vehicle {
 //
 //        vec.normalize();
 //        vec.scale(speed);
-//        pos.add(vec);
-//        model.setPos(pos);
+//        vector.add(vec);
+//        model.setPos(vector);
 //
 //        spentFuel();
 //
@@ -392,9 +392,14 @@ public class Vehicle {
     public void updateModel() {
 
         if (trajectory != null) {
-        this.pos = trajectory.getPoint(t);
+//            this.pos = trajectory.getPoint(t);
+//            node.setLocalTranslation(pos);
+            Vector3f point = trajectory.getPoint(t);
+            System.out.println(""+this.name+" "+t+" "+point);
+            node.setLocalTranslation(point);
+
         }
-        node.setLocalTranslation(pos);
+
 
         float heading = 0;
 
@@ -408,7 +413,7 @@ public class Vehicle {
 
         if (trajectory != null) {
             Vector3f vec = trajectory.getVector(t);
-
+//
 
 
 //        double angle = Math.atan2(vec.y, vec.x);
