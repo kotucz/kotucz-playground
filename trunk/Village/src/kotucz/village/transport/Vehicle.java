@@ -52,7 +52,8 @@ public class Vehicle {
         this.pos = pos.getPos();
 
         {
-            MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
+//            MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
+            MyBox box = new MyBox(new Vector3f(-0.5f, -0.5f, 0), new Vector3f(0.5f, 0.5f, 1));
             Geometry reBoxg = new Geometry("kapota", box);
             reBoxg.setUserData("test", "auto13654");
             reBoxg.setMaterial(mat);
@@ -118,7 +119,7 @@ public class Vehicle {
                 if (path == null) {
                     destLong = network.randomRoadPoint();
                 }
-                if (travelTo(destLong)) {
+                if (travelTo(destLong, time)) {
                     path = null;
                 }
                 break;
@@ -142,7 +143,7 @@ public class Vehicle {
                 }
                 break;
             case GO_FOR_LOAD:
-                if (travelTo(srcRoadPoint)) {
+                if (travelTo(srcRoadPoint, time)) {
                     this.path = null;
                     // reset path
                     setState(State.LOADING);
@@ -157,7 +158,7 @@ public class Vehicle {
                 }
                 break;
             case GO_FOR_UNLOAD:
-                if (travelTo(destRoadPoint)) {
+                if (travelTo(destRoadPoint, time)) {
                     this.path = null;
                     // reset path
                     setState(State.UNLOADING);
@@ -184,7 +185,7 @@ public class Vehicle {
      * @param point
      * @return true when reached, false during way
      */
-    public boolean travelTo(RoadPoint point) {
+    public boolean travelTo(RoadPoint point, float time) {
 //        if (point.getPos().distance(pos) < type.getSpeed()) {
 //            return true;
 //        }
@@ -211,7 +212,7 @@ public class Vehicle {
                 return false;
             }
         }
-        return followTrajectory();
+        return followTrajectory(time);
 //        return followPath();
     }
 
@@ -226,12 +227,12 @@ public class Vehicle {
 
     private float t;
 
-    public boolean followTrajectory() {
+    public boolean followTrajectory(float time) {
         if (t > trajectory.length()) {
             return true;
         }
 
-        t += 0.02;
+        t += time;
 
         this.pos = trajectory.getPoint(t);
 
@@ -389,14 +390,36 @@ public class Vehicle {
     }
 
     public void updateModel() {
+
+        if (trajectory != null) {
+        this.pos = trajectory.getPoint(t);
+        }
         node.setLocalTranslation(pos);
 
         float heading = 0;
 
         Quaternion rotation = new Quaternion();
-        rotation.fromAngleAxis(heading, MyGame.UP);
+//        rotation.fromAngleAxis(heading, MyGame.UP);
 
-        node.setLocalRotation(rotation);
+//        rotation
+
+//        tra
+
+
+        if (trajectory != null) {
+            Vector3f vec = trajectory.getVector(t);
+
+
+
+//        double angle = Math.atan2(vec.y, vec.x);
+//        model.setAngle(angle);
+
+//           rotation.lookAt(vec, MyGame.UP);
+//            node.setLocalRotation(rotation.fromAxes(vec, vec.cross(MyGame.UP), MyGame.UP));
+            node.setLocalRotation(rotation.fromAxes(vec, MyGame.UP.cross(vec), MyGame.UP));
+        }
+
+//        node.setLocalRotation(rotation);
     }
 
 
