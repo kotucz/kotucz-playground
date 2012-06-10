@@ -79,7 +79,7 @@ public class PathFinding {
         }
 
         public void explore(RoadPoint from, RoadPoint explore) {
-            double edgeValue = explore.getPos().distance(from.getPos());
+            double edgeValue = explore.getPosVector().distance(from.getPosVector());
             if (edgeValue < 0) {
                 throw new AssertionError(" edge value < 0 breaks invatriant ");
             }
@@ -108,7 +108,7 @@ public class PathFinding {
         }
 
         private double potential(RoadPoint of) {
-            return dest.getPos().distance(of.getPos());
+            return dest.getPosVector().distance(of.getPosVector());
         }
 
         double shortestDist(RoadPoint point) {
