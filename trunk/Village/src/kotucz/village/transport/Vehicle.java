@@ -11,6 +11,7 @@ import kotucz.village.game.MyGame;
 import kotucz.village.game.Player;
 import kotucz.village.tiles.LinearGrid;
 import kotucz.village.tiles.Multitexture1;
+import kotucz.village.tiles.Pos;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,7 +54,9 @@ public class Vehicle {
 
         {
 //            MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
-            MyBox box = new MyBox(new Vector3f(-0.5f, -0.5f, 0), new Vector3f(0.5f, 0.5f, 1));
+            final float halfSize = 0.25f;
+
+            MyBox box = new MyBox(new Vector3f(-halfSize, -halfSize, 0), new Vector3f(halfSize, halfSize, 2*halfSize));
             Geometry reBoxg = new Geometry("kapota", box);
             reBoxg.setUserData("test", "auto13654");
             reBoxg.setMaterial(mat);
@@ -243,6 +246,10 @@ public class Vehicle {
         return false;
     }
 
+    public Pos getP() {
+         return network.getPoint(pos).getPos();
+    }
+
     public boolean followPath() {
         if (path.isEmpty()) {
             return true;
@@ -395,6 +402,7 @@ public class Vehicle {
 //            this.pos = trajectory.getPoint(t);
 //            node.setLocalTranslation(pos);
             Vector3f point = trajectory.getPoint(t);
+            this.pos = point;
             System.out.println(""+this.name+" "+t+" "+point);
             node.setLocalTranslation(point);
 
