@@ -63,7 +63,7 @@ import com.jme3.scene.shape.Sphere.TextureMode;
 import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.texture.Texture;
 
-import java.util.Random;
+import java.util.*;
 
 import kotucz.village.tiles.Multitexture;
 import kotucz.village.common.MyBox;
@@ -84,6 +84,7 @@ public class MyGame extends SimpleApplication {
     static float bLength = 1f;
     static float bWidth = 1f;
     static float bHeight = 1f;
+    public static final String LEFT_CLICK = "LeftClick";
     Material mat;
     Material mat16;
     Material matgrass;
@@ -111,7 +112,7 @@ public class MyGame extends SimpleApplication {
 
     private TileGrid selectTileGrid;
 
-    Vehicle car;
+    List<Vehicle> cars = new ArrayList<Vehicle>();
 
 
     @Override
@@ -164,8 +165,12 @@ public class MyGame extends SimpleApplication {
 
         Player player = new Player("Kotuc", null, 10000);
 
-        car = new Vehicle(player, Vehicle.Type.SKODA120, pnet.randomRoadPoint(), matveh, pnet);
-        selectables.attachChild(car.getNode());
+
+        for (int i = 0; i < 50; i++) {
+            Vehicle car = new Vehicle(player, Vehicle.Type.SKODA120, pnet.randomRoadPoint(), matveh, pnet);
+            selectables.attachChild(car.getNode());
+            cars.add(car);
+        }
 
 
         {
@@ -194,19 +199,26 @@ public class MyGame extends SimpleApplication {
     public void simpleUpdate(float tpf) {
         super.simpleUpdate(tpf);
 
+        selectGrid.set.clear();
 
-        actionText.setText("Jelito " + System.currentTimeMillis());
+//        actionText.setText("Jelito " + System.currentTimeMillis());
 
-//        currentAction = new MyAction();
+        actionText.setText("Jelito " + System.currentTimeMillis() + " Action: " + currentAction);
 
-        if (currentAction != null) {
+//        currentAction = new SelectAction();
 
-            currentAction.current = pick();
-            currentAction.updateGui();
+
+        currentAction.updateGui();
+
+
+        for (Vehicle car : cars) {
+            car.act(tpf);
+            selectGrid.add(car.getP());
+
 
         }
 
-        car.act(tpf);
+        selectGrid.updateGrid();
 
     }
 
@@ -217,41 +229,29 @@ public class MyGame extends SimpleApplication {
     private ActionListener actionListener = new ActionListener() {
 
         public void onAction(String name, boolean keyPressed, float tpf) {
-            if (name.equals("shoot") && !keyPressed) {
-                Geometry bulletg = new Geometry("bullet", bullet);
-                bulletg.setMaterial(mat16);
-                bulletg.setShadowMode(ShadowMode.CastAndReceive);
-                bulletg.setLocalTranslation(cam.getLocation());
-
-//                SphereCollisionShape bulletCollisionShape = new SphereCollisionShape(0.4f);
-//                RigidBodyControl bulletNode = new BombControl(assetManager, bulletCollisionShape, 1);
-//                RigidBodyControl bulletNode = new RigidBodyControl(bulletCollisionShape, 1);
-//                bulletNode.setLinearVelocity(cam.getDirection().mult(25));
-//                bulletg.addControl(bulletNode);
-//                rootNode.attachChild(bulletg);
-//                getPhysicsSpace().add(bulletNode);
-            }
+//            if (name.equals("shoot") && !keyPressed) {
+//                Geometry bulletg = new Geometry("bullet", bullet);
+//                bulletg.setMaterial(mat16);
+//                bulletg.setShadowMode(ShadowMode.CastAndReceive);
+//                bulletg.setLocalTranslation(cam.getLocation());
+//
+////                SphereCollisionShape bulletCollisionShape = new SphereCollisionShape(0.4f);
+////                RigidBodyControl bulletNode = new BombControl(assetManager, bulletCollisionShape, 1);
+////                RigidBodyControl bulletNode = new RigidBodyControl(bulletCollisionShape, 1);
+////                bulletNode.setLinearVelocity(cam.getDirection().mult(25));
+////                bulletg.addControl(bulletNode);
+////                rootNode.attachChild(bulletg);
+////                getPhysicsSpace().add(bulletNode);
+//            }
             if (name.equals("gc") && !keyPressed) {
                 System.gc();
             }
-            if (name.equals("Shoot") && !keyPressed) {
-                pick();
-                if (currentAction != null) {
+            if (name.equals(LEFT_CLICK)) {
+                if (!keyPressed) {
+                    currentAction.onMouseUp();
+                } else {
+                    currentAction.onMouseDown();
 
-                    if (currentAction.current != null) {
-                        Building building = new Building(currentAction.current, mat16);
-                        selectables.attachChild(building.getNode());
-                    }
-
-                    currentAction.cancel();
-                    currentAction = null;
-                }
-            }
-            if (name.equals("Shoot") && keyPressed) {
-                final Pos pick = pick();
-                if (pick != null) {
-                    currentAction = new MyAction();
-                    currentAction.start = pick;
                 }
             }
 
@@ -576,10 +576,10 @@ public class MyGame extends SimpleApplication {
      * Declaring the "Shoot" action and mapping to its triggers.
      */
     private void initKeys() {
-        inputManager.addMapping("Shoot",
+        inputManager.addMapping(LEFT_CLICK,
                 new KeyTrigger(KeyInput.KEY_SPACE), // trigger 1: spacebar
                 new MouseButtonTrigger(MouseInput.BUTTON_LEFT)); // trigger 2: left-button click
-        inputManager.addListener(actionListener, "Shoot");
+        inputManager.addListener(actionListener, LEFT_CLICK);
     }
 
     /**
@@ -593,16 +593,22 @@ public class MyGame extends SimpleApplication {
         mark.setMaterial(mark_mat);
     }
 
-    MyAction currentAction;
+//    MyAction currentAction = new SelectAction();
+    MyAction currentAction = new BuildRoadAction();
 
-    class MyAction {
+
+    class SelectAction extends MyAction {
 
         Pos start;
         Pos current;
 
+        @Override
         void updateGui() {
+            current = pick();
             selectGrid.set.clear();
-            selectGrid.add(start.x, start.y);
+            if (start != null) {
+                selectGrid.add(start.x, start.y);
+            }
             if (current != null) {
                 selectGrid.add(current.x, current.y);
                 selectGrid.add(current.x, current.y + 1);
@@ -611,9 +617,125 @@ public class MyGame extends SimpleApplication {
             selectGrid.updateGrid();
         }
 
-        void cancel() {
+        @Override
+        void onMouseDown() {
+            this.start = pick();
+        }
+
+        @Override
+        void onMouseUp() {
+            if (this.current != null) {
+            }
+            this.start = null;
+        }
+
+//        void cancel() {
+//            selectGrid.set.clear();
+//            selectGrid.updateGrid();
+//        }
+    }
+
+    class BuildRoadAction extends MyAction {
+
+        Pos start;
+        Pos current;
+        private Set<Pos> c;
+
+        @Override
+        void updateGui() {
+            current = pick();
             selectGrid.set.clear();
+            if (start != null) {
+                selectGrid.add(start);
+            }
+            if (current != null) {
+                selectGrid.add(current);
+            }
+            c = simplepath4(start, current);
+            selectGrid.set.addAll(c);
             selectGrid.updateGrid();
         }
+
+        Set<Pos> simplepath4(Pos start, Pos end) {
+            Set<Pos> poses = new HashSet<Pos>();
+            if (start != null && end != null) {
+                if (start.x == end.x) {
+                    for (int i = Math.min(start.y, end.y); i <= Math.max(start.y, end.y); i++) {
+                        poses.add(new Pos(start.x, i));
+                    }
+                }
+                if (start.y == end.y) {
+                    for (int i = Math.min(start.x, end.x); i <= Math.max(start.x, end.x); i++) {
+                        poses.add(new Pos(i, start.y));
+                    }
+                }
+            }
+            return poses;
+        }
+
+        @Override
+        void onMouseDown() {
+            this.start = pick();
+        }
+
+        @Override
+        void onMouseUp() {
+            if (this.current != null) {
+                for (Pos pos : c) {
+                    pnet.addPoint(pos.x, pos.y);
+                }
+
+                pnet.addPoint(this.current.x, this.current.y);
+                pnet.updateTextures();
+            }
+            this.start = null;
+        }
+
+//        void cancel() {
+//            selectGrid.set.clear();
+//            selectGrid.updateGrid();
+//        }
     }
+
+    class BuildAction extends MyAction {
+
+        Pos start;
+        Pos current;
+
+        @Override
+        void updateGui() {
+            current = pick();
+            selectGrid.set.clear();
+            if (start != null) {
+                selectGrid.add(start.x, start.y);
+            }
+            if (current != null) {
+                selectGrid.add(current.x, current.y);
+                selectGrid.add(current.x, current.y + 1);
+                selectGrid.add(current.x + 1, current.y + 1);
+            }
+            selectGrid.updateGrid();
+        }
+
+        @Override
+        void onMouseDown() {
+            this.start = pick();
+        }
+
+        @Override
+        void onMouseUp() {
+            if (this.current != null) {
+                Building building = new Building(this.current, mat16);
+                selectables.attachChild(building.getNode());
+            }
+            this.start = null;
+        }
+
+//        void cancel() {
+//            selectGrid.set.clear();
+//            selectGrid.updateGrid();
+//        }
+    }
+
+
 }
