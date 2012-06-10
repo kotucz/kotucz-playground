@@ -23,9 +23,11 @@ public class Trajectory {
     public Trajectory(LinkedList<RoadPoint> path, float hand) {
         this.path = path;
 
+
         this.points = new LinkedList<Vector3f>();
         for (int i = 0; i < path.size(); i++) {
-            points.add(toHandPoint(i, hand));
+//            points.add(toHandPoint(i, hand));
+            points.add(path.get(i).getPos());
         }
 
         this.vectors = new LinkedList<Vector3f>();
@@ -33,10 +35,9 @@ public class Trajectory {
 //            Vector3f pos1 = pointClamp(i - 1);
             Vector3f pos1 = pointClamp(i);
             Vector3f pos2 = pointClamp(i + 1);
-            Vector3f vec = new Vector3f(pos2);
-            vec.subtract(pos1);
+            Vector3f vec = new Vector3f(pos2).subtract(pos1);
             if (vec.lengthSquared() > 0.001) {
-                vec.normalize();
+                vec = vec.normalize();
             }
             vectors.add(vec);
         }
@@ -84,10 +85,7 @@ public class Trajectory {
         Vector3f vec = new Vector3f(pos2.y - pos1.y, pos1.x - pos2.x, 0);
         Vector3f pos = new Vector3f(path.get(clamp(i)).getPos());
         if (vec.lengthSquared() > 0.1) {
-            vec.normalize();
-            vec.mult(hand);
-
-            pos.add(vec);
+            pos.add(vec.normalize().mult(hand));
         }
         return pos;
     }
@@ -102,9 +100,9 @@ public class Trajectory {
         Vector3f vec1 = new Vector3f(vectors.get(clamp(floor)));
         Vector3f vec2 = vectors.get(clamp(floor + 1));
 
-        vec1.interpolate(vec2, t - floor);
+        return vec1.interpolate(vec2, t - floor);
 
-        return vec1;
+//        return vec1;
 
     }
 

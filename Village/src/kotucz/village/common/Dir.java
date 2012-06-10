@@ -1,35 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package kotucz.village.common;
 
 /**
- *
- * @author Kotuc
+ * Created with IntelliJ IDEA.
+ * User: Kotuc
+ * Date: 10.6.12
+ * Time: 12:59
+ * To change this template use File | Settings | File Templates.
  */
-public enum Dir {
+public interface Dir {
+    int dx();
 
-        E(1, 0),
-        NE(1, 1),
-        N(0, 1),
-        NW(-1, 1),
-        W(-1, 0),
-        SW(-1, -1),
-        S(0, -1),
-        SE(1, -1);
-        private final int dx, dy;
-
-        public int dx() {
-            return dx;
-        }
-
-        public int dy() {
-            return dy;
-        }
-
-        private Dir(int dx, int dy) {
-            this.dx = dx;
-            this.dy = dy;
-        }
-    }
+    int dy();
+}

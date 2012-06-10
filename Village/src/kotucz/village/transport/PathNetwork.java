@@ -1,13 +1,12 @@
 package kotucz.village.transport;
 
 
-
-import java.util.Random;
-
 import com.jme3.math.Vector3f;
 import kotucz.village.common.Dir;
-import kotucz.village.common.Dir4;
+import kotucz.village.common.Neighbouring;
 import kotucz.village.tiles.*;
+
+import java.util.Random;
 
 
 /**
@@ -43,6 +42,8 @@ public class PathNetwork {
     private final int widthy;
 
     LinearGrid lingrid;
+
+    Neighbouring neighbouring = Neighbouring.N4;
 
 
 //    private Land3D land;
@@ -100,7 +101,7 @@ public class PathNetwork {
 //        RoadPoint roadPoint = new RoadPoint(land.getHeighmap().get(x, y));
         RoadPoint roadPoint = createRoadPoint(new Pos(x, y));
         roadpoints.set(x, y, roadPoint);
-        for (Dir dir : Dir.values()) {
+        for (Dir dir : neighbouring.getDirections()) {
             RoadPoint point = getPoint(x + dir.dx(), y + dir.dy());
             if (point != null) {
                 point.incidents.add(roadPoint);
@@ -170,8 +171,8 @@ public class PathNetwork {
         int y = random.nextInt(widthy);
 //        for (int i = 0; i < random.nextInt(20); i++) {
         for (int i = 0; i < widthx; i++) {
-//            Dir dir = Dir.values()[random.nextInt(8)];
-            Dir4 dir = Dir4.values()[random.nextInt(4)];
+//            Dir8 dir = Dir8.values()[random.nextInt(8)];
+            Dir dir = neighbouring.randomDir(random);
             
             
             final int nextInt = random.nextInt(20);
