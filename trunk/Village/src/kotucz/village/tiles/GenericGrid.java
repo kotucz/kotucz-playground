@@ -21,6 +21,9 @@ public class GenericGrid<T> {
     }
 
     public T get(int x, int y) {
+        if (lingrid.isOutOfBounds(x, y)) {
+            return null;
+        }
         return tiles[lingrid.index(x, y)];
     }
 

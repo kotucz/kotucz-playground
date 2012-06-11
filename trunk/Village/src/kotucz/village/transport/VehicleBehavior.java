@@ -69,7 +69,7 @@ public  class VehicleBehavior {
 //        RoadPoint curr = roadNetwork.contains(
 //                (int) Math.round(vector.x),
 //                (int) Math.round(vector.y));
-        RoadPoint curr = vehicle.getNetwork().getPoint(vehicle.getPos());
+        RoadPoint curr = vehicle.getNetwork().getPoint(vehicle.getPosVector());
         return pathFinding.aStar(curr, target);
     }
 
