@@ -13,8 +13,6 @@ import kotucz.village.tiles.LinearGrid;
 import kotucz.village.tiles.Multitexture1;
 import kotucz.village.tiles.Pos;
 
-import java.util.List;
-
 /**
  * @author Kotuc
  */
@@ -30,15 +28,16 @@ public class Vehicle {
     private Player owner;
     private String name;
 
+    Pos requestPos;
     Pos reservedPos;
 
-    Vector3f pos;
+    Vector3f posVector;
     float heading;
 
     final Node node = new Node("Vozidlo");
     private VehicleBehavior behavior = new VehicleBehavior(this);
 
-    public Vehicle(Player owner, Type type, RoadPoint pos, Material mat, PathNetwork network) {
+    public Vehicle(Player owner, Type type, RoadPoint roadPoint, Material mat, PathNetwork network) {
         this.type = type;
         this.name = type.toString();
         this.owner = owner;
@@ -46,8 +45,8 @@ public class Vehicle {
 
         this.fuel = 2000;
 
-        this.reservedPos = pos.getPos();
-        this.pos = pos.getPosVector();
+        this.reservedPos = roadPoint.getPos();
+        this.posVector = roadPoint.getPosVector();
 
         {
 //            MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
@@ -112,14 +111,14 @@ public class Vehicle {
 
 
     public Pos getPos() {
-         return network.getPoint(pos).getPos();
+         return network.getPoint(posVector).getPos();
     }
 
 
 
     public Vector3f getPosVector() {
         if (behavior.trajectory == null) {
-            return pos;
+            return posVector;
         }
         return behavior.trajectory.getPoint(behavior.t);
     }
@@ -187,11 +186,11 @@ public class Vehicle {
     public void updateModel() {
 
         if (behavior.trajectory != null) {
-//            this.pos = trajectory.contains(t);
-//            node.setLocalTranslation(pos);
+//            this.posVector = trajectory.contains(t);
+//            node.setLocalTranslation(posVector);
             Vector3f point = behavior.trajectory.getPoint(behavior.t);
-            this.pos = point;
-            System.out.println(""+this.name+" "+ behavior.t +" "+point);
+            this.posVector = point;
+//            System.out.println(""+this.name+" "+ behavior.t +" "+point);
             node.setLocalTranslation(point);
 
         }
@@ -266,4 +265,13 @@ public class Vehicle {
     public Node getNode() {
         return node;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
+

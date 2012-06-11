@@ -67,7 +67,7 @@ public class Trajectory {
             pos = p01.interpolate(p12, t);
         } else {
             // turning
-//            pos = p01.add(vec01.mult((float) Math.sin(fi) * 0.5f));
+//            posVector = p01.add(vec01.mult((float) Math.sin(fi) * 0.5f));
           pos = p01.add(vec01.mult((float) Math.sin(fi) * 0.5f)).add(vec12.mult((float) (1-Math.cos(fi)) * 0.5f));
         }
 

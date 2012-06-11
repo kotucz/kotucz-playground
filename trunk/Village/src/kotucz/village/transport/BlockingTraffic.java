@@ -37,6 +37,8 @@ public class BlockingTraffic {
         BlockingVehicleBehavior blockingVehicleBehavior = new BlockingVehicleBehavior(car, this);
         car.setBehavior(blockingVehicleBehavior);
 
+        car.setName("Car "+cars.size());
+
         this.cars.add(car);
     }
 
