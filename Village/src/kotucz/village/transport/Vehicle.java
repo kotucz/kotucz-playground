@@ -34,7 +34,7 @@ public class Vehicle {
     float heading;
 
     final Node node = new Node("Vozidlo");
-    private final VehicleBehavior behavior = new VehicleBehavior(this);
+    private VehicleBehavior behavior = new VehicleBehavior(this);
 
     public Vehicle(Player owner, Type type, RoadPoint pos, Material mat, PathNetwork network) {
         this.type = type;
@@ -77,15 +77,6 @@ public class Vehicle {
         payload = new Payload(1); //TODO: To be changed - depends on truck type
     }
 
-    public void setSrcDepot(Depot srcDepot) {
-        behavior.setSrcDepot(srcDepot);
-    }
-
-    public void setDestDepot(Depot destDepot) {
-        behavior.setDestDepot(destDepot);
-    }
-
-
 
 //    @Override
 //    public void addingTo(World world) {
@@ -112,98 +103,16 @@ public class Vehicle {
         behavior.act(time);
     }
 
-    /**
-     * @param point
-     * @return true when reached, false during way
-     */
-    public boolean travelTo(RoadPoint point, float time) {
-//        if (point.getPosVector().distance(vector) < type.getSpeed()) {
-//            return true;
-//        }
-        //        return followPath();
-        return behavior.travelTo(point, time);
+    public void setBehavior(VehicleBehavior behavior) {
+        this.behavior = behavior;
     }
 
-    public List<RoadPoint> findPath(RoadPoint target) {
-        //        RoadPoint curr = roadNetwork.getPoint(
-//                (int) Math.round(vector.x),
-//                (int) Math.round(vector.y));
-        return behavior.findPath(target);
-    }
-
-    public boolean followTrajectory(float time) {
-
-        //        Vector3d vec = trajectory.getVector(t);
-//        double angle = Math.atan2(vec.y, vec.x);
-//        model.setAngle(angle);
-
-        return behavior.followTrajectory(time);
-    }
 
     public Pos getP() {
          return network.getPoint(pos).getPos();
     }
 
-    public boolean followPath() {
 
-        //        if (vector.distance(tgt) < lookAhead && path.size() > 1) {
-//            if (vector.distance(tgt) > 0.5) {
-//                tgt.interpolate(path.get(1).getPosVector(), (vector.distance(tgt) / lookAhead));
-//            }
-//        }
-
-        return behavior.followPath();
-    }
-
-    /**
-     * Goes to dest point not faster than speed (per one call)
-     *
-     * @param dest
-     * @param speed
-     * @return true if reached destination; false otherwise
-     */
-    public boolean navigateLocal(Vector3f dest, double speed) {
-//        if (dest == null) {
-//            return true;
-//        }
-//
-//        Vector3d vec = new Vector3d(dest);
-//
-//        vec.sub(vector);
-//        if (vec.lengthSquared() <= speed * speed) {
-//            vector.set(dest);
-//            model.setPos(vector);
-//            return true;
-//        }
-//
-//        double atan2 = Math.atan2(vec.y, vec.x);
-//        double angle = model.getAngle();
-//
-//        double diff = atan2 - angle;
-//        while (diff > Math.PI) {
-//            diff -= 2 * Math.PI;
-//        }
-//
-//        while (diff < Math.PI) {
-//            diff += 2 * Math.PI;
-//        }
-//
-//        angle += diff;
-//
-//        model.setAngle(angle);
-//
-//        vec.set(Math.cos(angle), Math.sin(angle), 0);
-//
-//        vec.normalize();
-//        vec.scale(speed);
-//        vector.add(vec);
-//        model.setPos(vector);
-//
-//        spentFuel();
-//
-//        return false;
-        return behavior.navigateLocal(dest, speed);
-    }
 
     public Vector3f getPos() {
         if (behavior.trajectory == null) {
@@ -275,7 +184,7 @@ public class Vehicle {
     public void updateModel() {
 
         if (behavior.trajectory != null) {
-//            this.pos = trajectory.getPoint(t);
+//            this.pos = trajectory.contains(t);
 //            node.setLocalTranslation(pos);
             Vector3f point = behavior.trajectory.getPoint(behavior.t);
             this.pos = point;

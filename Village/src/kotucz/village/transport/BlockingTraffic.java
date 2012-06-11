@@ -2,6 +2,7 @@ package kotucz.village.transport;
 
 import com.jme3.scene.Node;
 import kotucz.village.tiles.GenericGrid;
+import kotucz.village.tiles.Pos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class BlockingTraffic {
 
     final GenericGrid<Vehicle> occupiers;
 
-    public List<Vehicle> cars = new ArrayList<Vehicle>();
+     List<Vehicle> cars = new ArrayList<Vehicle>();
 
     public final Node node = new Node("Cars");
 
@@ -30,6 +31,19 @@ public class BlockingTraffic {
 
 
     }
+
+    public void addVehicle(Vehicle car) {
+
+        BlockingVehicleBehavior blockingVehicleBehavior = new BlockingVehicleBehavior(car, this);
+        car.setBehavior(blockingVehicleBehavior);
+
+        this.cars.add(car);
+    }
+
+    public Vehicle getOccupier(Pos pos) {
+        return occupiers.get(pos);
+    }
+
 
 
     public void update(float tpf) {

@@ -144,10 +144,10 @@ public class PathNetwork {
 //        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
 //            return;
 //        }
-        int hash = ((getPoint(x, y) != null) ? 1 : 0)
-                + ((getPoint(x + 1, y) != null) ? 2 : 0)
-                + ((getPoint(x + 1, y + 1) != null) ? 4 : 0)
-                + ((getPoint(x, y + 1) != null) ? 8 : 0);
+        int hash = ((contains(x, y)) ? 1 : 0)
+                + ((contains(x + 1, y)) ? 2 : 0)
+                + ((contains(x + 1, y + 1)) ? 4 : 0)
+                + ((contains(x, y + 1)) ? 8 : 0);
 //        layer.selectTexture(x, y, selects[hash]);
         return hash;
     }
@@ -158,16 +158,20 @@ public class PathNetwork {
 //        }
 
 
-        if (getPoint(x, y) == null) {
+        if (!contains(x, y)) {
             return 0;
         }
 
-        int hash = ((getPoint(x + 1, y) != null) ? 1 : 0) +
-                ((getPoint(x, y + 1) != null) ? 2 : 0) +
-                ((getPoint(x - 1, y) != null) ? 4 : 0) +
-                ((getPoint(x, y - 1) != null) ? 8 : 0);
+        int hash = ((contains(x + 1, y)) ? 1 : 0) +
+                ((contains(x, y + 1)) ? 2 : 0) +
+                ((contains(x - 1, y)) ? 4 : 0) +
+                ((contains(x, y - 1)) ? 8 : 0);
         return hash;
     }
+
+             boolean contains(int x, int y) {
+                 return getPoint(x, y )!=null;
+             }
 
     public void generateRandomWalk(Random random) {
 //        Random random = new Random();

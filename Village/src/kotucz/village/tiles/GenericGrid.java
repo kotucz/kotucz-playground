@@ -31,4 +31,15 @@ public class GenericGrid<T> {
     public void set(int x, int y, T obj) {
         tiles[lingrid.index(x, y)] = obj;
     }
+
+    public T get(Pos pos) {
+
+        return get(pos.x, pos.y);
+    }
+
+    public void set(Pos p, T obj) {
+        set(p.x, p.y, obj);
+    }
+
+
 }
