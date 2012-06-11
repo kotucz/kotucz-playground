@@ -14,7 +14,10 @@ public class SelectGrid {
     private final TileGrid tilegrid;
     public final Set<Pos> set = new HashSet<Pos>();
 
-    public SelectGrid(TileGrid tilegrid) {
+    int def;
+
+    public SelectGrid(TileGrid tilegrid, int def) {
+        this.def = def;
         this.tilegrid = tilegrid;
     }
 
@@ -32,7 +35,7 @@ public class SelectGrid {
 
 
         if (!contains(x, y)) {
-            return 15;
+            return def;
         }
 
         int hash = ((contains(x + 1, y)) ? 1 : 0)

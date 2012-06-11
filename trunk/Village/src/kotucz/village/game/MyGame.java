@@ -172,10 +172,10 @@ public class MyGame extends SimpleApplication {
         traffic = new BlockingTraffic(pnet);
 
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 15; i++) {
             Vehicle car = new Vehicle(player, Vehicle.Type.SKODA120, pnet.randomRoadPoint(), matveh, pnet);
             selectables.attachChild(car.getNode());
-            traffic.cars.add(car);
+            traffic.addVehicle(car);
         }
 
 
@@ -378,7 +378,19 @@ public class MyGame extends SimpleApplication {
 
 
 //            final Geometry geometry = new Geometry("grid16", new NodedefTileGrid(pnet));
-            final Geometry geometry = new TileGrid(lingrid, matwtr, this).getGeometry();
+            TileGrid tileGrid = new TileGrid(lingrid, matwtr, this);
+            final Geometry geometry = tileGrid.getGeometry();
+            SelectGrid se = new SelectGrid(tileGrid, 0);
+            se.set.clear();
+
+            Random r = new Random();
+
+            for (int i = 0; i < 100; i++) {
+                se.add(r.nextInt(16), r.nextInt(16));
+            }
+
+            se.updateGrid();
+
 //            geometry.setMaterial(matwtr);
 //            geometry.setShadowMode(ShadowMode.Receive);
             geometry.setLocalTranslation(new Vector3f(0, 0, 0.002f));
@@ -409,7 +421,7 @@ public class MyGame extends SimpleApplication {
 //            pnet.randomlySelect(20);
 
             selectTileGrid = new TileGrid(lingrid, matsel, this);
-            selectGrid = new SelectGrid(selectTileGrid);
+            selectGrid = new SelectGrid(selectTileGrid, 15);
             selectGrid.updateGrid();
 
             selgeom = selectTileGrid.getGeometry();

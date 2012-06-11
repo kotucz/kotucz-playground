@@ -21,6 +21,15 @@ public class Trajectory {
         this.path = path;
     }
 
+    public RoadPoint getNextRoadPoint(float t) {
+        int i = Math.round(t);
+
+        if (i == path.size() - 1) {
+            return path.getLast();
+        }
+        return path.get(i + 1);
+    }
+
     public Vector3f getPoint(float t) {
 
         int i = Math.round(t);
