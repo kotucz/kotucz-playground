@@ -38,5 +38,10 @@ public final class Pos {
         hash = 59 * hash + this.y;
         return hash;
     }
-    
+
+
+    @Override
+    public String toString() {
+        return "Pos("+x+","+y+")";
+    }
 }
