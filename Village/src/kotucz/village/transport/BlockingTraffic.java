@@ -41,7 +41,11 @@ public class BlockingTraffic {
     }
 
     public Vehicle getOccupier(Pos pos) {
-        return occupiers.get(pos);
+        Vehicle vehicle = occupiers.get(pos);
+        if (vehicle!=null && pos.equals(vehicle.reservedPos)) {
+            return vehicle;
+        }
+        return null;
     }
 
 
@@ -50,7 +54,7 @@ public class BlockingTraffic {
         for (Vehicle car : cars) {
             car.act(tpf);
 
-//            selectGrid.add(car.getP());
+//            selectGrid.add(car.getPos());
 
 
         }

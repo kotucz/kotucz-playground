@@ -36,9 +36,13 @@ public final class LinearGrid implements Iterable<Tile>  {
 
     void assertTileBounds(int tilex, int tiley) {
 
-        if ((tilex < 0 || sizeX <= tilex || tiley < 0 || sizeY <= tiley)) {
+        if (isOutOfBounds(tilex, tiley)) {
             throw new ArrayIndexOutOfBoundsException("tile out of bounds " + tilex + ", " + tiley);
         }
+    }
+
+    public boolean isOutOfBounds(int tilex, int tiley) {
+        return (tilex < 0 || sizeX <= tilex || tiley < 0 || sizeY <= tiley);
     }
 
     public int getX(int index) {

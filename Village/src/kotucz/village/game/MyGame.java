@@ -169,7 +169,6 @@ public class MyGame extends SimpleApplication {
 
         Player player = new Player("Kotuc", null, 10000);
 
-        traffic = new BlockingTraffic(pnet);
 
 
         for (int i = 0; i < 15; i++) {
@@ -413,6 +412,8 @@ public class MyGame extends SimpleApplication {
             this.rootNode.attachChild(geometry);
         }
 
+        traffic = new BlockingTraffic(pnet);
+
 
         {
 
@@ -421,7 +422,13 @@ public class MyGame extends SimpleApplication {
 //            pnet.randomlySelect(20);
 
             selectTileGrid = new TileGrid(lingrid, matsel, this);
-            selectGrid = new SelectGrid(selectTileGrid, 15);
+            selectGrid = new SelectGrid(selectTileGrid, 15) {
+                @Override
+                public boolean contains(int x, int y) {
+                    return traffic.getOccupier(new Pos(x, y))!=null;
+//                    return super.contains(x, y);    //To change body of overridden methods use File | Settings | File Templates.
+                }
+            };
             selectGrid.updateGrid();
 
             selgeom = selectTileGrid.getGeometry();

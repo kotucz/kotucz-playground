@@ -30,6 +30,8 @@ public class Vehicle {
     private Player owner;
     private String name;
 
+    Pos reservedPos;
+
     Vector3f pos;
     float heading;
 
@@ -44,6 +46,7 @@ public class Vehicle {
 
         this.fuel = 2000;
 
+        this.reservedPos = pos.getPos();
         this.pos = pos.getPosVector();
 
         {
@@ -108,13 +111,13 @@ public class Vehicle {
     }
 
 
-    public Pos getP() {
+    public Pos getPos() {
          return network.getPoint(pos).getPos();
     }
 
 
 
-    public Vector3f getPos() {
+    public Vector3f getPosVector() {
         if (behavior.trajectory == null) {
             return pos;
         }

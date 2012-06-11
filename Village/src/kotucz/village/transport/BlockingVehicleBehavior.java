@@ -30,13 +30,16 @@ public class BlockingVehicleBehavior extends VehicleBehavior {
             // stop
         } else {
 
-            traffic.occupiers.set(vehicle.getP(), null); // release
+            traffic.occupiers.set(vehicle.reservedPos, null); // release
 
             t += time;
 
             vehicle.setPos(trajectory.getPoint(t));
 
-            traffic.occupiers.set(vehicle.getP(), vehicle);
+//            vehicle.reservedPos = vehicle.getPos();
+            vehicle.reservedPos = nextpos;
+
+            traffic.occupiers.set(vehicle.reservedPos, vehicle);
 
         }
 //        Vector3d vec = trajectory.getVector(t);
