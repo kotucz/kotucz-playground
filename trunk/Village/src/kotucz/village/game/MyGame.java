@@ -351,6 +351,7 @@ public class MyGame extends SimpleApplication {
     }
 
     public void initGrid() {
+        Random r = new Random();
         {
 //            final Geometry geometry = new Geometry("grid", new MeshTileGrid());
 //            geometry.setMaterial(matgrass);
@@ -358,9 +359,16 @@ public class MyGame extends SimpleApplication {
 //            geometry.setLocalTranslation(new Vector3f(0, 0, 0.f));
 //            this.rootNode.attachChild(geometry);
 
-            final Geometry geometry = new TileGrid(lingrid, matgrass, this).getGeometry();
+            Multitexture1 mtex = new Multitexture1(new LinearGrid(4, 4));
+            TileGrid tileGrid = new TileGrid(lingrid, matgrass, this);
+            final Geometry geometry = tileGrid.getGeometry();
 //            geometry.setMaterial(matwtr);
 //            geometry.setShadowMode(ShadowMode.Receive);
+            for (Tile tile : lingrid) {
+                tileGrid.setTexture(tile.pos, mtex.getTex(r.nextInt(16)));
+            }
+            tileGrid.updateTexture();
+
             geometry.setLocalTranslation(new Vector3f(0, 0, 0.001f));
             this.rootNode.attachChild(geometry);
 
@@ -376,13 +384,13 @@ public class MyGame extends SimpleApplication {
 //            final Geometry geometry = new Geometry("grid16", new NodedefTileGrid(pnet));
             TileGrid tileGrid = new TileGrid(lingrid, matwtr, this);
             final Geometry geometry = tileGrid.getGeometry();
-            SetGrid se = new SetGrid(tileGrid, 0);
+            NodeSetGrid se = new NodeSetGrid(tileGrid);
             se.set.clear();
 
-            Random r = new Random();
 
-            for (int i = 0; i < 100; i++) {
-                se.add(r.nextInt(16), r.nextInt(16));
+            int i1 = r.nextInt(lingrid.getTotalNum());
+            for (int i = 0; i < i1; i++) {
+                se.set.add(new Pos(r.nextInt(16), r.nextInt(16)));
             }
 
             se.updateGrid();

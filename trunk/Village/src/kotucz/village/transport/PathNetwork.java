@@ -140,17 +140,7 @@ public class PathNetwork {
 //        layer.selectTexture(x, y, selects[hash]);
     }
 
-    public int getFlatNodeTileHash(int x, int y) {
-//        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
-//            return;
-//        }
-        int hash = ((contains(x, y)) ? 1 : 0)
-                + ((contains(x + 1, y)) ? 2 : 0)
-                + ((contains(x + 1, y + 1)) ? 4 : 0)
-                + ((contains(x, y + 1)) ? 8 : 0);
-//        layer.selectTexture(x, y, selects[hash]);
-        return hash;
-    }
+
 
     public int getRoadTileHash(int x, int y) {
 //        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
