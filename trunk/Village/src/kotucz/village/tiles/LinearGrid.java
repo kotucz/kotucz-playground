@@ -49,6 +49,11 @@ public final class LinearGrid implements Iterable<Tile> {
         return (tilex < 0 || sizeX <= tilex || tiley < 0 || sizeY <= tiley);
     }
 
+    public boolean isOutOfBounds(Pos pos) {
+        return isOutOfBounds (pos.x, pos.y);
+    }
+
+
     public int getX(int index) {
         return index % sizeX;
     }

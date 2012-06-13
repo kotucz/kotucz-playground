@@ -9,7 +9,7 @@ public abstract class AbstractSetGrid implements SubtextureSelector {
     protected final TileGrid tilegrid;
     int def;
 
-    public AbstractSetGrid(int def, TileGrid tilegrid) {
+    public AbstractSetGrid(TileGrid tilegrid, int def) {
         this.def = def;
         this.tilegrid = tilegrid;
     }

@@ -14,7 +14,7 @@ public class SetGrid extends AbstractSetGrid {
     public final Set<Pos> set = new HashSet<Pos>();
 
     public SetGrid(TileGrid tilegrid, int def) {
-        super(def, tilegrid);
+        super(tilegrid, def);
     }
 
     @Override
