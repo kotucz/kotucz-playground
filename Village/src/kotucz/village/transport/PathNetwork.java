@@ -12,7 +12,7 @@ import java.util.Random;
 /**
  * @author Kotuc
  */
-public class PathNetwork {
+public class PathNetwork extends AbstractGridPathNetwork {
 
     final TextureSelect[] selects = new TextureSelect[]{
             new TextureSelect(0, 0, 8, 1, 0, 0),
@@ -32,20 +32,9 @@ public class PathNetwork {
             new TextureSelect(4, 0, 8, 1, 3, 0),
             new TextureSelect(5, 0, 8, 1, 0, 0)};
 
-    /*
-     if true - road is shifted by 0.5 0.5 so that it is in the middle of tiles
-     */
-    final boolean centeroffset = true;
-
-
-    private final GenericGrid<RoadPoint> roadpoints;
-
-    private final TileGrid tilegrid;
 
     private final int widthx;
     private final int widthy;
-
-    LinearGrid lingrid;
 
     Neighbouring neighbouring = Neighbouring.N4;
 
@@ -64,13 +53,11 @@ public class PathNetwork {
 //    }
 
     public PathNetwork(TileGrid grid) {
+        super(grid);
 //        this.land = land;
-        this.tilegrid = grid;
-        this.lingrid = tilegrid.getLingrid();
         this.widthx = lingrid.getSizeX();
         this.widthy = lingrid.getSizeY();
-        this.roadpoints = new GenericGrid<RoadPoint>(lingrid);
-//        this.layer = layer;
+        //        this.layer = layer;
 //        roadTextures();
 
 
@@ -90,14 +77,6 @@ public class PathNetwork {
         }
     }
 
-    RoadPoint createRoadPoint(Pos pos) {
-        if (centeroffset) {
-            return new RoadPoint(pos, new Vector3f(pos.x + 0.5f, pos.y + 0.5f, 0));
-        } else {
-            return new RoadPoint(pos, new Vector3f(pos.x, pos.y, 0));
-        }
-    }
-
     public void addPoint(int x, int y) {
         System.out.println("add point " + x + ", " + y);
 //        RoadPoint roadPoint = new RoadPoint(land.new Point3d(x, y, 0));
@@ -111,53 +90,46 @@ public class PathNetwork {
                 roadPoint.incidents.add(point);
             }
         }
-        correctRoadTile(x, y);
-        correctRoadTile(x - 1, y);
-        correctRoadTile(x - 1, y - 1);
-        correctRoadTile(x, y - 1);
+//        correctRoadTile(x, y);
+//        correctRoadTile(x - 1, y);
+//        correctRoadTile(x - 1, y - 1);
+//        correctRoadTile(x, y - 1);
 
     }
 
-    public void updateTextures() {
-        for (Tile t : lingrid) {
-            tilegrid.setTexture(t.x, t.y, getRoadTileHash(t.x, t.y));
-        }
-        tilegrid.updateTexture();
-    }
+
+//    /**
+//     * works on vertices
+//     *
+//     * @param x
+//     * @param y
+//     */
+//    public void correctRoadTile(int x, int y) {
+////        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
+////            return;
+////        }
+//        int hash = ((getPoint(x, y) != null) ? 8 : 0) + ((getPoint(x + 1, y) != null) ? 4 : 0) + ((getPoint(x + 1, y + 1) != null) ? 2 : 0) + ((getPoint(x, y + 1) != null) ? 1 : 0);
+////        layer.selectTexture(x, y, selects[hash]);
+//    }
 
 
-    /**
-     * works on vertices
-     *
-     * @param x
-     * @param y
-     */
-    public void correctRoadTile(int x, int y) {
-//        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
-//            return;
+
+//    public int getRoadTileHash(int x, int y) {
+////        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
+////            return;
+////        }
+//
+//
+//        if (!contains(x, y)) {
+//            return 0;
 //        }
-        int hash = ((getPoint(x, y) != null) ? 8 : 0) + ((getPoint(x + 1, y) != null) ? 4 : 0) + ((getPoint(x + 1, y + 1) != null) ? 2 : 0) + ((getPoint(x, y + 1) != null) ? 1 : 0);
-//        layer.selectTexture(x, y, selects[hash]);
-    }
-
-
-
-    public int getRoadTileHash(int x, int y) {
-//        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
-//            return;
-//        }
-
-
-        if (!contains(x, y)) {
-            return 0;
-        }
-
-        int hash = ((contains(x + 1, y)) ? 1 : 0) +
-                ((contains(x, y + 1)) ? 2 : 0) +
-                ((contains(x - 1, y)) ? 4 : 0) +
-                ((contains(x, y - 1)) ? 8 : 0);
-        return hash;
-    }
+//
+//        int hash = ((contains(x + 1, y)) ? 1 : 0) +
+//                ((contains(x, y + 1)) ? 2 : 0) +
+//                ((contains(x - 1, y)) ? 4 : 0) +
+//                ((contains(x, y - 1)) ? 8 : 0);
+//        return hash;
+//    }
 
              boolean contains(int x, int y) {
                  return getPoint(x, y )!=null;
@@ -188,26 +160,6 @@ public class PathNetwork {
         }
     }
 
-    public RoadPoint getPoint(Vector3f point) {
-
-        if (centeroffset) {
-            return getPoint((int) Math.floor(point.x), (int) Math.floor(point.y));
-        } else {
-            return getPoint((int) Math.round(point.x), (int) Math.round(point.y));
-        }
-    }
-
-    public RoadPoint getPoint(Pos pos) {
-        return getPoint(pos.x, pos.y);
-    }
-
-    public RoadPoint getPoint(int x, int y) {
-        if ((x < 0) || (y < 0) || (widthx <= x) || (widthy <= y)) {
-            return null;
-        }
-        return roadpoints.get(x, y);
-    }
-
     public boolean isAreaFree(double cx, double cy, double wx, double wy) {
         for (int i = (int) Math.round(cx - 0.5 * wy); i <= (int) Math.round(cx + 0.5 * wx); i++) {
             for (int j = (int) Math.round(cy - 0.5 * wy); j <= (int) Math.round(cy + 0.5 * wy); j++) {
@@ -229,19 +181,7 @@ public class PathNetwork {
         }
     }
 
-    public void removePoint(int x, int y) {
-        RoadPoint roadPoint = roadpoints.get(x, y);
-        for (RoadPoint otherPoint : roadPoint.incidents) {
-            otherPoint.incidents.remove(roadPoint);
-        }
-        roadpoints.set(x, y, null);
-//        correctRoadTile(x, y);
-//        correctRoadTile(x - 1, y);
-//        correctRoadTile(x - 1, y - 1);
-//        correctRoadTile(x, y - 1);
-    }
-
-//    void roadTextures() {
+    //    void roadTextures() {
 ////        int[][] roads = new int[widthx + 1][widthy + 1];
 ////
 ////        for (int x = 0; x < widthx + 1; x++) {
