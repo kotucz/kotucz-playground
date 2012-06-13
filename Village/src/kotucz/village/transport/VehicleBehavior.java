@@ -41,7 +41,7 @@ public  class VehicleBehavior {
             // create new path
 //            destLong = getWorld().getRoadNetwork().randomRoadPoint();
             List<RoadPoint> findPath = findPath(point);
-            if (findPath != null) {
+            if (findPath != null && findPath.size()>1) {
                 int i = 0;
                 // debug trace path
 //                for (RoadPoint roadPoint : findPath) {

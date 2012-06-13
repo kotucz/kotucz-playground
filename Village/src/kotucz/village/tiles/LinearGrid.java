@@ -3,13 +3,12 @@ package kotucz.village.tiles;
 import java.util.Iterator;
 
 /**
- *
  * @author Kotuc
  */
-public final class LinearGrid implements Iterable<Tile>  {
+public final class LinearGrid implements Iterable<Tile> {
 
-     final int sizeX;
-     final int sizeY;
+    final int sizeX;
+    final int sizeY;
 
     public LinearGrid(int sizeX, int sizeY) {
         this.sizeX = sizeX;
@@ -34,6 +33,11 @@ public final class LinearGrid implements Iterable<Tile>  {
         return (tilex + sizeX * tiley);
     }
 
+    public int index(Pos pos) {
+        return index(pos.x, pos.y);
+
+    }
+
     void assertTileBounds(int tilex, int tiley) {
 
         if (isOutOfBounds(tilex, tiley)) {
@@ -52,19 +56,19 @@ public final class LinearGrid implements Iterable<Tile>  {
     public int getY(int index) {
         return index / sizeX;
     }
-    
+
     public Iterator<Tile> iterator() {
-       return  new Iterator<Tile> () {
+        return new Iterator<Tile>() {
 
             int i = -1;
-            
+
             public boolean hasNext() {
-                return i < getTotalNum()-1;
+                return i < getTotalNum() - 1;
             }
 
             public Tile next() {
                 i++;
-                return new Tile(getX(i), getY(i), i);                
+                return new Tile(getX(i), getY(i), i);
             }
 
             public void remove() {
@@ -72,7 +76,7 @@ public final class LinearGrid implements Iterable<Tile>  {
             }
         };
     }
-    
+
     public Pos getPos(int index) {
         return new Pos(getX(index), getY(index));
     }

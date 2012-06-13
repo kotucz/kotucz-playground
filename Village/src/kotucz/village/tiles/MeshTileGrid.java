@@ -42,6 +42,11 @@ public class MeshTileGrid extends Mesh {
 //        1, 0, 0, 0, 0, 1, 1, 1 // bottom
 //    };
 
+    public void setTexture(Pos pos, Subtexture s) {
+
+        setTexture(lingrid.index(pos), s);
+    }
+
     public void setTexture(int x, int y, Subtexture s) {
 
         setTexture(lingrid.index(x, y), s);

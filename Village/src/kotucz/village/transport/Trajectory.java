@@ -35,15 +35,23 @@ public class Trajectory {
     public Vector3f getPoint(float t) {
 
         int i = Math.round(t);
-        vec = Vector3f.UNIT_X;
+//        vec = Vector3f.UNIT_X;
+
+
+
 
         if (i == 0) {
-              return path.getFirst().getPosVector();
+//            return path.getFirst().getPosVector();
+            vec = path.get(1).getPosVector().subtract( path.getFirst().getPosVector());
+            return path.getFirst().getPosVector().interpolate(path.get(1).getPosVector(), t);
         } else if (i == path.size() - 1) {
-            return path.getLast().getPosVector();
+            //return path.getLast().getPosVector();
+            vec = path.getLast().getPosVector().subtract( path.get(path.size() - 2).getPosVector());
+            return path.get(path.size() - 2).getPosVector().interpolate(path.getLast().getPosVector(), t-(path.size() - 2));
         }
 
-//        t -= Math.floor(t);
+
+        //        t -= Math.floor(t);
         t -= i-0.5;
 
         RoadPoint prev = path.get(i - 1);

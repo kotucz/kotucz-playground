@@ -8,7 +8,7 @@ package kotucz.village.common;
  *
  * @author Kotuc
  */
-enum Dir8 implements Dir {
+public enum Dir8 implements Dir {
 
         E(1, 0),
         NE(1, 1),

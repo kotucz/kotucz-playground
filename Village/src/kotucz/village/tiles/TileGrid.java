@@ -64,6 +64,9 @@ public class TileGrid {
     public void setTexture(int x, int y, Subtexture subtex) {
         meshGrid.setTexture(x, y, subtex);
     }
+    public void setTexture(Pos pos, Subtexture subtex) {
+        meshGrid.setTexture(pos, subtex);
+    }
 
     public void setTexture(int x, int y, int tex) {
         this.setTexture(x, y, mtex.getTex(tex));
