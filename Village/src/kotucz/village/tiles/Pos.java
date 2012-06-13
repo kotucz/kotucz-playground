@@ -1,5 +1,9 @@
 package kotucz.village.tiles;
 
+import kotucz.village.common.Dir;
+
+import java.security.PublicKey;
+
 /**
  *
  * @author Kotuc
@@ -44,4 +48,9 @@ public final class Pos {
     public String toString() {
         return "Pos("+x+","+y+")";
     }
+
+    public Pos inDir(Dir dir) {
+        return new Pos(this.x + dir.dx(), this.y + dir.dy());
+    }
+
 }

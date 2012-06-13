@@ -22,7 +22,9 @@ public class Trajectory {
     }
 
     public RoadPoint getNextRoadPoint(float t) {
-        int i = Math.round(t);
+//        int i = Math.round(t); // this
+        int i = (int)Math.floor(t);
+//        int i = (int)Math.ceil(t);
 
         if (i == path.size() - 1) {
             return path.getLast();

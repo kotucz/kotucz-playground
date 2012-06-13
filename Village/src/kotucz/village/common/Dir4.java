@@ -3,7 +3,7 @@ package kotucz.village.common;
 /**
  * @author Kotuc
  */
-enum Dir4 implements Dir {
+public enum Dir4 implements Dir {
 
     E(1, 0),
     N(0, 1),
