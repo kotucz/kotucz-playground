@@ -23,7 +23,7 @@ public class Vehicle {
 
     private long fuel;
     protected final Payload payload;
-    private PathNetwork network;
+    private AbstractGridPathNetwork network;
     protected final Type type;
     private Player owner;
     private String name;
@@ -37,7 +37,7 @@ public class Vehicle {
     final Node node = new Node("Vozidlo");
     private VehicleBehavior behavior = new VehicleBehavior(this);
 
-    public Vehicle(Player owner, Type type, RoadPoint roadPoint, Material mat, PathNetwork network) {
+    public Vehicle(Player owner, Type type, RoadPoint roadPoint, Material mat, AbstractGridPathNetwork network) {
         this.type = type;
         this.name = type.toString();
         this.owner = owner;
@@ -175,7 +175,7 @@ public class Vehicle {
         return payload;
     }
 
-    public PathNetwork getNetwork() {
+    public AbstractGridPathNetwork getNetwork() {
         return network;
     }
 

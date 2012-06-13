@@ -1,6 +1,7 @@
 package kotucz.village.tiles;
 
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * @author Kotuc
@@ -84,6 +85,10 @@ public final class LinearGrid implements Iterable<Tile> {
 
     public Pos getPos(int index) {
         return new Pos(getX(index), getY(index));
+    }
+
+    public Pos randomPos(Random random) {
+        return getPos(random.nextInt(getTotalNum()));
     }
 
 

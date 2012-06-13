@@ -16,6 +16,9 @@ public class PathFinding {
         this.network = network;
     }
 
+    public PathFinding() {
+    }
+
     public List<RoadPoint> aStar(RoadPoint start, RoadPoint dest) {
         Preconditions.checkNotNull(start, "start");
         Preconditions.checkNotNull(dest, "dest");
@@ -36,7 +39,7 @@ public class PathFinding {
             RoadPoint poll = queue.poll();
 //            System.out.println("Poll "+poll);
             {   // expand poll
-                for (RoadPoint next : poll.incidents) {
+                for (RoadPoint next : poll.getNexts()) {
                     if (!visited.contains(next)) {
                         heuristics.explore(poll, next);
                         queue.add(next);

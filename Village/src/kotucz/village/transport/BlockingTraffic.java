@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class BlockingTraffic {
 
-    final PathNetwork network;
+    final AbstractGridPathNetwork network;
 
     final GenericGrid<Vehicle> occupiers;
 
@@ -23,7 +23,7 @@ public class BlockingTraffic {
     public final Node node = new Node("Cars");
 
 
-    public BlockingTraffic(PathNetwork network) {
+    public BlockingTraffic(AbstractGridPathNetwork network) {
         this.network = network;
 
         this.occupiers = new GenericGrid<Vehicle>(network.lingrid);
