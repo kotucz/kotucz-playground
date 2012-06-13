@@ -9,11 +9,13 @@ public class Tile {
     public final int x;
     public final int y;
     public final int i;
+    public final Pos pos;
 
     public Tile(int x, int y, int i) {
         this.x = x;
         this.y = y;
         this.i = i;
+        this.pos = new Pos(x, y);
     }
 
     @Override
@@ -45,6 +47,7 @@ public class Tile {
         hash = 37 * hash + this.i;
         return hash;
     }
+
 
     
     

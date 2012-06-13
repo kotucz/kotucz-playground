@@ -61,12 +61,24 @@ public class TileGrid {
         return lingrid;
     }
 
+    public void setTexture(int x, int y, Subtexture subtex) {
+        meshGrid.setTexture(x, y, subtex);
+    }
+
     public void setTexture(int x, int y, int tex) {
-        meshGrid.setTexture(x, y, mtex.getTex(tex));
+        this.setTexture(x, y, mtex.getTex(tex));
     }
 
     public void updateTexture() {
         meshGrid.updateTexture();
+    }
+
+    public void updateGrid(SubtextureSelector selector) {
+        for (Tile t : lingrid) {
+//            tilegrid.setTexture(t.x, t.y, getRoadTileHash(t.x, t.y));
+            this.setTexture(t.x, t.y, selector.getSubtexture(t.pos));
+        }
+        this.updateTexture();
     }
 
    

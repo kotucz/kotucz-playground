@@ -65,15 +65,12 @@ import com.jme3.texture.Texture;
 
 import java.util.*;
 
-import kotucz.village.tiles.Multitexture;
+import kotucz.village.tiles.*;
 import kotucz.village.common.MyBox;
 import kotucz.village.build.Building;
-import kotucz.village.tiles.LinearGrid;
 import kotucz.village.transport.BlockingTraffic;
 import kotucz.village.transport.PathNetwork;
-import kotucz.village.tiles.Pos;
-import kotucz.village.tiles.SelectGrid;
-import kotucz.village.tiles.TileGrid;
+import kotucz.village.tiles.SetGrid;
 import kotucz.village.transport.Vehicle;
 
 /**
@@ -103,7 +100,7 @@ public class MyGame extends SimpleApplication {
     Geometry mark;
     Node selectables;
     final LinearGrid lingrid = new LinearGrid(16, 16);
-    SelectGrid selectGrid;
+    SetGrid selectGrid;
     private PathNetwork pnet;
 
     public static void main(String args[]) {
@@ -171,7 +168,7 @@ public class MyGame extends SimpleApplication {
 
 
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 35; i++) {
             Vehicle car = new Vehicle(player, Vehicle.Type.SKODA120, pnet.randomRoadPoint(), matveh, pnet);
             selectables.attachChild(car.getNode());
             traffic.addVehicle(car);
@@ -379,7 +376,7 @@ public class MyGame extends SimpleApplication {
 //            final Geometry geometry = new Geometry("grid16", new NodedefTileGrid(pnet));
             TileGrid tileGrid = new TileGrid(lingrid, matwtr, this);
             final Geometry geometry = tileGrid.getGeometry();
-            SelectGrid se = new SelectGrid(tileGrid, 0);
+            SetGrid se = new SetGrid(tileGrid, 0);
             se.set.clear();
 
             Random r = new Random();
@@ -422,11 +419,11 @@ public class MyGame extends SimpleApplication {
 //            pnet.randomlySelect(20);
 
             selectTileGrid = new TileGrid(lingrid, matsel, this);
-            selectGrid = new SelectGrid(selectTileGrid, 15) {
+            selectGrid = new SetGrid(selectTileGrid, 15) {
                 @Override
-                public boolean contains(int x, int y) {
-                    return traffic.getOccupier(new Pos(x, y))!=null;
-//                    return super.contains(x, y);    //To change body of overridden methods use File | Settings | File Templates.
+                public boolean contains(Pos pos) {
+                    return traffic.getOccupier(pos)!=null;
+//                    return super.contains(x, y);
                 }
             };
             selectGrid.updateGrid();

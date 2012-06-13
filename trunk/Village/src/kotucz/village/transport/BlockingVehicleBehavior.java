@@ -32,7 +32,7 @@ public class BlockingVehicleBehavior extends VehicleBehavior {
         Vehicle occupier = traffic.getOccupier(nextpos);
         if (occupier != null && occupier != this.vehicle) {
             // stop
-            System.out.println("Vehicle "+vehicle.getName()+" "+vehicle.getPos() + " holds "+vehicle.reservedPos +" waits for "+occupier.getName()+" "+occupier.getPos());
+            System.out.println("Vehicle "+vehicle.getName()+" "+vehicle.getPos() + " holds "+vehicle.reservedPos +" waits for "+occupier.getName()+" "+occupier.reservedPos+" "+occupier.getPos());
 
             // simple deadlock of 2 cars
 //            boolean deadlock = (occupier.requestPos == vehicle.reservedPos);
@@ -55,7 +55,7 @@ public class BlockingVehicleBehavior extends VehicleBehavior {
 //            vehicle.reservedPos = vehicle.getPos();
             vehicle.reservedPos = nextpos;
 
-            traffic.occupiers.set(vehicle.reservedPos, vehicle);
+            traffic.occupiers.set(vehicle.reservedPos, vehicle);   // grab
 
         }
 //        Vector3d vec = trajectory.getVector(t);
