@@ -4,6 +4,7 @@ import com.jme3.math.Vector3f;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public  class VehicleBehavior {
     final Vehicle vehicle;
@@ -21,7 +22,7 @@ public  class VehicleBehavior {
     public void act(float time) {
 
         if (path == null) {
-            destLong = vehicle.getNetwork().randomRoadPoint();
+            destLong = vehicle.getNetwork().randomRoadPoint(new Random());
         }
         if (travelTo(destLong, time)) {
             path = null;
@@ -65,7 +66,8 @@ public  class VehicleBehavior {
     }
 
     public List<RoadPoint> findPath(RoadPoint target) {
-        PathFinding pathFinding = new PathFinding(vehicle.getNetwork());
+//        PathFinding pathFinding = new PathFinding(vehicle.getNetwork());
+        PathFinding pathFinding = new PathFinding();
 //        RoadPoint curr = roadNetwork.contains(
 //                (int) Math.round(vector.x),
 //                (int) Math.round(vector.y));

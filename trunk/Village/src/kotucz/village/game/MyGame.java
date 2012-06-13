@@ -71,6 +71,7 @@ import kotucz.village.build.Building;
 import kotucz.village.transport.BlockingTraffic;
 import kotucz.village.transport.PathNetwork;
 import kotucz.village.tiles.SetGrid;
+import kotucz.village.transport.UnidirectionalPathNetwork;
 import kotucz.village.transport.Vehicle;
 
 /**
@@ -101,7 +102,9 @@ public class MyGame extends SimpleApplication {
     Node selectables;
     final LinearGrid lingrid = new LinearGrid(16, 16);
     SetGrid selectGrid;
-    private PathNetwork pnet;
+    private UnidirectionalPathNetwork pnet;
+
+    final Random random = new Random();
 
     public static void main(String args[]) {
         MyGame f = new MyGame();
@@ -168,8 +171,8 @@ public class MyGame extends SimpleApplication {
 
 
 
-        for (int i = 0; i < 35; i++) {
-            Vehicle car = new Vehicle(player, Vehicle.Type.SKODA120, pnet.randomRoadPoint(), matveh, pnet);
+        for (int i = 0; i < 25; i++) {
+            Vehicle car = new Vehicle(player, Vehicle.Type.SKODA120, pnet.randomRoadPoint(random), matveh, pnet);
             selectables.attachChild(car.getNode());
             traffic.addVehicle(car);
         }
@@ -351,7 +354,7 @@ public class MyGame extends SimpleApplication {
     }
 
     public void initGrid() {
-        Random r = new Random();
+
         {
 //            final Geometry geometry = new Geometry("grid", new MeshTileGrid());
 //            geometry.setMaterial(matgrass);
@@ -365,7 +368,7 @@ public class MyGame extends SimpleApplication {
 //            geometry.setMaterial(matwtr);
 //            geometry.setShadowMode(ShadowMode.Receive);
             for (Tile tile : lingrid) {
-                tileGrid.setTexture(tile.pos, mtex.getTex(r.nextInt(16)));
+                tileGrid.setTexture(tile.pos, mtex.getTex(random.nextInt(16)));
             }
             tileGrid.updateTexture();
 
@@ -388,9 +391,9 @@ public class MyGame extends SimpleApplication {
             se.set.clear();
 
 
-            int i1 = r.nextInt(lingrid.getTotalNum());
+            int i1 = random.nextInt(lingrid.getTotalNum());
             for (int i = 0; i < i1; i++) {
-                se.set.add(new Pos(r.nextInt(16), r.nextInt(16)));
+                se.set.add(new Pos(random.nextInt(16), random.nextInt(16)));
             }
 
             se.updateGrid();
@@ -404,8 +407,9 @@ public class MyGame extends SimpleApplication {
 
 
             TileGrid tileGrid = new TileGrid(lingrid, matroad, this);
-            pnet = new PathNetwork(tileGrid);
-//            pnet.randomlySelect(80); 
+//            pnet = new PathNetwork(tileGrid);
+            pnet = new UnidirectionalPathNetwork(tileGrid);
+//            pnet.randomlySelect(80);
             pnet.generateRandomWalk(new Random());
             pnet.updateTextures();
 
@@ -708,10 +712,10 @@ public class MyGame extends SimpleApplication {
         void onMouseUp() {
             if (this.current != null) {
                 for (Pos pos : c) {
-                    pnet.addPoint(pos.x, pos.y);
+                    pnet.addPoint(pos);
                 }
 
-                pnet.addPoint(this.current.x, this.current.y);
+                pnet.addPoint(this.current);
                 pnet.updateTextures();
             }
             this.start = null;

@@ -1,5 +1,7 @@
 package kotucz.village.transport;
 
+import java.util.Random;
+
 /**
  * @author Kotuc
  */
@@ -31,7 +33,7 @@ public class TransporterBehavior extends VehicleBehavior {
         switch (state) {
             case RANDOM:
                 if (path == null) {
-                    destLong = vehicle.getNetwork().randomRoadPoint();
+                    destLong = vehicle.getNetwork().randomRoadPoint(new Random());
                 }
                 if (travelTo(destLong, time)) {
                     path = null;
