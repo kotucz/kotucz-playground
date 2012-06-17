@@ -5,6 +5,7 @@ import java.util.Random;
 
 /**
  * @author Kotuc
+ * Immutable
  */
 public final class LinearGrid implements Iterable<Tile> {
 

@@ -16,8 +16,8 @@ import java.util.Set;
 public class UnidirectionalPathNetwork extends AbstractGridPathNetwork {
 
 
-    private final int widthx;
-    private final int widthy;
+//    private final int widthx;
+//    private final int widthy;
 
     Neighbouring neighbouring = Neighbouring.N4;
 
@@ -35,11 +35,11 @@ public class UnidirectionalPathNetwork extends AbstractGridPathNetwork {
 ////        roadTextures();
 //    }
 
-    public UnidirectionalPathNetwork(TileGrid grid) {
+    public UnidirectionalPathNetwork(LinearGrid grid) {
         super(grid);
 //        this.land = land;
-        this.widthx = lingrid.getSizeX();
-        this.widthy = lingrid.getSizeY();
+//        this.widthx = lingrid.getSizeX();
+//        this.widthy = lingrid.getSizeY();
         //        this.layer = layer;
 //        roadTextures();
 
@@ -102,38 +102,14 @@ public class UnidirectionalPathNetwork extends AbstractGridPathNetwork {
 //        return hash;
 //    }
 
-    boolean contains(int x, int y) {
-        return getPoint(x, y) != null;
-    }
+//    boolean contains(int x, int y) {
+//        return getPoint(x, y) != null;
+//    }
 
 
-    public void updateTextures() {
-        for (Tile t : lingrid) {
-//            tilegrid.setTexture(t.x, t.y, getRoadTileHash(t.x, t.y));
-            tilegrid.setTexture(t.x, t.y, getRoadTileHash(t.pos));
-        }
 
-        tilegrid.updateTexture();
-    }
 
-    public int getRoadTileHash(Pos pos) {
-//        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
-//            return;
-//        }
 
-        RoadPoint point = getPoint(pos);
-        if (point == null) {
-            return 0;
-        }
-
-        Set<RoadPoint> s = point.getNexts();
-
-        int hash = ((s.contains(getPoint(pos.inDir(Dir4.E)))) ? 1 : 0)
-                + ((s.contains(getPoint(pos.inDir(Dir4.N)))) ? 2 : 0)
-                + ((s.contains(getPoint(pos.inDir(Dir4.W)))) ? 4 : 0)
-                + ((s.contains(getPoint(pos.inDir(Dir4.S)))) ? 8 : 0);
-        return hash;
-    }
 
 
     //    void roadTextures() {

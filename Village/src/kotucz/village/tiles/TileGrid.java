@@ -14,17 +14,17 @@ import kotucz.village.game.MyGame;
  */
 public class TileGrid {
 
-    MeshTileGrid meshGrid;
+    final MeshTileGrid meshGrid;
 //    Multitexture mtex = new Multitexture(16*4, 16*4);
     Multitexture1 mtex = new Multitexture1(new LinearGrid(4, 4));
-    Material mat;
-    MyGame myGame;
-    LinearGrid lingrid;
+//    Material mat;
+    final MyGame myGame;
+    public   final LinearGrid lingrid;
     final Geometry geometry;
 
     public TileGrid(LinearGrid lingrid, Material mat, MyGame myGame) {
 
-        this.mat = mat;
+//        this.mat = mat;
         this.myGame = myGame;
         this.lingrid = lingrid;
 
@@ -81,7 +81,7 @@ public class TileGrid {
 //            tilegrid.setTexture(t.x, t.y, getRoadTileHash(t.x, t.y));
             this.setTexture(t.x, t.y, selector.getSubtexture(t.pos));
         }
-        this.updateTexture();
+        meshGrid.updateTexture();
     }
 
    

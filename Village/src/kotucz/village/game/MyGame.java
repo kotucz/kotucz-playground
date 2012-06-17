@@ -68,11 +68,8 @@ import java.util.*;
 import kotucz.village.tiles.*;
 import kotucz.village.common.MyBox;
 import kotucz.village.build.Building;
-import kotucz.village.transport.BlockingTraffic;
-import kotucz.village.transport.PathNetwork;
+import kotucz.village.transport.*;
 import kotucz.village.tiles.SetGrid;
-import kotucz.village.transport.UnidirectionalPathNetwork;
-import kotucz.village.transport.Vehicle;
 
 /**
  * @author double1984
@@ -88,6 +85,7 @@ public class MyGame extends SimpleApplication {
     Material mat16;
     Material matgrass;
     Material matroad;
+    Material matroadarrows;
     Material matwtr;
     Material matsel;
     Material matveh;
@@ -105,6 +103,8 @@ public class MyGame extends SimpleApplication {
     private UnidirectionalPathNetwork pnet;
 
     final Random random = new Random();
+    private TileGrid roadTileGrid;
+    private TileGrid arrowsTileGrid;
 
     public static void main(String args[]) {
         MyGame f = new MyGame();
@@ -115,7 +115,6 @@ public class MyGame extends SimpleApplication {
 
 
     BlockingTraffic traffic;
-
 
 
     @Override
@@ -147,7 +146,6 @@ public class MyGame extends SimpleApplication {
 //        brick.scaleTextureCoordinates(new Vector2f(1f, 1f));
 
 
-
 //         {
 //              float frustumSize = 1;
 //        cam.setParallelProjection(true);
@@ -170,13 +168,11 @@ public class MyGame extends SimpleApplication {
         Player player = new Player("Kotuc", null, 10000);
 
 
-
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 50; i++) {
             Vehicle car = new Vehicle(player, Vehicle.Type.SKODA120, pnet.randomRoadPoint(random), matveh, pnet);
             selectables.attachChild(car.getNode());
             traffic.addVehicle(car);
         }
-
 
 
         {
@@ -406,19 +402,32 @@ public class MyGame extends SimpleApplication {
         {
 
 
-            TileGrid tileGrid = new TileGrid(lingrid, matroad, this);
-//            pnet = new PathNetwork(tileGrid);
-            pnet = new UnidirectionalPathNetwork(tileGrid);
+            //            pnet = new PathNetwork(tileGrid);
+            pnet = new UnidirectionalPathNetwork(lingrid);
 //            pnet.randomlySelect(80);
             pnet.generateRandomWalk(new Random());
-            pnet.updateTextures();
 
-            final Geometry geometry = tileGrid.getGeometry();
-            geometry.setMaterial(matroad);
+            roadTileGrid = new RoadTextureTileGrid(pnet, matroad, this);
+            roadTileGrid.updateTexture();
+            arrowsTileGrid = new UnidirectionalRoadTileGrid(pnet, matroadarrows, this);
+            arrowsTileGrid.updateTexture();
+            {
+                final Geometry geometry = roadTileGrid.getGeometry();
+//            geometry.setMaterial(matroadarrows);
 //            geometry.setShadowMode(ShadowMode.Receive);
-            geometry.setLocalTranslation(new Vector3f(0, 0, 0.003f));
+                geometry.setLocalTranslation(new Vector3f(0, 0, 0.003f));
 //            geometry.setQueueBucket(Bucket.Transparent);
-            this.rootNode.attachChild(geometry);
+                this.rootNode.attachChild(geometry);
+            }
+            {
+                final Geometry geometry = arrowsTileGrid.getGeometry();
+//            geometry.setMaterial(matroadarrows);
+//            geometry.setShadowMode(ShadowMode.Receive);
+                geometry.setLocalTranslation(new Vector3f(0, 0, 0.004f));
+//            geometry.setQueueBucket(Bucket.Transparent);
+                this.rootNode.attachChild(geometry);
+            }
+
         }
 
         traffic = new BlockingTraffic(pnet);
@@ -434,7 +443,7 @@ public class MyGame extends SimpleApplication {
             selectGrid = new SetGrid(selectTileGrid, 15) {
                 @Override
                 public boolean contains(Pos pos) {
-                    return traffic.getOccupier(pos)!=null;
+                    return traffic.getOccupier(pos) != null;
 //                    return super.contains(x, y);
                 }
             };
@@ -445,7 +454,7 @@ public class MyGame extends SimpleApplication {
 
 //            selgeom.setMaterial(matsel);
 //            selgeom.setShadowMode(ShadowMode.Receive);
-            selgeom.setLocalTranslation(new Vector3f(0, 0, 0.004f));
+            selgeom.setLocalTranslation(new Vector3f(0, 0, 0.005f));
 //            selgeom.setQueueBucket(Bucket.Transparent);
             this.selectables.attachChild(selgeom);
         }
@@ -522,6 +531,20 @@ public class MyGame extends SimpleApplication {
 //        tex3.setWrap(WrapMode.Repeat);
             matroad.setTexture("ColorMap", tex4);
             matroad.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+        }
+        {
+            Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+
+            TextureKey key4 = new TextureKey("Textures/roadarrows16.png");
+//            TextureKey key4 = new TextureKey("Textures/watr16.png");
+//            TextureKey key3 = new TextureKey("Textures/tex16.png");
+//            key3.setGenerateMips(true);`
+            Texture tex4 = assetManager.loadTexture(key4);
+            tex4.setMagFilter(Texture.MagFilter.Nearest);
+//        tex3.setWrap(WrapMode.Repeat);
+            material.setTexture("ColorMap", tex4);
+            material.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+            matroadarrows = material;
         }
         {
             matsel = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
@@ -623,7 +646,7 @@ public class MyGame extends SimpleApplication {
         mark.setMaterial(mark_mat);
     }
 
-//    MyAction currentAction = new SelectAction();
+    //    MyAction currentAction = new SelectAction();
     MyAction currentAction = new BuildRoadAction();
 
 
@@ -716,7 +739,9 @@ public class MyGame extends SimpleApplication {
                 }
 
                 pnet.addPoint(this.current);
-                pnet.updateTextures();
+                roadTileGrid.updateTexture();
+                arrowsTileGrid.updateTexture();
+//                pnet.updateTextures();
             }
             this.start = null;
         }

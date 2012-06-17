@@ -7,6 +7,7 @@ import java.security.PublicKey;
 /**
  *
  * @author Kotuc
+ * Immutable
  */
 public final class Pos {
     public final int x;
