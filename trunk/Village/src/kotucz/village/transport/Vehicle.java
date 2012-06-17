@@ -1,6 +1,7 @@
 package kotucz.village.transport;
 
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
@@ -48,6 +49,9 @@ public class Vehicle {
         this.reservedPos = roadPoint.getPos();
         this.posVector = roadPoint.getPosVector();
 
+        mat = mat.clone();
+        mat.setColor("Color", new ColorRGBA((float)Math.random(), (float)Math.random(),(float)Math.random(), 1f));
+
         {
 //            MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
             final float halfSize = 0.25f;
@@ -57,13 +61,14 @@ public class Vehicle {
             reBoxg.setUserData("test", "auto13654");
             reBoxg.setMaterial(mat);
             reBoxg.setLocalTranslation(new Vector3f(0, 0, 0));
-            Multitexture1 mtex = new Multitexture1(new LinearGrid(4, 4));
-            box.setTexture(MyBox.FACE_FRONT, mtex.getTex(3));
-            box.setTexture(MyBox.FACE_RIGHT, mtex.getTex(0));
-            box.setTexture(MyBox.FACE_BACK, mtex.getTex(4));
-            box.setTexture(MyBox.FACE_BOTTOM, mtex.getTex(5));
-            box.setTexture(MyBox.FACE_TOP, mtex.getTex(2));
-            box.setTexture(MyBox.FACE_LEFT, mtex.getTex(1));
+            Multitexture1 mtex = new Multitexture1(new LinearGrid(16, 16));
+            final int off = 16;
+            box.setTexture(MyBox.FACE_FRONT, mtex.getTex(off +3));
+            box.setTexture(MyBox.FACE_RIGHT, mtex.getTex(off +0));
+            box.setTexture(MyBox.FACE_BACK, mtex.getTex(off +4));
+            box.setTexture(MyBox.FACE_BOTTOM, mtex.getTex(off +5));
+            box.setTexture(MyBox.FACE_TOP, mtex.getTex(off +2));
+            box.setTexture(MyBox.FACE_LEFT, mtex.getTex(off +1));
             reBoxg.setQueueBucket(RenderQueue.Bucket.Transparent);
 
             node.attachChild(reBoxg);

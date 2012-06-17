@@ -6,6 +6,7 @@ import kotucz.village.common.Dir4;
 import kotucz.village.common.Neighbouring;
 import kotucz.village.tiles.*;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -176,12 +177,36 @@ public class UnidirectionalPathNetwork extends AbstractGridPathNetwork {
                     break;
 //                    pos = lingrid.randomPos(random);
                 } else {
-                    addPoint(next);
-                    getPoint(pos).linkNext(getPoint(next));
+                    connect(pos, next);
+//                    addPoint(next);
+//                    getPoint(pos).linkNext(getPoint(next));
                     pos = next;
                 }
             }
         }
+    }
+
+    public void build(List<Pos> poses) {
+        Pos prev = null;
+        for (Pos pose : poses) {
+            if (prev!= null) {
+                connect(prev, pose);
+            }
+            prev = pose;
+        }
+
+    }
+
+    public void connect(Pos from, Pos to) {
+
+        // nonnull
+        addPoint(from);
+        addPoint(to);
+
+        assert (Math.abs(from.x-to.x)+Math.abs(from.y - to.y) == 1) ;
+
+        getPoint(from).linkNext(getPoint(to));
+
     }
 
 
