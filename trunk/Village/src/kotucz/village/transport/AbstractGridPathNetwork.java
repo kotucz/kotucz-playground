@@ -14,12 +14,12 @@ public abstract class AbstractGridPathNetwork {
     */
     final boolean centeroffset = true;
     protected final GenericGrid<RoadPoint> roadpoints;
-    protected final TileGrid tilegrid;
+//    protected final TileGrid tilegrid;
     LinearGrid lingrid;
 
-    public AbstractGridPathNetwork(TileGrid grid) {
-        this.tilegrid = grid;
-        this.lingrid = tilegrid.getLingrid();
+    public AbstractGridPathNetwork(LinearGrid lingrid) {
+//        this.tilegrid = grid;
+        this.lingrid = lingrid;
         this.roadpoints = new GenericGrid<RoadPoint>(lingrid);
     }
 
@@ -31,20 +31,7 @@ public abstract class AbstractGridPathNetwork {
         }
     }
 
-    public void updateTextures() {
-//        for (Tile t : lingrid) {
-//            tilegrid.setTexture(t.x, t.y, getRoadTileHash(t.x, t.y));
-//        }
-//        tilegrid.updateTexture();
 
-        tilegrid.updateGrid(new AbstractSetGrid(tilegrid, 0) {
-            @Override
-            public boolean contains(Pos pos) {
-                return getPoint(pos) != null;
-            }
-        });
-
-    }
 
     public RoadPoint getPoint(Vector3f point) {
 

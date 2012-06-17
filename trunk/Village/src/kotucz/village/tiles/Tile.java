@@ -3,8 +3,9 @@ package kotucz.village.tiles;
 /**
  *
  * @author Kotuc
+ * Immutable
  */
-public class Tile {
+public final class Tile {
 
     public final int x;
     public final int y;

@@ -51,7 +51,7 @@ public class PathNetwork extends AbstractGridPathNetwork {
 ////        roadTextures();
 //    }
 
-    public PathNetwork(TileGrid grid) {
+    public PathNetwork(LinearGrid grid) {
         super(grid);
 //        this.land = land;
 //        this.widthx = lingrid.getSizeX();
