@@ -78,7 +78,7 @@ public class PathNetwork extends AbstractGridPathNetwork {
 
     public void addPoint(Pos pos) {
         System.out.println("add point " + pos);
-        if (getPoint(pos) != null) {
+        if (getRoadPoint(pos) != null) {
             // do not create multiple points
             System.out.println("add point not already addded " + pos);
             return;
@@ -89,7 +89,7 @@ public class PathNetwork extends AbstractGridPathNetwork {
 
         roadpoints.set(pos, roadPoint);
         for (Dir dir : neighbouring.getDirections()) {
-            RoadPoint point = getPoint(pos.inDir(dir));
+            RoadPoint point = getRoadPoint(pos.inDir(dir));
             if (point != null) {
                 roadPoint.linkTogether(point);
 //                point.incidents.add(roadPoint);
@@ -114,7 +114,7 @@ public class PathNetwork extends AbstractGridPathNetwork {
 ////        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
 ////            return;
 ////        }
-//        int hash = ((getPoint(x, y) != null) ? 8 : 0) + ((getPoint(x + 1, y) != null) ? 4 : 0) + ((getPoint(x + 1, y + 1) != null) ? 2 : 0) + ((getPoint(x, y + 1) != null) ? 1 : 0);
+//        int hash = ((getRoadPoint(x, y) != null) ? 8 : 0) + ((getRoadPoint(x + 1, y) != null) ? 4 : 0) + ((getRoadPoint(x + 1, y + 1) != null) ? 2 : 0) + ((getRoadPoint(x, y + 1) != null) ? 1 : 0);
 ////        layer.selectTexture(x, y, selects[hash]);
 //    }
 

@@ -2,13 +2,11 @@ package kotucz.village.transport;
 
 
 import kotucz.village.common.Dir;
-import kotucz.village.common.Dir4;
 import kotucz.village.common.Neighbouring;
 import kotucz.village.tiles.*;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 
 /**
@@ -56,7 +54,7 @@ public class UnidirectionalPathNetwork extends AbstractGridPathNetwork {
 //        RoadPoint roadPoint = createRoadPoint(new Pos(x, y));
 //        roadpoints.set(x, y, roadPoint);
 //        for (Dir dir : neighbouring.getDirections()) {
-//            RoadPoint point = getPoint(x + dir.dx(), y + dir.dy());
+//            RoadPoint point = getRoadPoint(x + dir.dx(), y + dir.dy());
 //            if (point != null) {
 //                roadPoint.linkTogether(point);
 ////                point.incidents.add(roadPoint);
@@ -81,7 +79,7 @@ public class UnidirectionalPathNetwork extends AbstractGridPathNetwork {
 ////        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
 ////            return;
 ////        }
-//        int hash = ((getPoint(x, y) != null) ? 8 : 0) + ((getPoint(x + 1, y) != null) ? 4 : 0) + ((getPoint(x + 1, y + 1) != null) ? 2 : 0) + ((getPoint(x, y + 1) != null) ? 1 : 0);
+//        int hash = ((getRoadPoint(x, y) != null) ? 8 : 0) + ((getRoadPoint(x + 1, y) != null) ? 4 : 0) + ((getRoadPoint(x + 1, y + 1) != null) ? 2 : 0) + ((getRoadPoint(x, y + 1) != null) ? 1 : 0);
 ////        layer.selectTexture(x, y, selects[hash]);
 //    }
 
@@ -104,7 +102,7 @@ public class UnidirectionalPathNetwork extends AbstractGridPathNetwork {
 //    }
 
 //    boolean contains(int x, int y) {
-//        return getPoint(x, y) != null;
+//        return getRoadPoint(x, y) != null;
 //    }
 
 
@@ -136,7 +134,7 @@ public class UnidirectionalPathNetwork extends AbstractGridPathNetwork {
 
     public void addPoint(Pos pos) {
         System.out.println("add point " + pos);
-        if (getPoint(pos) != null) {
+        if (getRoadPoint(pos) != null) {
             // do not create multiple points
             System.out.println("add point not already addded " + pos);
             return;
@@ -160,16 +158,17 @@ public class UnidirectionalPathNetwork extends AbstractGridPathNetwork {
 //        int y = random.nextInt(widthy);
 //        for (int i = 0; i < random.nextInt(20); i++) {
 
+        Pos pos = lingrid.randomPos(random);
 
-        for (int i = 0; i < 40; i++) {
+        for (int i = 0; i < lingrid.getSizeX(); i++) {
 //        for (int i = 0; i < lingrid.getSizeX(); i++) {
 //            Dir8 dir = Dir8.values()[random.nextInt(8)];
-            Pos pos = lingrid.randomPos(random);
+
             addPoint(pos);
             Dir dir = neighbouring.randomDir(random);
 
 
-            final int nextInt = random.nextInt(20);
+            final int nextInt = random.nextInt(lingrid.getSizeY());
             for (int j = 0; j < nextInt; j++) {
 //            for (int j = 0; j < 10; j++) {
                 Pos next = pos.inDir(dir);
@@ -179,7 +178,7 @@ public class UnidirectionalPathNetwork extends AbstractGridPathNetwork {
                 } else {
                     connect(pos, next);
 //                    addPoint(next);
-//                    getPoint(pos).linkNext(getPoint(next));
+//                    getRoadPoint(pos).linkNext(getRoadPoint(next));
                     pos = next;
                 }
             }
@@ -205,7 +204,7 @@ public class UnidirectionalPathNetwork extends AbstractGridPathNetwork {
 
         assert (Math.abs(from.x-to.x)+Math.abs(from.y - to.y) == 1) ;
 
-        getPoint(from).linkNext(getPoint(to));
+        getRoadPoint(from).linkNext(getRoadPoint(to));
 
     }
 

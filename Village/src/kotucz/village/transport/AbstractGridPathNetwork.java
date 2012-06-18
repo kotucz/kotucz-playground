@@ -42,7 +42,7 @@ public abstract class AbstractGridPathNetwork {
         }
     }
 
-    public RoadPoint getPoint(Pos pos) {
+    public RoadPoint getRoadPoint(Pos pos) {
 //        if (lingrid.isOutOfBounds(pos)) {
 //            return null;
 //        } else {
@@ -51,7 +51,7 @@ public abstract class AbstractGridPathNetwork {
     }
 
     public RoadPoint getPoint(int x, int y) {
-        return getPoint(new Pos(x, y));
+        return getRoadPoint(new Pos(x, y));
     }
 
     public void removePoint(int x, int y) {
@@ -67,9 +67,11 @@ public abstract class AbstractGridPathNetwork {
 //        correctRoadTile(x, y - 1);
     }
 
+
+
     public RoadPoint randomRoadPoint(Random random) {
         while (true) {
-            RoadPoint rp = getPoint(lingrid.randomPos(random));
+            RoadPoint rp = getRoadPoint(lingrid.randomPos(random));
             if (rp != null) {
                 return rp;
             }

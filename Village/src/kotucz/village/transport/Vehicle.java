@@ -119,7 +119,7 @@ public class Vehicle {
 
 
     public Pos getPos() {
-//         return network.getPoint(posVector).getPos();
+//         return network.getRoadPoint(posVector).getPos();
          return pos;
     }
 
@@ -197,7 +197,7 @@ public class Vehicle {
 //        if (behavior.trajectory != null) {
 ////            this.posVector = trajectory.contains(t);
 ////            node.setLocalTranslation(posVector);
-//            Vector3f point = behavior.trajectory.getPoint(behavior.t);
+//            Vector3f point = behavior.trajectory.getRoadPoint(behavior.t);
 //            this.posVector = point;
 ////            System.out.println(""+this.name+" "+ behavior.t +" "+point);
 //            node.setLocalTranslation(point);
