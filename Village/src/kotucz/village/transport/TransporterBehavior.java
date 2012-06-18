@@ -12,18 +12,18 @@ public class TransporterBehavior extends VehicleBehavior {
     Depot destDepot;
     RoadPoint destRoadPoint;State state;
 
-    public TransporterBehavior(Vehicle vehicle) {
-        super(vehicle);
+    public TransporterBehavior(Vehicle vehicle, UnidirectionalPathNetwork network) {
+        super(vehicle, network);
     }
 
     public void setSrcDepot(Depot srcDepot) {
         this.srcDepot = srcDepot;
-        this.srcRoadPoint = vehicle.getNetwork().getPoint(srcDepot.getEntrance());
+        this.srcRoadPoint = network.getPoint(srcDepot.getEntrance());
     }
 
     public void setDestDepot(Depot destDepot) {
         this.destDepot = destDepot;
-        this.destRoadPoint = vehicle.getNetwork().getPoint(destDepot.getEntrance());
+        this.destRoadPoint = network.getPoint(destDepot.getEntrance());
         path = null;
         setState(State.GO_FOR_LOAD);
     }
@@ -33,7 +33,7 @@ public class TransporterBehavior extends VehicleBehavior {
         switch (state) {
             case RANDOM:
                 if (path == null) {
-                    destLong = vehicle.getNetwork().randomRoadPoint(new Random());
+                    destLong = network.randomRoadPoint(new Random());
                 }
                 if (travelTo(destLong, time)) {
                     path = null;
@@ -94,7 +94,7 @@ public class TransporterBehavior extends VehicleBehavior {
 //            path = null;
 //        }
 //        model.refresh();
-        vehicle.updateModel();
+        updateModel();
     }
 
     public String getStatusMessage() {
