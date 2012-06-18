@@ -29,7 +29,7 @@ public class Map {
     public Map(MyGame myGame, Node rootNode) {
         this.myGame = myGame;
         
-        this.lingrid = new LinearGrid(16, 16);
+        this.lingrid = myGame.lingrid;
         
         this.rootNode = rootNode;
 

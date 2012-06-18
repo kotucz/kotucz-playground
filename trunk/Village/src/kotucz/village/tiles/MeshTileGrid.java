@@ -72,7 +72,7 @@ public class MeshTileGrid extends Mesh {
         int off = 8 * face;
         System.arraycopy(texs, 0, geometryTextureDate, off, texs.length);
 
-        createGeometry();
+//        createGeometry();
 
     }
 

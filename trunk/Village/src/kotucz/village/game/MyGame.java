@@ -87,6 +87,7 @@ public class MyGame extends SimpleApplication {
     public static final String GC = "gc";
     public static final String BUILD_BUILDING = "buildBuilding";
     public static final String BUILD_ROAD = "buildRoad";
+    public static final int NUM_CARS = 500;
     Material mat;
     Material mat16;
     Material matgrass;
@@ -96,15 +97,17 @@ public class MyGame extends SimpleApplication {
     Material matsel;
     Material matveh;
     BasicShadowRenderer bsr;
-    private static Sphere bullet;
+//    private static Sphere bullet;
     private static MyBox box;
     private static Box brick;
-    private static SphereCollisionShape bulletCollisionShape;
+//    private static SphereCollisionShape bulletCollisionShape;
     private BitmapText actionText;
     private BulletAppState bulletAppState;
     Geometry mark;
     Node selectables;
-    final LinearGrid lingrid = new LinearGrid(16, 16);
+    final LinearGrid lingrid = new LinearGrid(64, 64);
+//    final LinearGrid lingrid = new LinearGrid(128, 128);
+    // beware larger maps are buggy due to short ints in MeshTileGrid
     SetGrid selectGrid;
 
     final Random random = new Random();
@@ -138,20 +141,20 @@ public class MyGame extends SimpleApplication {
         bulletAppState.setThreadingType(BulletAppState.ThreadingType.PARALLEL);
 //        stateManager.attach(bulletAppState);
 
-        bullet = new Sphere(32, 32, 0.4f, true, false);
-        bullet.setTextureMode(TextureMode.Projected);
+//        bullet = new Sphere(32, 32, 0.4f, true, false);
+//        bullet.setTextureMode(TextureMode.Projected);
 //        bulletCollisionShape = new SphereCollisionShape(0.4f);
 
 
         selectables = new Node("Shootables");
         rootNode.attachChild(selectables);
 
-        Multitexture mtex = new Multitexture(16 * 4, 16 * 4);
+//        Multitexture mtex = new Multitexture(16 * 4, 16 * 4);
 //        mtex.createSubtexture(0, 16, 16, 32);
 
         box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
 
-        box.setTexture(4, mtex.createSubtexture(0, 16, 16, 32));
+//        box.setTexture(4, mtex.createSubtexture(0, 16, 16, 32));
 
         brick = new Box(Vector3f.ZERO, new Vector3f(1, 1, 1));
 //        brick = new Box(Vector3f.ZERO, new Vector3f(1, 1, 1));
@@ -182,7 +185,7 @@ public class MyGame extends SimpleApplication {
         Player player = new Player("Kotuc", null, 10000);
 
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < NUM_CARS; i++) {
             Vehicle car = new Vehicle(player, Vehicle.Type.SKODA120, map.pnet.randomRoadPoint(random), matveh);
             car.setBehavior(new VehicleBehavior(car, map.pnet));
             selectables.attachChild(car.getNode());
@@ -197,7 +200,7 @@ public class MyGame extends SimpleApplication {
 
             this.cam.setLocation(new Vector3f(8, -8, 8f));
             cam.lookAt(new Vector3f(8, 8, 0), UP);
-            cam.setFrustumFar(50);
+            cam.setFrustumFar(500);
         }
 
         inputManager.addMapping(SHOOT, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
@@ -230,14 +233,10 @@ public class MyGame extends SimpleApplication {
 
 //        currentAction = new SelectAction();
 
-
-        currentAction.updateGui();
-
-
         map.traffic.update(tpf);
 
+        currentAction.updateGui();
         trafficGrid.updateGrid();
-
         selectGrid.updateGrid();
 
     }
@@ -424,7 +423,7 @@ public class MyGame extends SimpleApplication {
 
             int i1 = random.nextInt(lingrid.getTotalNum());
             for (int i = 0; i < i1; i++) {
-                se.set.add(new Pos(random.nextInt(16), random.nextInt(16)));
+                se.set.add(lingrid.randomPos(random));
             }
 
             se.updateGrid();

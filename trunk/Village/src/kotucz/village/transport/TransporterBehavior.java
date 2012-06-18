@@ -18,12 +18,12 @@ public class TransporterBehavior extends VehicleBehavior {
 
     public void setSrcDepot(Depot srcDepot) {
         this.srcDepot = srcDepot;
-        this.srcRoadPoint = network.getPoint(srcDepot.getEntrance());
+        this.srcRoadPoint = network.getRoadPoint(srcDepot.getEntrance());
     }
 
     public void setDestDepot(Depot destDepot) {
         this.destDepot = destDepot;
-        this.destRoadPoint = network.getPoint(destDepot.getEntrance());
+        this.destRoadPoint = network.getRoadPoint(destDepot.getEntrance());
         path = null;
         setState(State.GO_FOR_LOAD);
     }
