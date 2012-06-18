@@ -24,7 +24,7 @@ public class Vehicle {
 
     private long fuel;
     protected final Payload payload;
-    private AbstractGridPathNetwork network;
+//    private AbstractGridPathNetwork network;
     protected final Type type;
     private Player owner;
     private String name;
@@ -33,16 +33,19 @@ public class Vehicle {
     Pos reservedPos;
 
     Vector3f posVector;
+    Pos pos;
+
     float heading;
 
     final Node node = new Node("Vozidlo");
-    private VehicleBehavior behavior = new VehicleBehavior(this);
+    private VehicleBehavior behavior;
 
-    public Vehicle(Player owner, Type type, RoadPoint roadPoint, Material mat, AbstractGridPathNetwork network) {
+//    public Vehicle(Player owner, Type type, RoadPoint roadPoint, Material mat, AbstractGridPathNetwork network) {
+    public Vehicle(Player owner, Type type, RoadPoint roadPoint, Material mat) {
         this.type = type;
         this.name = type.toString();
         this.owner = owner;
-        this.network = network;
+//        this.network = network;
 
         this.fuel = 2000;
 
@@ -75,7 +78,7 @@ public class Vehicle {
         }
 
 
-        updateModel();
+//        updateModel();
 
 //        this.model = new Vehicle3D(this);
 //        this.setPos(point);
@@ -116,7 +119,8 @@ public class Vehicle {
 
 
     public Pos getPos() {
-         return network.getPoint(posVector).getPos();
+//         return network.getPoint(posVector).getPos();
+         return pos;
     }
 
 
@@ -180,52 +184,52 @@ public class Vehicle {
         return payload;
     }
 
-    public AbstractGridPathNetwork getNetwork() {
-        return network;
-    }
+//    public AbstractGridPathNetwork getNetwork() {
+//        return network;
+//    }
 
     public String getStatusMessage() {
         return behavior.getStatusMessage();
     }
 
-    public void updateModel() {
-
-        if (behavior.trajectory != null) {
-//            this.posVector = trajectory.contains(t);
-//            node.setLocalTranslation(posVector);
-            Vector3f point = behavior.trajectory.getPoint(behavior.t);
-            this.posVector = point;
-//            System.out.println(""+this.name+" "+ behavior.t +" "+point);
-            node.setLocalTranslation(point);
-
-        }
-
-
-        float heading = 0;
-
-        Quaternion rotation = new Quaternion();
-//        rotation.fromAngleAxis(heading, MyGame.UP);
-
-//        rotation
-
-//        tra
-
-
-        if (behavior.trajectory != null) {
-            Vector3f vec = behavior.trajectory.getVector(behavior.t);
+//    public void updateModel() {
 //
-
-
-//        double angle = Math.atan2(vec.y, vec.x);
-//        model.setAngle(angle);
-
-//           rotation.lookAt(vec, MyGame.UP);
-//            node.setLocalRotation(rotation.fromAxes(vec, vec.cross(MyGame.UP), MyGame.UP));
-            node.setLocalRotation(rotation.fromAxes(vec, MyGame.UP.cross(vec), MyGame.UP));
-        }
-
-//        node.setLocalRotation(rotation);
-    }
+//        if (behavior.trajectory != null) {
+////            this.posVector = trajectory.contains(t);
+////            node.setLocalTranslation(posVector);
+//            Vector3f point = behavior.trajectory.getPoint(behavior.t);
+//            this.posVector = point;
+////            System.out.println(""+this.name+" "+ behavior.t +" "+point);
+//            node.setLocalTranslation(point);
+//
+//        }
+//
+//
+//        float heading = 0;
+//
+//        Quaternion rotation = new Quaternion();
+////        rotation.fromAngleAxis(heading, MyGame.UP);
+//
+////        rotation
+//
+////        tra
+//
+//
+//        if (behavior.trajectory != null) {
+//            Vector3f vec = behavior.trajectory.getVector(behavior.t);
+////
+//
+//
+////        double angle = Math.atan2(vec.y, vec.x);
+////        model.setAngle(angle);
+//
+////           rotation.lookAt(vec, MyGame.UP);
+////            node.setLocalRotation(rotation.fromAxes(vec, vec.cross(MyGame.UP), MyGame.UP));
+//            node.setLocalRotation(rotation.fromAxes(vec, MyGame.UP.cross(vec), MyGame.UP));
+//        }
+//
+////        node.setLocalRotation(rotation);
+//    }
 
 
     @Override

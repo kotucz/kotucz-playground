@@ -13,7 +13,7 @@ public class BlockingVehicleBehavior extends VehicleBehavior {
     final BlockingTraffic traffic;
 
     public BlockingVehicleBehavior(Vehicle vehicle, BlockingTraffic traffic) {
-        super(vehicle);
+        super(vehicle, traffic.network);
         this.traffic = traffic;
     }
 

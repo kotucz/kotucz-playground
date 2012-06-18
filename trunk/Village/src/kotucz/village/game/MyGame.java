@@ -106,22 +106,27 @@ public class MyGame extends SimpleApplication {
     Node selectables;
     final LinearGrid lingrid = new LinearGrid(16, 16);
     SetGrid selectGrid;
-    private UnidirectionalPathNetwork pnet;
 
     final Random random = new Random();
+
     private TileGrid roadTileGrid;
     private TileGrid arrowsTileGrid;
+    private TileGrid selectTileGrid;
     private AbstractSetGrid trafficGrid;
+
+
+
+    Map map;
 
     public static void main(String args[]) {
         MyGame f = new MyGame();
         f.start();
     }
 
-    private TileGrid selectTileGrid;
 
 
-    BlockingTraffic traffic;
+
+
 
 
     @Override
@@ -161,6 +166,8 @@ public class MyGame extends SimpleApplication {
 //        }
 
 
+        map = new Map(this, rootNode);
+
         initMaterial();
 //        initWall();
         initBoxes();
@@ -176,9 +183,10 @@ public class MyGame extends SimpleApplication {
 
 
         for (int i = 0; i < 50; i++) {
-            Vehicle car = new Vehicle(player, Vehicle.Type.SKODA120, pnet.randomRoadPoint(random), matveh, pnet);
+            Vehicle car = new Vehicle(player, Vehicle.Type.SKODA120, map.pnet.randomRoadPoint(random), matveh);
+            car.setBehavior(new VehicleBehavior(car, map.pnet));
             selectables.attachChild(car.getNode());
-            traffic.addVehicle(car);
+            map.traffic.addVehicle(car);
         }
 
 
@@ -226,7 +234,7 @@ public class MyGame extends SimpleApplication {
         currentAction.updateGui();
 
 
-        traffic.update(tpf);
+        map.traffic.update(tpf);
 
         trafficGrid.updateGrid();
 
@@ -429,14 +437,11 @@ public class MyGame extends SimpleApplication {
         {
 
 
-            //            pnet = new PathNetwork(tileGrid);
-            pnet = new UnidirectionalPathNetwork(lingrid);
-//            pnet.randomlySelect(80);
-            pnet.generateRandomWalk(new Random());
 
-            roadTileGrid = new RoadTextureTileGrid(pnet, matroad, this);
+
+            roadTileGrid = new RoadTextureTileGrid(map.pnet, matroad, this);
             roadTileGrid.updateTexture();
-            arrowsTileGrid = new UnidirectionalRoadTileGrid(pnet, matroadarrows, this);
+            arrowsTileGrid = new UnidirectionalRoadTileGrid(map.pnet, matroadarrows, this);
             arrowsTileGrid.updateTexture();
             {
                 final Geometry geometry = roadTileGrid.getGeometry();
@@ -457,7 +462,7 @@ public class MyGame extends SimpleApplication {
 
         }
 
-        traffic = new BlockingTraffic(pnet);
+
 
 
         {
@@ -470,12 +475,11 @@ public class MyGame extends SimpleApplication {
             matsel1.setColor("Color", ColorRGBA.Orange);
 
 
-
             TileGrid selectTileGrid = new TileGrid(lingrid, matsel1, this);
             trafficGrid = new AbstractSetGrid(selectTileGrid, 15) {
                 @Override
                 public boolean contains(Pos pos) {
-                    return traffic.getOccupier(pos) != null;
+                    return map.traffic.getOccupier(pos) != null;
 //                    return super.contains(x, y);
                 }
             };
@@ -785,8 +789,8 @@ public class MyGame extends SimpleApplication {
 //                    for (int i = Math.min(start.y, end.y); i <= Math.max(start.y, end.y); i++) {
 
 
-                    dir = ((start.y<end.y)? Dir4.N:Dir4.S);
-                    len = Math.abs(end.y - start.y)   ;
+                    dir = ((start.y < end.y) ? Dir4.N : Dir4.S);
+                    len = Math.abs(end.y - start.y);
 
 
                 }
@@ -796,8 +800,8 @@ public class MyGame extends SimpleApplication {
 //                        poses.add(new Pos(x, start.y));
 //                    }
 
-                    dir = ((start.x<end.x)? Dir4.E:Dir4.W);
-                    len = Math.abs(end.x - start.x)   ;
+                    dir = ((start.x < end.x) ? Dir4.E : Dir4.W);
+                    len = Math.abs(end.x - start.x);
                 }
                 Pos pos = start;
                 for (int i = 0; i <= len; i++) {
@@ -820,9 +824,9 @@ public class MyGame extends SimpleApplication {
 //                for (Pos pos : c) {
 //                    pnet.addPoint(pos);
 //                }
-                pnet.build(c); // build oriented path
+                map.pnet.build(c); // build oriented path
 
-                pnet.addPoint(this.current);
+                map.pnet.addPoint(this.current);
                 roadTileGrid.updateTexture();
                 arrowsTileGrid.updateTexture();
 //                pnet.updateTextures();

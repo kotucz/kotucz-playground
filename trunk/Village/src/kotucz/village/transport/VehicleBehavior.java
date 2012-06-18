@@ -1,33 +1,78 @@
 package kotucz.village.transport;
 
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
+import kotucz.village.game.MyGame;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public  class VehicleBehavior {
+public class VehicleBehavior {
     final Vehicle vehicle;
     Trajectory trajectory;
     float t;
     RoadPoint destLong;
 
+    final UnidirectionalPathNetwork network;
 
     LinkedList<RoadPoint> path = null;// new LinkedList<RoadPoint>();
 
-    public VehicleBehavior(Vehicle vehicle) {
+    public VehicleBehavior(Vehicle vehicle, UnidirectionalPathNetwork network) {
         this.vehicle = vehicle;
+        this.network = network;
+
     }
 
     public void act(float time) {
 
         if (path == null) {
-            destLong = vehicle.getNetwork().randomRoadPoint(new Random());
+            destLong = network.randomRoadPoint(new Random());
         }
         if (travelTo(destLong, time)) {
             path = null;
         }
-        vehicle.updateModel();
+//        vehicle.updateModel();
+        updateModel();
+    }
+
+    public void updateModel() {
+
+        Spatial node = vehicle.getNode();
+
+        if (trajectory != null) {
+//            this.posVector = trajectory.contains(t);
+//            node.setLocalTranslation(posVector);
+            Vector3f point = trajectory.getPoint(t);
+            vehicle.posVector = point;
+//            System.out.println(""+this.name+" "+ behavior.t +" "+point);
+            node.setLocalTranslation(point);
+
+
+//        float heading = 0;
+
+//        rotation.fromAngleAxis(heading, MyGame.UP);
+
+//        rotation
+
+//        tra
+
+
+            Quaternion rotation = new Quaternion();
+            Vector3f vec = trajectory.getVector(t);
+//
+
+
+//        double angle = Math.atan2(vec.y, vec.x);
+//        model.setAngle(angle);
+
+//           rotation.lookAt(vec, MyGame.UP);
+//            node.setLocalRotation(rotation.fromAxes(vec, vec.cross(MyGame.UP), MyGame.UP));
+            node.setLocalRotation(rotation.fromAxes(vec, MyGame.UP.cross(vec), MyGame.UP));
+        }
+
+//        node.setLocalRotation(rotation);
     }
 
     /**
@@ -42,7 +87,7 @@ public  class VehicleBehavior {
             // create new path
 //            destLong = getWorld().getRoadNetwork().randomRoadPoint();
             List<RoadPoint> findPath = findPath(point);
-            if (findPath != null && findPath.size()>1) {
+            if (findPath != null && findPath.size() > 1) {
                 int i = 0;
                 // debug trace path
 //                for (RoadPoint roadPoint : findPath) {
@@ -71,7 +116,7 @@ public  class VehicleBehavior {
 //        RoadPoint curr = roadNetwork.contains(
 //                (int) Math.round(vector.x),
 //                (int) Math.round(vector.y));
-        RoadPoint curr = vehicle.getNetwork().getPoint(vehicle.getPosVector());
+        RoadPoint curr = network.getPoint(vehicle.getPosVector());
         return pathFinding.aStar(curr, target);
     }
 
