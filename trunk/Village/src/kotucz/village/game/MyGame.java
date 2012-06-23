@@ -37,7 +37,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.asset.TextureKey;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
-import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
@@ -59,7 +58,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.AbstractBox;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
-import com.jme3.scene.shape.Sphere.TextureMode;
 import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.texture.Texture;
 
@@ -87,7 +85,7 @@ public class MyGame extends SimpleApplication {
     public static final String GC = "gc";
     public static final String BUILD_BUILDING = "buildBuilding";
     public static final String BUILD_ROAD = "buildRoad";
-    public static final int NUM_CARS = 500;
+    public static final int NUM_CARS = 00;
     Material mat;
     Material mat16;
     Material matgrass;
@@ -108,7 +106,7 @@ public class MyGame extends SimpleApplication {
     final LinearGrid lingrid = new LinearGrid(64, 64);
 //    final LinearGrid lingrid = new LinearGrid(128, 128);
     // beware larger maps are buggy due to short ints in MeshTileGrid
-    SetGrid selectGrid;
+    //SetGrid selectGrid;
 
     final Random random = new Random();
 
@@ -119,7 +117,7 @@ public class MyGame extends SimpleApplication {
 
 
 
-    Map map;
+    GameMap map;
 
     public static void main(String args[]) {
         MyGame f = new MyGame();
@@ -169,7 +167,7 @@ public class MyGame extends SimpleApplication {
 //        }
 
 
-        map = new Map(this, rootNode);
+        map = new GameMap(this, rootNode);
 
         initMaterial();
 //        initWall();
@@ -225,7 +223,7 @@ public class MyGame extends SimpleApplication {
     public void simpleUpdate(float tpf) {
         super.simpleUpdate(tpf);
 
-        selectGrid.set.clear();
+        selectTileGrid.setAllTo(TexturesSelect.VOID);
 
 //        actionText.setText("Jelito " + System.currentTimeMillis());
 
@@ -237,7 +235,7 @@ public class MyGame extends SimpleApplication {
 
         currentAction.updateGui();
         trafficGrid.updateGrid();
-        selectGrid.updateGrid();
+        selectTileGrid.updateTexture();
 
     }
 
@@ -379,6 +377,10 @@ public class MyGame extends SimpleApplication {
 
     public void initGrids() {
 
+        final float epsz = 1/16f;
+
+        float layerZ = 0;
+
         final Node grids = new Node("floorGrids");
 //        grids.setQueueBucket(RenderQueue.Bucket.Sky);
 //        grids.setQueueBucket(RenderQueue.Bucket.Transparent);
@@ -402,7 +404,7 @@ public class MyGame extends SimpleApplication {
             }
             tileGrid.updateTexture();
 
-            geometry.setLocalTranslation(new Vector3f(0, 0, 0.001f));
+            geometry.setLocalTranslation(new Vector3f(0, 0, layerZ += epsz));
             grids.attachChild(geometry);
 
         }
@@ -428,9 +430,11 @@ public class MyGame extends SimpleApplication {
 
             se.updateGrid();
 
+            map.water = se;
+
 //            geometry.setMaterial(matwtr);
 //            geometry.setShadowMode(ShadowMode.Receive);
-            geometry.setLocalTranslation(new Vector3f(0, 0, 0.002f));
+            geometry.setLocalTranslation(new Vector3f(0, 0, layerZ += epsz));
             grids.attachChild(geometry);
         }
         {
@@ -446,7 +450,7 @@ public class MyGame extends SimpleApplication {
                 final Geometry geometry = roadTileGrid.getGeometry();
 //            geometry.setMaterial(matroadarrows);
 //            geometry.setShadowMode(ShadowMode.Receive);
-                geometry.setLocalTranslation(new Vector3f(0, 0, 0.003f));
+                geometry.setLocalTranslation(new Vector3f(0, 0, layerZ += epsz));
 //            geometry.setQueueBucket(Bucket.Transparent);
                 grids.attachChild(geometry);
             }
@@ -454,7 +458,7 @@ public class MyGame extends SimpleApplication {
                 final Geometry geometry = arrowsTileGrid.getGeometry();
 //            geometry.setMaterial(matroadarrows);
 //            geometry.setShadowMode(ShadowMode.Receive);
-                geometry.setLocalTranslation(new Vector3f(0, 0, 0.004f));
+                geometry.setLocalTranslation(new Vector3f(0, 0, layerZ += epsz));
 //            geometry.setQueueBucket(Bucket.Transparent);
                 grids.attachChild(geometry);
             }
@@ -490,7 +494,7 @@ public class MyGame extends SimpleApplication {
 
 //            selgeom.setMaterial(matsel);
 //            selgeom.setShadowMode(ShadowMode.Receive);
-            selgeom.setLocalTranslation(new Vector3f(0, 0, 0.005f));
+            selgeom.setLocalTranslation(new Vector3f(0, 0, layerZ += epsz));
 //            selgeom.setQueueBucket(Bucket.Transparent);
             grids.attachChild(selgeom);
         }
@@ -505,7 +509,7 @@ public class MyGame extends SimpleApplication {
             matsel1.setColor("Color", ColorRGBA.Green);
 
             selectTileGrid = new TileGrid(lingrid, matsel1, this);
-            selectGrid = new SetGrid(selectTileGrid, 15);
+//            selectGrid = new SetGrid(selectTileGrid, 15);
 //            {
 //                @Override
 //                public boolean contains(Pos pos) {
@@ -513,14 +517,14 @@ public class MyGame extends SimpleApplication {
 ////                    return super.contains(x, y);
 //                }
 //            };
-            selectGrid.updateGrid();
+//            selectGrid.updateGrid();
 
             selgeom = selectTileGrid.getGeometry();
             selgeom.setName("selgrid");
 
 //            selgeom.setMaterial(matsel);
 //            selgeom.setShadowMode(ShadowMode.Receive);
-            selgeom.setLocalTranslation(new Vector3f(0, 0, 0.006f));
+            selgeom.setLocalTranslation(new Vector3f(0, 0, layerZ += epsz));
 //            selgeom.setQueueBucket(Bucket.Transparent);
             this.selectables.attachChild(selgeom);
         }
@@ -728,16 +732,16 @@ public class MyGame extends SimpleApplication {
         @Override
         void updateGui() {
             current = pick();
-            selectGrid.set.clear();
+//            selectGrid.set.clear();
             if (start != null) {
-                selectGrid.add(start.x, start.y);
+                selectTileGrid.setTexture(start, TexturesSelect.SELECTED);
             }
             if (current != null) {
-                selectGrid.add(current.x, current.y);
-                selectGrid.add(current.x, current.y + 1);
-                selectGrid.add(current.x + 1, current.y + 1);
+                selectTileGrid.setTexture(current, TexturesSelect.SELECTED);
+//                selectTileGrid.add(current.x, current.y + 1);
+//                selectTileGridd.add(current.x + 1, current.y + 1);
             }
-            selectGrid.updateGrid();
+//            selectGrid.updateGrid();
         }
 
         @Override
@@ -767,16 +771,16 @@ public class MyGame extends SimpleApplication {
         @Override
         void updateGui() {
             current = pick();
-            selectGrid.set.clear();
+//            selectGrid.set.clear();
             if (start != null) {
-                selectGrid.add(start);
+                selectTileGrid.setTexture(start, TexturesSelect.SELECTED);
             }
             if (current != null) {
-                selectGrid.add(current);
+                selectTileGrid.setTexture(current, TexturesSelect.SELECTED);
             }
             c = simplepath4(start, current);
-            selectGrid.set.addAll(c);
-            selectGrid.updateGrid();
+            selectTileGrid.setAllTo(c, TexturesSelect.SELECTED);
+//            selectGrid.updateGrid();
         }
 
         List<Pos> simplepath4(Pos start, Pos end) {
@@ -847,18 +851,29 @@ public class MyGame extends SimpleApplication {
         @Override
         void updateGui() {
             current = pick();
-            selectGrid.set.clear();
+//            selectGrid.set.clear();
             if (start != null) {
-                selectGrid.add(start.x, start.y);
+                selectTileGrid.setTexture(start, TexturesSelect.SELECTED);
             }
             if (current != null) {
                 Set<Pos> occupyPosses = Building.getOccupyPosses(current);
-                selectGrid.set.addAll(occupyPosses);
-//                selectGrid.add(current.x, current.y);
+
+
+//                selectGrid.set.addAll(occupyPosses);
+
+                for (Pos occupyPoss : occupyPosses) {
+                    if (map.isBuildable(occupyPoss)) {
+                        selectTileGrid.setTexture(occupyPoss, TexturesSelect.SELECTED);
+                    }
+                }
+
+
+//
+// selectGrid.add(current.x, current.y);
 //                selectGrid.add(current.x, current.y + 1);
 //                selectGrid.add(current.x + 1, current.y + 1);
             }
-            selectGrid.updateGrid();
+//            selectGrid.updateGrid();
         }
 
         @Override
@@ -871,6 +886,7 @@ public class MyGame extends SimpleApplication {
             if (this.current != null) {
                 Building building = new Building(this.current, mat16);
                 selectables.attachChild(building.getNode());
+                map.buildings.put(building);
             }
             this.start = null;
         }

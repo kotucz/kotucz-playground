@@ -1,6 +1,5 @@
 package kotucz.village.tiles;
 
-import kotucz.village.common.Dir4;
 import kotucz.village.common.Dir8;
 
 /**
@@ -21,10 +20,10 @@ public abstract class AbstractNodeSetGrid implements SubtextureSelector {
 
     @Override
     public Subtexture getSubtexture(Pos pos) {
-        return tilegrid.mtex.getTex(getFlatNodeTileHash(pos));
+        return tilegrid.mtex.getTex(getNodesHash(pos));
     }
 
-    public int getFlatNodeTileHash(Pos pos) {
+    public int getNodesHash(Pos pos) {
 //        if ((x < 0) || (y < 0) || (tilesx <= x) || (tilesy <= y)) {
 //            return;
 //        }

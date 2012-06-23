@@ -1,8 +1,11 @@
 package kotucz.village.game;
 
 import com.jme3.scene.Node;
+import kotucz.village.build.Buildings;
 import kotucz.village.game.MyGame;
 import kotucz.village.tiles.LinearGrid;
+import kotucz.village.tiles.NodeSetGrid;
+import kotucz.village.tiles.Pos;
 import kotucz.village.transport.BlockingTraffic;
 import kotucz.village.transport.UnidirectionalPathNetwork;
 
@@ -12,7 +15,7 @@ import java.util.Random;
  *
  * @author Kotuc
  */
-public class Map {
+public class GameMap {
 
     final MyGame myGame;
 
@@ -25,8 +28,12 @@ public class Map {
 
     BlockingTraffic traffic;
 
+    Buildings buildings;
+
+    NodeSetGrid water;
+
     
-    public Map(MyGame myGame, Node rootNode) {
+    public GameMap(MyGame myGame, Node rootNode) {
         this.myGame = myGame;
         
         this.lingrid = myGame.lingrid;
@@ -40,13 +47,15 @@ public class Map {
 
         traffic = new BlockingTraffic(pnet);
 
-
+        buildings = new Buildings(lingrid);
 
 
 
     }
 
-
+    public boolean isBuildable(Pos pos) {
+        return water.getNodesHash(pos)==0 && buildings.get(pos) == null && pnet.getRoadPoint(pos) == null;
+    }
 
 
 

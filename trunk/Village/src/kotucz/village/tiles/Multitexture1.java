@@ -10,8 +10,11 @@ public class Multitexture1 {
 
     public Multitexture1(LinearGrid linearGrid) {
         this.linearGrid = linearGrid;
-    }                  
-    
+    }
+
+    private static final float eps = 1/16f;
+//    private static final float eps = 1/256f;
+
     public Subtexture getTex(int i) {
         int tx = linearGrid.getX(i);
                 
@@ -22,10 +25,13 @@ public class Multitexture1 {
 //    }
 //
 //    public Subtexture createSubtexture(int startX, int startY, int endX, int endY) {
-        return new Subtexture((float) (tx) / linearGrid.getSizeX(),
-                (float) (linearGrid.getSizeY() - ty -1) / linearGrid.getSizeY(),
-                (float) (tx+1) / linearGrid.getSizeX(),
-                (float) (linearGrid.getSizeY() - ty ) / linearGrid.getSizeY());
+
+
+
+        return new Subtexture((float) ((tx + eps) / linearGrid.getSizeX()),
+                (float) ((linearGrid.getSizeY() - ty -1+eps) / linearGrid.getSizeY()),
+                (float) ((tx+1-eps) / linearGrid.getSizeX()),
+                (float) ((linearGrid.getSizeY() - ty -eps) / linearGrid.getSizeY()));
     }
 
     

@@ -81,6 +81,10 @@ public class Building {
         return owner;
     }
 
+    public Set<Pos> getOccupiedPosses() {
+        return getOccupyPosses(pos);
+    }
+
     public static Set<Pos> getOccupyPosses(Pos pos) {
         HashSet<Pos> poses = new HashSet<Pos>();
         poses.add(pos);
@@ -91,6 +95,8 @@ public class Building {
         poses.add(pos.inDir(Dir8.W));
         return poses;
     }
+
+
 
 
 }
