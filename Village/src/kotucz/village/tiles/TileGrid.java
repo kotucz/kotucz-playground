@@ -1,6 +1,7 @@
 package kotucz.village.tiles;
 
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
@@ -35,9 +36,15 @@ public class TileGrid {
 //                    PathNetwork pnet = new PathNetwork(16, 16);
 //            pnet.randomlySelect(80);
 //
+//        mat.set
+
+//        mat.setColor("Color", new ColorRGBA(0, 0, 0, 0));
+        System.out.println("Magic color "+mat.getParam("Color"));
+
         geometry = new Geometry("roadgrid", meshGrid);
         geometry.setMaterial(mat);
-        geometry.setShadowMode(ShadowMode.Receive);
+
+//        geometry.setShadowMode(ShadowMode.Receive);
         geometry.setQueueBucket(Bucket.Transparent);
 
 
@@ -61,6 +68,7 @@ public class TileGrid {
         return lingrid;
     }
 
+
     public void setTexture(int x, int y, Subtexture subtex) {
         meshGrid.setTexture(x, y, subtex);
     }
@@ -71,6 +79,11 @@ public class TileGrid {
     public void setTexture(int x, int y, int tex) {
         this.setTexture(x, y, mtex.getTex(tex));
     }
+
+    public void setTexture(Pos pos, int tex) {
+        this.setTexture(pos, mtex.getTex(tex));
+    }
+
 
     public void updateTexture() {
         meshGrid.updateTexture();
@@ -83,6 +96,27 @@ public class TileGrid {
         }
         meshGrid.updateTexture();
     }
+
+    public void setAllTo(int tex) {
+        setAllTo(mtex.getTex(tex));
+    }
+
+    void setAllTo(Subtexture subtex) {
+        for (Tile tile : lingrid) {
+            setTexture(tile.pos, subtex);
+        }
+
+    }
+
+    public void setAllTo(Iterable<Pos> poses, int tex) {
+        for (Pos pos : poses) {
+            setTexture(pos, mtex.getTex(tex));
+        }
+
+    }
+
+
+
 
    
 }
