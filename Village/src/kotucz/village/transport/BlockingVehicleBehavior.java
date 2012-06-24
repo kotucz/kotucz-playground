@@ -41,6 +41,7 @@ public class BlockingVehicleBehavior extends VehicleBehavior {
 
             if (deadlock) {
                 System.out.println("DEADLOCK");
+//                doInDeadlock();
                 path = null; // choose another path
                 return true;
             }

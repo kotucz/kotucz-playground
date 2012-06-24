@@ -43,7 +43,10 @@ public class MeshTileGrid extends Mesh {
 //    };
 
     public void setTexture(Pos pos, Subtexture s) {
-
+        if (lingrid.isOutOfBounds(pos)) {
+            // maybe warning
+            return;
+        }
         setTexture(lingrid.index(pos), s);
     }
 

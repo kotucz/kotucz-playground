@@ -14,13 +14,19 @@ import kotucz.village.tiles.LinearGrid;
 import kotucz.village.tiles.Multitexture1;
 import kotucz.village.tiles.Pos;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * @author Kotuc
  */
 public class Vehicle {
 
+    public static final String ID_KEY = "VehicleUserDataIdKey";
 
     //    private Vector3f destShort = new Vector3f();
+
+    static final AtomicInteger idGen = new AtomicInteger();
+
 
     private long fuel;
     protected final Payload payload;
@@ -29,7 +35,15 @@ public class Vehicle {
     private Player owner;
     private String name;
 
+
+    /**
+     * Pos intendet to get grant to.
+     */
     Pos requestPos;
+
+    /**
+       Pos that has been granted exclusively to this vehicle
+     */
     Pos reservedPos;
 
     Vector3f posVector;
@@ -40,7 +54,9 @@ public class Vehicle {
     final Node node = new Node("Vozidlo");
     private VehicleBehavior behavior;
 
-//    public Vehicle(Player owner, Type type, RoadPoint roadPoint, Material mat, AbstractGridPathNetwork network) {
+    private final String id;
+
+    //    public Vehicle(Player owner, Type type, RoadPoint roadPoint, Material mat, AbstractGridPathNetwork network) {
     public Vehicle(Player owner, Type type, RoadPoint roadPoint, Material mat) {
         this.type = type;
         this.name = type.toString();
@@ -55,13 +71,15 @@ public class Vehicle {
         mat = mat.clone();
         mat.setColor("Color", new ColorRGBA((float)Math.random(), (float)Math.random(),(float)Math.random(), 1f));
 
+        id = "V"+idGen.incrementAndGet();
+
         {
 //            MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
             final float halfSize = 0.25f;
 
             MyBox box = new MyBox(new Vector3f(-halfSize, -halfSize, 0), new Vector3f(halfSize, halfSize, 2*halfSize));
             Geometry reBoxg = new Geometry("kapota", box);
-            reBoxg.setUserData("test", "auto13654");
+            reBoxg.setUserData(ID_KEY, id);
             reBoxg.setMaterial(mat);
             reBoxg.setLocalTranslation(new Vector3f(0, 0, 0));
             Multitexture1 mtex = new Multitexture1(new LinearGrid(16, 16));
@@ -234,7 +252,7 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return type + " (" + owner + ")";
+        return type + " (" + owner + ")"+behavior;
     }
 
     public void setPos(Vector3f point) {
@@ -282,5 +300,12 @@ public class Vehicle {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getId() {
+        return id;
+    }
+
+
+
 }
 

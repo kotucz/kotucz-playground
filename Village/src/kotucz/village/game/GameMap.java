@@ -28,7 +28,7 @@ public class GameMap {
 
     BlockingTraffic traffic;
 
-    Buildings buildings;
+    public Buildings buildings;
 
     NodeSetGrid water;
 
@@ -45,7 +45,7 @@ public class GameMap {
 //            pnet.randomlySelect(80);
         pnet.generateRandomWalk(myGame.random);
 
-        traffic = new BlockingTraffic(pnet);
+        traffic = new BlockingTraffic(pnet, myGame);
 
         buildings = new Buildings(lingrid);
 
