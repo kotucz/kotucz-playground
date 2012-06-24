@@ -69,7 +69,6 @@ import kotucz.village.tiles.*;
 import kotucz.village.common.MyBox;
 import kotucz.village.build.Building;
 import kotucz.village.transport.*;
-import kotucz.village.tiles.SetGrid;
 
 /**
  * @author double1984
@@ -77,6 +76,7 @@ import kotucz.village.tiles.SetGrid;
 public class MyGame extends SimpleApplication {
 
     public static final Vector3f UP = new Vector3f(0, 0, 1);
+    public static final int NUM_CARS = 00;
     static float bLength = 1f;
     static float bWidth = 1f;
     static float bHeight = 1f;
@@ -85,7 +85,7 @@ public class MyGame extends SimpleApplication {
     public static final String GC = "gc";
     public static final String BUILD_BUILDING = "buildBuilding";
     public static final String BUILD_ROAD = "buildRoad";
-    public static final int NUM_CARS = 00;
+    public static final String BUILD_CAR = "buildCAR";
     Material mat;
     Material mat16;
     Material matgrass;
@@ -95,15 +95,16 @@ public class MyGame extends SimpleApplication {
     Material matsel;
     Material matveh;
     BasicShadowRenderer bsr;
-//    private static Sphere bullet;
+    //    private static Sphere bullet;
     private static MyBox box;
     private static Box brick;
-//    private static SphereCollisionShape bulletCollisionShape;
-    private BitmapText actionText;
+    //    private static SphereCollisionShape bulletCollisionShape;
+    private BitmapText textAction;
     private BulletAppState bulletAppState;
     Geometry mark;
     Node selectables;
-    final LinearGrid lingrid = new LinearGrid(64, 64);
+    final LinearGrid lingrid = new LinearGrid(16, 16);
+//    final LinearGrid lingrid = new LinearGrid(64, 64);
 //    final LinearGrid lingrid = new LinearGrid(128, 128);
     // beware larger maps are buggy due to short ints in MeshTileGrid
     //SetGrid selectGrid;
@@ -116,18 +117,15 @@ public class MyGame extends SimpleApplication {
     private AbstractSetGrid trafficGrid;
 
 
-
-    GameMap map;
+    public GameMap map;
+    private Material buildingsMat;
+    private BitmapText textSelection;
+    private Player player;
 
     public static void main(String args[]) {
         MyGame f = new MyGame();
         f.start();
     }
-
-
-
-
-
 
 
     @Override
@@ -180,14 +178,11 @@ public class MyGame extends SimpleApplication {
         initMark();       // a red sphere to mark the hit
 
 
-        Player player = new Player("Kotuc", null, 10000);
+        player = new Player("Kotuc", null, 10000);
 
 
         for (int i = 0; i < NUM_CARS; i++) {
-            Vehicle car = new Vehicle(player, Vehicle.Type.SKODA120, map.pnet.randomRoadPoint(random), matveh);
-            car.setBehavior(new VehicleBehavior(car, map.pnet));
-            selectables.attachChild(car.getNode());
-            map.traffic.addVehicle(car);
+            putCar(new Vehicle(player, Vehicle.Type.SKODA120, map.pnet.randomRoadPoint(random), matveh));
         }
 
 
@@ -201,6 +196,16 @@ public class MyGame extends SimpleApplication {
             cam.setFrustumFar(500);
         }
 
+        initInputs();
+
+
+        rootNode.setShadowMode(ShadowMode.Off);
+        bsr = new BasicShadowRenderer(assetManager, 256);
+        bsr.setDirection(new Vector3f(-1, -1, -1).normalizeLocal());
+        viewPort.addProcessor(bsr);
+    }
+
+    private void initInputs() {
         inputManager.addMapping(SHOOT, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addListener(actionListener, SHOOT);
         inputManager.addMapping(GC, new KeyTrigger(KeyInput.KEY_X));
@@ -212,11 +217,15 @@ public class MyGame extends SimpleApplication {
         inputManager.addMapping(BUILD_ROAD, new KeyTrigger(KeyInput.KEY_R));
         inputManager.addListener(actionListener, BUILD_ROAD);
 
+        inputManager.addMapping(BUILD_CAR, new KeyTrigger(KeyInput.KEY_V));
+        inputManager.addListener(actionListener, BUILD_CAR);
+    }
 
-        rootNode.setShadowMode(ShadowMode.Off);
-        bsr = new BasicShadowRenderer(assetManager, 256);
-        bsr.setDirection(new Vector3f(-1, -1, -1).normalizeLocal());
-        viewPort.addProcessor(bsr);
+    private void putCar(Vehicle vehicle) {
+        Vehicle car = vehicle;
+        car.setBehavior(new VehicleBehavior(car, map.pnet));
+        selectables.attachChild(car.getNode());
+        map.traffic.addVehicle(car);
     }
 
     @Override
@@ -225,9 +234,12 @@ public class MyGame extends SimpleApplication {
 
         selectTileGrid.setAllTo(TexturesSelect.VOID);
 
-//        actionText.setText("Jelito " + System.currentTimeMillis());
+//        textAction.setText("Jelito " + System.currentTimeMillis());
 
-        actionText.setText("Jelito " + System.currentTimeMillis() + " Action: " + currentAction);
+        textAction.setText("Jelito " + System.currentTimeMillis() + " Action: " + currentAction);
+
+
+//        textSelection.setText("Jelito " + System.currentTimeMillis() + " Action: " + currentAction);
 
 //        currentAction = new SelectAction();
 
@@ -263,6 +275,9 @@ public class MyGame extends SimpleApplication {
             if (name.equals(BUILD_BUILDING) && !keyPressed) {
                 currentAction = new BuildAction();
             }
+            if (name.equals(BUILD_CAR) && !keyPressed) {
+                currentAction = new DropCarAction();
+            }
             if (name.equals(BUILD_ROAD) && !keyPressed) {
                 currentAction = new BuildRoadAction();
             }
@@ -281,7 +296,7 @@ public class MyGame extends SimpleApplication {
         }
     };
 
-    Pos pick() {
+    Object pick() {
         // 1. Reset results list.
         CollisionResults results = new CollisionResults();
         // 2. Aim the ray from cam loc to cam direction.
@@ -295,11 +310,16 @@ public class MyGame extends SimpleApplication {
             float dist = results.getCollision(i).getDistance();
             Vector3f pt = results.getCollision(i).getContactPoint();
             String hit = results.getCollision(i).getGeometry().getName();
+
+//            results.getCollision(i).getGeometry().getMaterial().setColor("Color", ColorRGBA.randomColor());
+
+
             System.out.println("* Collision #" + i);
             System.out.println("  You shot " + hit + " at " + pt + ", " + dist + " wu away.");
 
 
         }
+
 
 
         // 5. Use the results (we mark the hit object)
@@ -309,8 +329,32 @@ public class MyGame extends SimpleApplication {
             // Let's interact - we mark the hit with a red dot.
             mark.setLocalTranslation(closest.getContactPoint());
             rootNode.attachChild(mark);
+            {
+                Object userData = closest.getGeometry().getUserData(Building.ID_KEY);
+                System.out.println("Test user value: " + userData);
+                Building building = map.buildings.map.get(userData);
 
-            System.out.println("Test user value: " + closest.getGeometry().getUserData("test"));
+
+                if (building != null) {
+                    textSelection.setText("" + building);
+                    building.mark(ColorRGBA.randomColor());
+                    selectTileGrid.setTexture(building.getEntrancePos(), TexturesSelect.SELECTED);
+                }
+            }
+
+            {
+                Object userData = closest.getGeometry().getUserData(Vehicle.ID_KEY);
+                System.out.println("Test user value: " + userData);
+                Vehicle vehicle = map.traffic.vehicleFindById.get(userData);
+
+
+                if (vehicle != null) {
+                    textSelection.setText("" + vehicle);
+//                    vehicle.mark(ColorRGBA.randomColor());
+//                    selectTileGrid.setTexture(vehicle.requestPos, TexturesSelect.SELECTED);
+                }
+            }
+
 
             if ("selgrid".equals(closest.getGeometry().getName())) {
                 Vector3f contactPoint = closest.getContactPoint();
@@ -319,7 +363,9 @@ public class MyGame extends SimpleApplication {
 //                selectTileGrid.setTexture(x, y, 1);
 //                selectGrid.add(x, y);
 //                selectGrid.updateGrid();
-                return new Pos(x, y);
+                Pos pos = new Pos(x, y);
+                textSelection.setText("pozice "+pos);
+                return pos;
             }
 
         } else {
@@ -327,6 +373,16 @@ public class MyGame extends SimpleApplication {
             rootNode.detachChild(mark);
         }
         return null;
+    }
+
+    Pos pickPos() {
+        Object pick = pick();
+        if (pick instanceof Pos) {
+            return (Pos) pick;
+        } else {
+            return null;
+        }
+
     }
 
     public void initBoxes() {
@@ -377,7 +433,8 @@ public class MyGame extends SimpleApplication {
 
     public void initGrids() {
 
-        final float epsz = 1/16f;
+        //final float epsz = 1 / 16f;
+        final float epsz = 1 / 1024f;
 
         float layerZ = 0;
 
@@ -440,8 +497,6 @@ public class MyGame extends SimpleApplication {
         {
 
 
-
-
             roadTileGrid = new RoadTextureTileGrid(map.pnet, matroad, this);
             roadTileGrid.updateTexture();
             arrowsTileGrid = new UnidirectionalRoadTileGrid(map.pnet, matroadarrows, this);
@@ -464,8 +519,6 @@ public class MyGame extends SimpleApplication {
             }
 
         }
-
-
 
 
         {
@@ -620,6 +673,23 @@ public class MyGame extends SimpleApplication {
             matroadarrows = material;
         }
         {
+            Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+
+            TextureKey textureKey = new TextureKey("Textures/buildings.png");
+//            TextureKey key4 = new TextureKey("Textures/watr16.png");
+//            TextureKey key3 = new TextureKey("Textures/tex16.png");
+//            key3.setGenerateMips(true);`
+            Texture texture = assetManager.loadTexture(textureKey);
+            texture.setMagFilter(Texture.MagFilter.Nearest);
+//        tex3.setWrap(WrapMode.Repeat);
+            material.setTexture("ColorMap", texture);
+            material.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+
+            buildingsMat = material;
+
+        }
+
+        {
             matsel = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
             TextureKey key4 = new TextureKey("Textures/select16.png");
 //            TextureKey key4 = new TextureKey("Textures/watr16.png");
@@ -687,8 +757,8 @@ public class MyGame extends SimpleApplication {
             guiNode.attachChild(ch);
         }
         {
-            actionText = new BitmapText(guiFont, false);
-            BitmapText score = actionText;
+            textAction = new BitmapText(guiFont, false);
+            BitmapText score = textAction;
             score.setSize(guiFont.getCharSet().getRenderedSize() * 2);
             score.setText("Bingo"); // crosshairs
             score.setLocalTranslation( // center
@@ -697,6 +767,19 @@ public class MyGame extends SimpleApplication {
                             - 10, 0);
             guiNode.attachChild(score);
         }
+
+        {
+            textSelection = new BitmapText(guiFont, false);
+            BitmapText score = textSelection;
+            score.setSize(guiFont.getCharSet().getRenderedSize() * 2);
+            score.setText("Bingo"); // crosshairs
+            score.setLocalTranslation( // center
+                    10,
+                    settings.getHeight()
+                            - 50, 0);
+            guiNode.attachChild(score);
+        }
+
     }
 
     /**
@@ -731,7 +814,7 @@ public class MyGame extends SimpleApplication {
 
         @Override
         void updateGui() {
-            current = pick();
+            current = pickPos();
 //            selectGrid.set.clear();
             if (start != null) {
                 selectTileGrid.setTexture(start, TexturesSelect.SELECTED);
@@ -746,7 +829,7 @@ public class MyGame extends SimpleApplication {
 
         @Override
         void onMouseDown() {
-            this.start = pick();
+            this.start = pickPos();
         }
 
         @Override
@@ -770,7 +853,7 @@ public class MyGame extends SimpleApplication {
 
         @Override
         void updateGui() {
-            current = pick();
+            current = pickPos();
 //            selectGrid.set.clear();
             if (start != null) {
                 selectTileGrid.setTexture(start, TexturesSelect.SELECTED);
@@ -818,7 +901,7 @@ public class MyGame extends SimpleApplication {
 
         @Override
         void onMouseDown() {
-            this.start = pick();
+            this.start = pickPos();
         }
 
         @Override
@@ -850,7 +933,7 @@ public class MyGame extends SimpleApplication {
 
         @Override
         void updateGui() {
-            current = pick();
+            current = pickPos();
 //            selectGrid.set.clear();
             if (start != null) {
                 selectTileGrid.setTexture(start, TexturesSelect.SELECTED);
@@ -878,15 +961,66 @@ public class MyGame extends SimpleApplication {
 
         @Override
         void onMouseDown() {
-            this.start = pick();
+            this.start = pickPos();
         }
 
         @Override
         void onMouseUp() {
             if (this.current != null) {
-                Building building = new Building(this.current, mat16);
+//                Building building = new Building(this.current, buildingsMat);
+                Building building = new Depot(this.current, player, buildingsMat);
                 selectables.attachChild(building.getNode());
-                map.buildings.put(building);
+                map.buildings.putBuilding(building);
+            }
+            this.start = null;
+        }
+
+//        void cancel() {
+//            selectGrid.set.clear();
+//            selectGrid.updateGrid();
+//        }
+    }
+
+    class DropCarAction extends MyAction {
+
+        Pos start;
+        Pos current;
+        private RoadPoint roadPoint;
+
+        @Override
+        void updateGui() {
+            current = pickPos();
+//            selectGrid.set.clear();
+            if (start != null) {
+                selectTileGrid.setTexture(start, TexturesSelect.SELECTED);
+            }
+            if (current != null) {
+                roadPoint = map.pnet.getRoadPoint(current);
+
+                if (roadPoint != null) {
+                    selectTileGrid.setTexture(current, TexturesSelect.SELECTED);
+                }
+
+//
+// selectGrid.add(current.x, current.y);
+//                selectGrid.add(current.x, current.y + 1);
+//                selectGrid.add(current.x + 1, current.y + 1);
+            }
+//            selectGrid.updateGrid();
+        }
+
+        @Override
+        void onMouseDown() {
+            this.start = pickPos();
+        }
+
+        @Override
+        void onMouseUp() {
+            if (this.current != null) {
+
+                if (roadPoint != null) {
+                    putCar(new Vehicle(player, Vehicle.Type.SKODA120, roadPoint, matveh));
+                }
             }
             this.start = null;
         }

@@ -94,7 +94,7 @@ public class PathFinding {
                 // TODO replace ancestor
                 ancestors.put(explore, from);
 //                System.out.println("Updated "+explore+" from "+from+" newDist "+newDist);
-//                ancestors.put(from, explore);
+//                ancestors.putBuilding(from, explore);
                 // TODO if solved was updated means error - invarian break
 
                 // TODO update queue (comparable thing)

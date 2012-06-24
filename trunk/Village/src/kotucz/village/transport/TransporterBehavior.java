@@ -1,56 +1,71 @@
 package kotucz.village.transport;
 
+import kotucz.village.build.Building;
+import kotucz.village.build.Buildings;
+
 import java.util.Random;
 
 /**
  * @author Kotuc
  */
-public class TransporterBehavior extends VehicleBehavior {
+public class TransporterBehavior extends BlockingVehicleBehavior {
 
     Depot srcDepot;
     RoadPoint srcRoadPoint;
     Depot destDepot;
-    RoadPoint destRoadPoint;State state;
+    RoadPoint destRoadPoint;
+    State state = State.WAIT;
+    private Buildings buildings;
 
-    public TransporterBehavior(Vehicle vehicle, UnidirectionalPathNetwork network) {
+    public TransporterBehavior(Vehicle vehicle, BlockingTraffic network, Buildings buildings) {
         super(vehicle, network);
+        this.buildings = buildings;
     }
 
     public void setSrcDepot(Depot srcDepot) {
         this.srcDepot = srcDepot;
-        this.srcRoadPoint = network.getRoadPoint(srcDepot.getEntrance());
+        this.srcRoadPoint = network.getRoadPoint(srcDepot.getEntrancePos());
     }
 
     public void setDestDepot(Depot destDepot) {
         this.destDepot = destDepot;
-        this.destRoadPoint = network.getRoadPoint(destDepot.getEntrance());
+        this.destRoadPoint = network.getRoadPoint(destDepot.getEntrancePos());
         path = null;
         setState(State.GO_FOR_LOAD);
     }
 
+
     public void act(float time) {
         //  System.out.println("" + this + " " + state);
         switch (state) {
-            case RANDOM:
-                if (path == null) {
-                    destLong = network.randomRoadPoint(new Random());
-                }
-                if (travelTo(destLong, time)) {
-                    path = null;
-                }
-                break;
+//            case RANDOM:
+//                if (path == null) {
+//                    destLong = network.randomRoadPoint(new Random());
+//                }
+//                if (travelTo(destLong, time)) {
+//                    path = null;
+//                }
+//                break;
             case WAIT:
                 // TODO uncomment/fix
-//                for (Building building : getWorld().getBuildings()) {
-//                    if (building instanceof Depot) {
+                for (Building building : buildings) {
+                    if (building instanceof Depot) {
+                        if (srcDepot == null) {
+                            setSrcDepot((Depot) building);
+                        } else {
+                            // second depot
+                            setDestDepot((Depot) building);
+                        }
+                    }
+
 //                        if (srcDepot == null) {
-//                            setSrcDepot((Depot) building);
+//                            setSrcDepot(building);
 //                        } else {
 //                            // second depot
-//                            setDestDepot((Depot) building);
+//                            setDestDepot(building);
 //                        }
-//                    }
-//                }
+
+                }
                 if (destDepot != null) {
                     setState(State.GO_FOR_LOAD);
                     System.out.println("Depos found " + srcRoadPoint + " -> " + destRoadPoint);
@@ -115,11 +130,23 @@ public class TransporterBehavior extends VehicleBehavior {
 
     enum State {
 
-        RANDOM,
+        //        RANDOM,
         WAIT,
         GO_FOR_LOAD,
         LOADING,
         GO_FOR_UNLOAD,
         UNLOADING;
+    }
+
+    @Override
+    public String toString() {
+        return "TranspBeh{" +
+                ", state=" + state +
+//                "srcDepot=" + srcDepot +
+                ", src=" + srcRoadPoint +
+//                ", destDepot=" + destDepot +
+                ", dest=" + destRoadPoint +
+//                ", buildings=" + buildings +
+                '}';
     }
 }

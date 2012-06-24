@@ -22,6 +22,14 @@ public class MyBox extends AbstractBox {
     public static final int FACE_LEFT = 4;
     public static final int FACE_RIGHT = 5;
 
+    public static final int FACE_STATIC_BOTTOM = 0;
+    public static final int FACE_STATIC_E = 1;
+    public static final int FACE_STATIC_TOP = 2;
+    public static final int FACE_STATIC_W = 3;
+    public static final int FACE_STATIC_N = 4;
+    public static final int FACE_STATIC_S = 5;
+
+
     private final short[] GEOMETRY_INDICES_DATA = {
             2, 1, 0, 3, 2, 0, // back
             6, 5, 4, 7, 6, 4, // right

@@ -1,11 +1,14 @@
 package kotucz.village.transport;
 
 import com.jme3.scene.Node;
+import kotucz.village.game.MyGame;
 import kotucz.village.tiles.GenericGrid;
 import kotucz.village.tiles.Pos;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kotuc
@@ -15,16 +18,20 @@ import java.util.List;
 public class BlockingTraffic {
 
     final UnidirectionalPathNetwork network;
+    private MyGame game;
 
     final GenericGrid<Vehicle> occupiers;
 
      List<Vehicle> cars = new ArrayList<Vehicle>();
 
+    public final Map<String, Vehicle> vehicleFindById = new HashMap<String, Vehicle>();
+
     public final Node node = new Node("Cars");
 
 
-    public BlockingTraffic(UnidirectionalPathNetwork network) {
+    public BlockingTraffic(UnidirectionalPathNetwork network, MyGame game) {
         this.network = network;
+        this.game = game;
 
         this.occupiers = new GenericGrid<Vehicle>(network.lingrid);
 
@@ -34,10 +41,15 @@ public class BlockingTraffic {
 
     public void addVehicle(Vehicle car) {
 
-        BlockingVehicleBehavior blockingVehicleBehavior = new BlockingVehicleBehavior(car, this);
+
+
+//        BlockingVehicleBehavior blockingVehicleBehavior = new BlockingVehicleBehavior(car, this);
+        BlockingVehicleBehavior blockingVehicleBehavior = new TransporterBehavior(car, this, game.map.buildings);
         car.setBehavior(blockingVehicleBehavior);
 
         car.setName("Car "+cars.size());
+
+        vehicleFindById.put(car.getId(), car);
 
         this.cars.add(car);
     }

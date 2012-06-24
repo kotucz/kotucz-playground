@@ -4,6 +4,7 @@
  */
 package kotucz.village.transport;
 
+import com.jme3.material.Material;
 import kotucz.village.build.Building;
 import kotucz.village.game.Player;
 import kotucz.village.tiles.Pos;
@@ -28,12 +29,19 @@ public class Depot extends Building {
     private static final long FUEL_EFFICIENCY = 2000; //TODO : should be different for different types of fuel
     private Vehicle operatedVehicle;
 
-    public Depot(Goods.Type type, Player owner, Point3d upperLeft) {
-        super(null, null);
+    Storage localStorage;
+
+//    public Depot(Goods.Type type, Player owner, Point3d upperLeft) {
+    public Depot(Pos type, Player owner, Material mat) {
+        super(type, mat, owner);
 //        super(type, owner, upperLeft);
 
         workingState = WorkingState.WAITING_FOR_REQUEST;
         progress = 0;
+
+        localStorage  = new Storage(100);
+        localStorage.getPayload().addGoods(new Goods(Goods.Type.PETROL, 20, owner)); //TODO: To remove - onlz for testing
+        localStorage.getPayload().addGoods(new Goods(Goods.Type.WOOD, 20, owner)); //TODO: To remove - onlz for testing
 
 //        panel = new DepotPanel(this);
 
@@ -57,6 +65,9 @@ public class Depot extends Building {
 
     public boolean requestLoadVehicle(Vehicle vehicle, Goods.Type type, Player owner) {
 
+        // TODO remove hack
+        doStep();
+
         if (vehicles.contains(vehicle)) {
 
             if (WorkingState.WAITING_FOR_REQUEST.equals(workingState)) {
@@ -64,7 +75,10 @@ public class Depot extends Building {
 
                 boolean done = false;
 
-                for (Storage storage : storages) {
+//                for (Storage storage : storages)
+                Storage storage = localStorage;
+
+                {
                     //   System.out.println("Prohledavam skladiste");
                     Goods targetGoods = storage.getPayload().findGoodsPile(type, owner);
                     if (targetGoods != null) {
@@ -74,7 +88,7 @@ public class Depot extends Building {
                         operatedVehicle.load(targetGoods);
 
                         done = true;
-                        break;
+//                        break;
                     }
                 }
                 if (done) {
@@ -104,12 +118,16 @@ public class Depot extends Building {
 
     public boolean requestUnloadVehicle(Vehicle vehicle, Goods.Type type, Player owner) {
 
+        // TODO remove hack
+        doStep();
+
         if (vehicles.contains(vehicle)) {
 
             if (WorkingState.WAITING_FOR_REQUEST.equals(workingState)) {
 
 
-                Storage storage = findFreeStorage(1);
+//                Storage storage = findFreeStorage(1);
+                  Storage storage = localStorage;
                 if (storage != null) {
                     operatedVehicle = vehicle;
                     Goods targetGoods = new Goods(type, 1, owner);
@@ -183,12 +201,12 @@ public class Depot extends Building {
         return workingState;
     }
 
-    public Pos getEntrance() {
-//        Pos point = new Pos(getType().getWidthx() / 2.0 - 1.0, -getType().getWidthy() / 2.0, 0);
-        Pos point = new Pos(0, 0);
-//        point.add(getPosVector());
-        return point;
-    }
+//    public Pos getEntrance() {
+////        Pos point = new Pos(getType().getWidthx() / 2.0 - 1.0, -getType().getWidthy() / 2.0, 0);
+//        Pos point = new Pos(0, 0);
+////        point.add(getPosVector());
+//        return point;
+//    }
 
     public void addStorage(Storage storage) {
 
