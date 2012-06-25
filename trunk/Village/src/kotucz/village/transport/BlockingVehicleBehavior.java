@@ -51,7 +51,7 @@ public class BlockingVehicleBehavior extends VehicleBehavior {
 
             t += time;
 
-            vehicle.setPos(trajectory.getPoint(t));
+//            vehicle.setPos(trajectory.getPoint(t));
 
 //            vehicle.reservedPos = vehicle.getPos();
             vehicle.reservedPos = nextpos;

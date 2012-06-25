@@ -3,8 +3,6 @@ package kotucz.village.transport;
 import kotucz.village.build.Building;
 import kotucz.village.build.Buildings;
 
-import java.util.Random;
-
 /**
  * @author Kotuc
  */
@@ -78,14 +76,14 @@ public class TransporterBehavior extends BlockingVehicleBehavior {
                     path = null;
                     // reset path
                     setState(State.LOADING);
-                    srcDepot.addVehicle(vehicle);
+//                    srcDepot.addVehicle(vehicle);
                 }
                 break;
             case LOADING:
-                if (srcDepot.requestLoadVehicle(vehicle, Goods.Type.WOOD, srcDepot.getOwner())) {
+                if (srcDepot.requestLoadVehicle(vehicle, GoodsType.WOOD, srcDepot.getOwner())) {
 //                    destLong = null; // dest depot
                     setState(State.GO_FOR_UNLOAD);
-                    srcDepot.removeVehicle(vehicle);
+//                    srcDepot.removeVehicle(vehicle);
                 }
                 break;
             case GO_FOR_UNLOAD:
@@ -93,14 +91,14 @@ public class TransporterBehavior extends BlockingVehicleBehavior {
                     path = null;
                     // reset path
                     setState(State.UNLOADING);
-                    destDepot.addVehicle(vehicle);
+//                    destDepot.addVehicle(vehicle);
                 }
                 break;
             case UNLOADING:
-                if (destDepot.requestUnloadVehicle(vehicle, Goods.Type.WOOD, destDepot.getOwner())) {
+                if (destDepot.requestUnloadVehicle(vehicle, GoodsType.WOOD, destDepot.getOwner())) {
 //                    destLong = null; // next depot
                     setState(State.GO_FOR_LOAD);
-                    destDepot.removeVehicle(vehicle);
+//                    destDepot.removeVehicle(vehicle);
                 }
                 break;
         }
