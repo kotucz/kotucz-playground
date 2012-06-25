@@ -2,13 +2,11 @@ package kotucz.village.transport;
 
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import kotucz.village.common.MyBox;
-import kotucz.village.game.MyGame;
 import kotucz.village.game.Player;
 import kotucz.village.tiles.LinearGrid;
 import kotucz.village.tiles.Multitexture1;
@@ -28,13 +26,15 @@ public class Vehicle {
     static final AtomicInteger idGen = new AtomicInteger();
 
 
-    private long fuel;
-    protected final Payload payload;
+//    private long fuel;
+//    protected final Payload payload;
 //    private AbstractGridPathNetwork network;
     protected final Type type;
     private Player owner;
     private String name;
 
+
+    GoodsType payload;
 
     /**
      * Pos intendet to get grant to.
@@ -63,7 +63,7 @@ public class Vehicle {
         this.owner = owner;
 //        this.network = network;
 
-        this.fuel = 2000;
+//        this.fuel = 2000;
 
         this.reservedPos = roadPoint.getPos();
         this.posVector = roadPoint.getPosVector();
@@ -102,7 +102,7 @@ public class Vehicle {
 //        this.setPos(point);
 
 //        payload = new Payload(type.maxPayload);
-        payload = new Payload(1); //TODO: To be changed - depends on truck type
+//        payload = new Payload(1); //TODO: To be changed - depends on truck type
     }
 
 
@@ -162,47 +162,41 @@ public class Vehicle {
         return type.modelName;
     }
 
-    public void spentFuel() {
+//    public void spentFuel() {
+//
+//        fuel -= 1;
+//    }
+//
+//    public void addFuel(long fuel) {
+//
+//        this.fuel += fuel;
+//    }
+//
+//    public long getFuel() {
+//
+//        return fuel;
+//    }
 
-        fuel -= 1;
-    }
-
-    public void addFuel(long fuel) {
-
-        this.fuel += fuel;
-    }
-
-    public long getFuel() {
-
-        return fuel;
-    }
-
-    public Goods.Type getFuelType() {
-
-        return type.fuelType;
-    }
+//    public Goods.Type getFuelType() {
+//
+//        return type.fuelType;
+//    }
 
     public long getMaxFuel() {
 
         return type.maxFuel;
     }
 
-    public void load(Goods goods) {
-
-        payload.addGoods(goods);
-    }
-
-    public void unload(Goods goods) {
-
-        payload.removeGoods(goods);
-    }
-
-    public Payload getPayload() {
-
+    public GoodsType getPayload() {
         return payload;
     }
 
-//    public AbstractGridPathNetwork getNetwork() {
+    public void setPayload(GoodsType payload) {
+        this.payload = payload;
+    }
+
+
+    //    public AbstractGridPathNetwork getNetwork() {
 //        return network;
 //    }
 
@@ -255,17 +249,14 @@ public class Vehicle {
         return type + " (" + owner + ")"+behavior;
     }
 
-    public void setPos(Vector3f point) {
-
-    }
 
     public enum Type {
 
-        SKODA120(Goods.Type.PETROL, 0.2, 4000, Element.ROAD, "Car1"),
-        LIGHT_TRUCK(Goods.Type.PETROL, 0.2, 4000, Element.TRAIN, "Train1"),
-        TRAIN1(Goods.Type.PETROL, 0.2, 4000, Element.TRAIN, "Train1"),
-        STEAM_TRUCK(Goods.Type.PETROL, 0.2, 4000, Element.ROAD, "Car1");
-        private final Goods.Type fuelType;
+        SKODA120(GoodsType.PETROL, 0.2, 4000, Element.ROAD, "Car1"),
+        LIGHT_TRUCK(GoodsType.PETROL, 0.2, 4000, Element.TRAIN, "Train1"),
+        TRAIN1(GoodsType.PETROL, 0.2, 4000, Element.TRAIN, "Train1"),
+        STEAM_TRUCK(GoodsType.PETROL, 0.2, 4000, Element.ROAD, "Car1");
+        private final GoodsType fuelType;
         private final double speed;
         private final long maxFuel;
         private final Element element;
@@ -275,7 +266,7 @@ public class Vehicle {
             return speed;
         }
 
-        private Type(Goods.Type fuelType, double speed, long maxFuel, Element element, String modelName) {
+        private Type(GoodsType fuelType, double speed, long maxFuel, Element element, String modelName) {
             this.fuelType = fuelType;
             this.speed = speed;
             this.maxFuel = maxFuel;

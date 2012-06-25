@@ -4,34 +4,35 @@
  */
 package kotucz.village.transport;
 
+import com.google.common.collect.EnumMultiset;
+import com.google.common.collect.Multiset;
 import com.jme3.material.Material;
 import kotucz.village.build.Building;
 import kotucz.village.game.Player;
 import kotucz.village.tiles.Pos;
 
-import javax.vecmath.Point3d;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * Place, where vehicles load and unload goods)
+ *
  * @author Petr Dluhoš
  */
 public class Depot extends Building {
 
-    private final List<Storage> storages = new LinkedList<Storage>();
-    private final List<Vehicle> vehicles = new LinkedList<Vehicle>();
+    //    private final List<Storage> storages = new LinkedList<Storage>();
+//    private final List<Vehicle> vehicles = new LinkedList<Vehicle>();
     private int progress;
     private WorkingState workingState;
     private static final int LOADING_SPEED = 200;
     private static final long FUEL_EFFICIENCY = 2000; //TODO : should be different for different types of fuel
-    private Vehicle operatedVehicle;
+//    private Vehicle operatedVehicle;
 
-    Storage localStorage;
 
-//    public Depot(Goods.Type type, Player owner, Point3d upperLeft) {
+    final Multiset<GoodsType> goods = EnumMultiset.create(GoodsType.class);
+
+
+//    Storage localStorage;
+
+    //    public Depot(Goods.Type type, Player owner, Point3d upperLeft) {
     public Depot(Pos type, Player owner, Material mat) {
         super(type, mat, owner);
 //        super(type, owner, upperLeft);
@@ -39,163 +40,151 @@ public class Depot extends Building {
         workingState = WorkingState.WAITING_FOR_REQUEST;
         progress = 0;
 
-        localStorage  = new Storage(100);
-        localStorage.getPayload().addGoods(new Goods(Goods.Type.PETROL, 20, owner)); //TODO: To remove - onlz for testing
-        localStorage.getPayload().addGoods(new Goods(Goods.Type.WOOD, 20, owner)); //TODO: To remove - onlz for testing
+//        localStorage = new Storage(100);
+//        localStorage.getPayload().addGoods(new Goods(Goods.Type.PETROL, 20, owner)); //TODO: To remove - onlz for testing
+//        localStorage.getPayload().addGoods(new Goods(Goods.Type.WOOD, 20, owner)); //TODO: To remove - onlz for testing
+
+        goods.add(GoodsType.WOOD, 20);
+        goods.add(GoodsType.PETROL, 20);
 
 //        panel = new DepotPanel(this);
 
     }
 
-    public void buildVehicle(Vehicle.Type type) {
-//        Vehicle vehicle = new Truck(this.getOwner(), type, this.getEntrance());
-//        getWorld().putVehicle(vehicle);
-    }
+//    public void buildVehicle(Vehicle.Type type) {
+////        Vehicle vehicle = new Truck(this.getOwner(), type, this.getEntrance());
+////        getWorld().putVehicle(vehicle);
+//    }
 
-    private Storage findFreeStorage(int spaceRequired) {
+//    private Storage findFreeStorage(int spaceRequired) {
+//
+//        for (Storage storage : storages) {
+//            if (storage.getPayload().getFreeVolume() >= spaceRequired) {
+//                return storage;
+//            }
+//
+//        }
+//        return null;
+//    }
 
-        for (Storage storage : storages) {
-            if (storage.getPayload().getFreeVolume() >= spaceRequired) {
-                return storage;
+    private void doStep() {
+
+        if (WorkingState.WORKING.equals(workingState)) {
+            if (progress >= LOADING_SPEED) {
+                workingState = WorkingState.DONE;
+            } else {
+                progress++;
+                System.out.println("" + progress);
             }
-
         }
-        return null;
     }
 
-    public boolean requestLoadVehicle(Vehicle vehicle, Goods.Type type, Player owner) {
+    public boolean requestLoadVehicle(Vehicle vehicle, GoodsType type, Player owner) {
 
         // TODO remove hack
         doStep();
 
-        if (vehicles.contains(vehicle)) {
 
-            if (WorkingState.WAITING_FOR_REQUEST.equals(workingState)) {
+        if (WorkingState.WAITING_FOR_REQUEST.equals(workingState)) {
 
+            if (goods.contains(type)) {
+//                operatedVehicle = vehicle;
 
-                boolean done = false;
+                goods.remove(type);
+//                operatedVehicle.setPayload(type);
 
-//                for (Storage storage : storages)
-                Storage storage = localStorage;
+                progress = 0;
+                workingState = WorkingState.WORKING;
 
-                {
-                    //   System.out.println("Prohledavam skladiste");
-                    Goods targetGoods = storage.getPayload().findGoodsPile(type, owner);
-                    if (targetGoods != null) {
-                        operatedVehicle = vehicle;
-                        targetGoods = new Goods(type, 1, owner);
-                        storage.getPayload().removeGoods(targetGoods);
-                        operatedVehicle.load(targetGoods);
-
-                        done = true;
-//                        break;
-                    }
-                }
-                if (done) {
-                    //   System.out.println("Nalezeno zbozi.");
-                    progress = 0;
-                    workingState = WorkingState.WORKING;
-                }
-                return false;
-            }
-            if (WorkingState.DONE.equals(workingState)) {
-
-                if (vehicle.equals(operatedVehicle)) {
-                    workingState = WorkingState.WAITING_FOR_REQUEST;
-                    operatedVehicle = null;
-                    return true;
-                } else {
-                    return false;
-                }
             }
 
-
-        } else {
-            throw new IllegalArgumentException("Vehicle is trying to load not being in the depot's 'vehicles' list.");
+            return false;
         }
+        if (WorkingState.DONE.equals(workingState)) {
+
+//            if (vehicle.equals(operatedVehicle)) {
+                workingState = WorkingState.WAITING_FOR_REQUEST;
+//                operatedVehicle = null;
+                return true;
+        }
+
+
         return false;
     }
 
-    public boolean requestUnloadVehicle(Vehicle vehicle, Goods.Type type, Player owner) {
+    public boolean requestUnloadVehicle(Vehicle vehicle, GoodsType type, Player owner) {
 
         // TODO remove hack
         doStep();
 
-        if (vehicles.contains(vehicle)) {
+//        if (vehicles.contains(vehicle)) {
 
             if (WorkingState.WAITING_FOR_REQUEST.equals(workingState)) {
 
 
 //                Storage storage = findFreeStorage(1);
-                  Storage storage = localStorage;
-                if (storage != null) {
-                    operatedVehicle = vehicle;
-                    Goods targetGoods = new Goods(type, 1, owner);
-                    storage.getPayload().addGoods(targetGoods);
-                    operatedVehicle.unload(targetGoods);
+
+//                    operatedVehicle = vehicle;
+//                    Goods targetGoods = new Goods(type, 1, owner);
+                    goods.add(type);
+                    vehicle.setPayload(null);
 
                     progress = 0;
                     workingState = WorkingState.WORKING;
-                }
-                return false;
             }
+//            }
             if (WorkingState.DONE.equals(workingState)) {
 
-                if (vehicle.equals(operatedVehicle)) {
+//                if (vehicle.equals(operatedVehicle)) {
                     workingState = WorkingState.WAITING_FOR_REQUEST;
-                    operatedVehicle = null;
+//                    operatedVehicle = null;
                     return true;
-                } else {
-                    return false;
-                }
+
             }
 
 
-        } else {
-            throw new IllegalArgumentException("Vehicle is trying to unload not being in the depot's 'vehicles' list.");
-        }
-        return false;
+            return false;
     }
 
-    private void tankVehicle(Vehicle vehicle) {
+//    private void tankVehicle(Vehicle vehicle) {
+//
+//        for (Storage storage : storages) {
+//
+//            Goods targetGoods = storage.getPayload().findGoodsPile(vehicle.getFuelType(), getOwner());//TODO : Should be vehicle's owner?);
+//            if (targetGoods != null) {
+//
+//                targetGoods = new Goods(vehicle.getFuelType(), 1, getOwner());
+//                storage.getPayload().removeGoods(targetGoods);
+//                vehicle.addFuel(FUEL_EFFICIENCY);
+//                break;
+//            }
+//        }
+//    }
 
-        for (Storage storage : storages) {
+//    public void addVehicle(Vehicle vehicle) {
+//
+//        vehicles.add(vehicle);
+//        System.out.println("Fuel : " + vehicle.getFuel());
+//        if (vehicle.getFuel() < vehicle.getMaxFuel() - FUEL_EFFICIENCY) {
+//            tankVehicle(vehicle);
+//        }
+//
+//    }
 
-            Goods targetGoods = storage.getPayload().findGoodsPile(vehicle.getFuelType(), getOwner());//TODO : Should be vehicle's owner?);
-            if (targetGoods != null) {
+//    public void removeVehicle(Vehicle vehicle) {
+//
+//        if (vehicles.contains(vehicle)) {
+//            vehicles.remove(vehicle);
+//        } else {
+//            throw new IllegalArgumentException("Cannot remove vehicle which is not in the depot's 'vehicles' list.");
+//        }
+//
+//    }
 
-                targetGoods = new Goods(vehicle.getFuelType(), 1, getOwner());
-                storage.getPayload().removeGoods(targetGoods);
-                vehicle.addFuel(FUEL_EFFICIENCY);
-                break;
-            }
-        }
-    }
-
-    public void addVehicle(Vehicle vehicle) {
-
-        vehicles.add(vehicle);
-        System.out.println("Fuel : " + vehicle.getFuel());
-        if (vehicle.getFuel() < vehicle.getMaxFuel() - FUEL_EFFICIENCY) {
-            tankVehicle(vehicle);
-        }
-
-    }
-
-    public void removeVehicle(Vehicle vehicle) {
-
-        if (vehicles.contains(vehicle)) {
-            vehicles.remove(vehicle);
-        } else {
-            throw new IllegalArgumentException("Cannot remove vehicle which is not in the depot's 'vehicles' list.");
-        }
-
-    }
-
-    public List<Vehicle> getVehicles() {
-
-        return vehicles;
-    }
+//    public List<Vehicle> getVehicles() {
+//
+//        return vehicles;
+//    }
 
     public WorkingState getWorkingState() {
         return workingState;
@@ -208,7 +197,7 @@ public class Depot extends Building {
 //        return point;
 //    }
 
-    public void addStorage(Storage storage) {
+//    public void addStorage(Storage storage) {
 
         //System.out.println("" + getPosVector().distanceTo(storage.getPosVector()));
 //        if (getPosVector().distance(storage.getPosVector()) <= Building.STORAGE_RADIUS) {
@@ -238,27 +227,17 @@ public class Depot extends Building {
 //
 //            throw new IllegalArgumentException("Storage is out of STORAGE_RADIUS.");
 //        }
-    }
+//    }
 
-    public boolean isEmpty() {
-        return vehicles.isEmpty();
-    }
+//    public boolean isEmpty() {
+//        return vehicles.isEmpty();
+//    }
 
-    public void act() {
-        doStep();
-    }
+//    public void act() {
+//        doStep();
+//    }
 
-    private void doStep() {
 
-        if (WorkingState.WORKING.equals(workingState)) {
-            if (progress >= LOADING_SPEED) {
-                workingState = WorkingState.DONE;
-            } else {
-                progress++;
-                System.out.println("" + progress);
-            }
-        }
-    }
 
     public enum WorkingState {
 

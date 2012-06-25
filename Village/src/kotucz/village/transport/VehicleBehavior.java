@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 public class VehicleBehavior {
+    // todo maybe not final
     final Vehicle vehicle;
     Trajectory trajectory;
     float t;
@@ -127,7 +128,7 @@ public class VehicleBehavior {
 
         t += time;
 
-        vehicle.setPos(trajectory.getPoint(t));
+//        vehicle.setPos(trajectory.getPoint(t));
 
 //        Vector3d vec = trajectory.getVector(t);
 //        double angle = Math.atan2(vec.y, vec.x);
