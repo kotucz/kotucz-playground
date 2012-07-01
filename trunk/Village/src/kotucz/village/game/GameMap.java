@@ -7,6 +7,7 @@ import kotucz.village.tiles.LinearGrid;
 import kotucz.village.tiles.NodeSetGrid;
 import kotucz.village.tiles.Pos;
 import kotucz.village.transport.BlockingTraffic;
+import kotucz.village.transport.RoadBuilder;
 import kotucz.village.transport.UnidirectionalPathNetwork;
 
 import java.util.Random;
@@ -43,11 +44,16 @@ public class GameMap {
         //            pnet = new PathNetwork(tileGrid);
         pnet = new UnidirectionalPathNetwork(lingrid);
 //            pnet.randomlySelect(80);
-        pnet.generateRandomWalk(myGame.random);
+//        pnet.generateRandomWalk(myGame.random);
+
+
 
         traffic = new BlockingTraffic(pnet, myGame);
 
         buildings = new Buildings(lingrid);
+
+
+
 
 
 

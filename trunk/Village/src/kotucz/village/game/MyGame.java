@@ -71,15 +71,15 @@ import kotucz.village.build.Building;
 import kotucz.village.transport.*;
 
 /**
- * @author double1984
+ * @author kotucz
  */
 public class MyGame extends SimpleApplication {
 
     public static final Vector3f UP = new Vector3f(0, 0, 1);
     public static final int NUM_CARS = 00;
-    static float bLength = 1f;
-    static float bWidth = 1f;
-    static float bHeight = 1f;
+//    static float bLength = 1f;
+//    static float bWidth = 1f;
+//    static float bHeight = 1f;
     public static final String LEFT_CLICK = "LeftClick";
     public static final String SHOOT = "shoot";
     public static final String GC = "gc";
@@ -95,19 +95,15 @@ public class MyGame extends SimpleApplication {
     Material matsel;
     Material matveh;
     BasicShadowRenderer bsr;
-    //    private static Sphere bullet;
-    private static MyBox box;
-    private static Box brick;
-    //    private static SphereCollisionShape bulletCollisionShape;
+
     private BitmapText textAction;
-    private BulletAppState bulletAppState;
+
     Geometry mark;
     Node selectables;
     final LinearGrid lingrid = new LinearGrid(16, 16);
 //    final LinearGrid lingrid = new LinearGrid(64, 64);
 //    final LinearGrid lingrid = new LinearGrid(128, 128);
     // beware larger maps are buggy due to short ints in MeshTileGrid
-    //SetGrid selectGrid;
 
     final Random random = new Random();
 
@@ -121,6 +117,8 @@ public class MyGame extends SimpleApplication {
     private Material buildingsMat;
     private BitmapText textSelection;
     private Player player;
+    private Material spriteMaterial;
+    private RoadBuilder roadBuilder;
 
     public static void main(String args[]) {
         MyGame f = new MyGame();
@@ -133,50 +131,25 @@ public class MyGame extends SimpleApplication {
 
         assetManager.registerLocator("assets/", FileLocator.class);
 
-        bulletAppState = new BulletAppState();
-        bulletAppState.setThreadingType(BulletAppState.ThreadingType.PARALLEL);
-//        stateManager.attach(bulletAppState);
-
-//        bullet = new Sphere(32, 32, 0.4f, true, false);
-//        bullet.setTextureMode(TextureMode.Projected);
-//        bulletCollisionShape = new SphereCollisionShape(0.4f);
-
 
         selectables = new Node("Shootables");
         rootNode.attachChild(selectables);
 
-//        Multitexture mtex = new Multitexture(16 * 4, 16 * 4);
-//        mtex.createSubtexture(0, 16, 16, 32);
-
-        box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
-
-//        box.setTexture(4, mtex.createSubtexture(0, 16, 16, 32));
-
-        brick = new Box(Vector3f.ZERO, new Vector3f(1, 1, 1));
-//        brick = new Box(Vector3f.ZERO, new Vector3f(1, 1, 1));
-//        brick.scaleTextureCoordinates(new Vector2f(1f, 1f));
-
-
-//         {
-//              float frustumSize = 1;
-//        cam.setParallelProjection(true);
-//        float aspect = (float) cam.getWidth() / cam.getHeight();
-//        cam.setFrustum(-1000, 1000, -aspect * frustumSize, aspect * frustumSize, frustumSize, -frustumSize);
-//        }
 
 
         map = new GameMap(this, rootNode);
 
         initMaterial();
-//        initWall();
-        initBoxes();
-//        initFloor();
         initGrids();
         initCrossHairs();
 
         initKeys();       // load custom key mappings
         initMark();       // a red sphere to mark the hit
 
+
+        roadBuilder = new RoadBuilder(map, map .pnet);
+
+        roadBuilder.buildPath(new Pos(2, 2), new Pos(8, 14));
 
         player = new Player("Kotuc", null, 10000);
 
@@ -243,6 +216,7 @@ public class MyGame extends SimpleApplication {
 
 //        currentAction = new SelectAction();
 
+
         map.traffic.update(tpf);
 
         currentAction.updateGui();
@@ -251,9 +225,6 @@ public class MyGame extends SimpleApplication {
 
     }
 
-    private PhysicsSpace getPhysicsSpace() {
-        return bulletAppState.getPhysicsSpace();
-    }
 
     private ActionListener actionListener = new ActionListener() {
 
@@ -385,51 +356,6 @@ public class MyGame extends SimpleApplication {
 
     }
 
-    public void initBoxes() {
-
-        {
-            Geometry reBoxg = new Geometry("brick", box);
-            reBoxg.setMaterial(mat16);
-            reBoxg.setLocalTranslation(new Vector3f(0, 0, 0));
-
-            this.rootNode.attachChild(reBoxg);
-        }
-
-
-        {
-            Geometry reBoxg = new Geometry("brick3", box);
-            reBoxg.setMaterial(mat16);
-            reBoxg.setLocalTranslation(new Vector3f(0, 3, 0));
-
-            this.rootNode.attachChild(reBoxg);
-        }
-
-        {
-            Geometry reBoxg = new Geometry("brick2", brick);
-            reBoxg.setMaterial(mat);
-            reBoxg.setLocalTranslation(new Vector3f(2, 0, 0));
-
-            this.rootNode.attachChild(reBoxg);
-        }
-
-//        addBox(new Vector3f(0, 0, 0), box);
-
-//        addBox(new Vector3f(2, 0, 0), brick);
-
-    }
-
-    public void initWall() {
-        float startpt = bLength / 4;
-        float height = 0;
-        for (int j = 0; j < 15; j++) {
-            for (int i = 0; i < 4; i++) {
-                Vector3f vt = new Vector3f(i * bLength * 2 + startpt, bHeight + height, 0);
-                addBrick(vt);
-            }
-            startpt = -startpt;
-            height += 2 * bHeight;
-        }
-    }
 
     public void initGrids() {
 
@@ -476,18 +402,18 @@ public class MyGame extends SimpleApplication {
 //            final Geometry geometry = new Geometry("grid16", new NodedefTileGrid(pnet));
             TileGrid tileGrid = new TileGrid(lingrid, matwtr, this);
             final Geometry geometry = tileGrid.getGeometry();
-            NodeSetGrid se = new NodeSetGrid(tileGrid);
-            se.set.clear();
+            NodeSetGrid watter = new NodeSetGrid(tileGrid);
+            watter.set.clear();
 
 
-            int i1 = random.nextInt(lingrid.getTotalNum());
+            int i1 = random.nextInt(lingrid.getTotalNum()/16);
             for (int i = 0; i < i1; i++) {
-                se.set.add(lingrid.randomPos(random));
+                watter.set.add(lingrid.randomPos(random));
             }
 
-            se.updateGrid();
+            watter.updateGrid();
 
-            map.water = se;
+            map.water = watter;
 
 //            geometry.setMaterial(matwtr);
 //            geometry.setShadowMode(ShadowMode.Receive);
@@ -598,7 +524,7 @@ public class MyGame extends SimpleApplication {
         floor.setLocalTranslation(0, -0.1f, 0);
         floor.addControl(new RigidBodyControl(new BoxCollisionShape(new Vector3f(10f, 0.1f, 5f)), 0));
         this.rootNode.attachChild(floor);
-        this.getPhysicsSpace().add(floor);
+
     }
 
     public void initMaterial() {
@@ -715,34 +641,12 @@ public class MyGame extends SimpleApplication {
             matveh.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
         }
 
-    }
-
-    public void addBox(Vector3f ori, AbstractBox box) {
-
-        Geometry reBoxg = new Geometry("brick", box);
-        reBoxg.setMaterial(mat);
-        reBoxg.setLocalTranslation(ori);
-
-        //for geometry with sphere mesh the physics system automatically uses a sphere collision shape
-//        reBoxg.addControl(new RigidBodyControl(1.5f));
-//        reBoxg.setShadowMode(ShadowMode.CastAndReceive);
-//        reBoxg.getControl(RigidBodyControl.class).setFriction(0.6f);
-        this.rootNode.attachChild(reBoxg);
-//        this.getPhysicsSpace().add(reBoxg);
-
-    }
-
-    public void addBrick(Vector3f ori) {
-
-        Geometry reBoxg = new Geometry("brick", brick);
-        reBoxg.setMaterial(mat);
-        reBoxg.setLocalTranslation(ori);
-        //for geometry with sphere mesh the physics system automatically uses a sphere collision shape
-        reBoxg.addControl(new RigidBodyControl(1.5f));
-        reBoxg.setShadowMode(ShadowMode.CastAndReceive);
-        reBoxg.getControl(RigidBodyControl.class).setFriction(0.6f);
-        this.rootNode.attachChild(reBoxg);
-        this.getPhysicsSpace().add(reBoxg);
+        {
+//            Material mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
+//            mat.setBoolean("PointSprite", true);
+//            mat.setTexture("Texture", assetManager.loadTexture("Effects/Smoke/Smoke.png"));
+            spriteMaterial = mat;
+        }
     }
 
     protected void initCrossHairs() {
@@ -861,8 +765,13 @@ public class MyGame extends SimpleApplication {
             if (current != null) {
                 selectTileGrid.setTexture(current, TexturesSelect.SELECTED);
             }
-            c = simplepath4(start, current);
-            selectTileGrid.setAllTo(c, TexturesSelect.SELECTED);
+            if (start != null && current != null) {
+//            c = simplepath4(start, current);
+                c = roadBuilder.buildPath(start, current);
+                selectTileGrid.setAllTo(c, TexturesSelect.SELECTED);
+            }
+
+
 //            selectGrid.updateGrid();
         }
 
