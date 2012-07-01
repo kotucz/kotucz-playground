@@ -113,12 +113,12 @@ public class VehicleBehavior {
 
     public List<RoadPoint> findPath(RoadPoint target) {
 //        PathFinding pathFinding = new PathFinding(vehicle.getNetwork());
-        PathFinding pathFinding = new PathFinding();
+//        PathFinding pathFinding = new PathFinding();
 //        RoadPoint curr = roadNetwork.contains(
 //                (int) Math.round(vector.x),
 //                (int) Math.round(vector.y));
         RoadPoint curr = network.getPoint(vehicle.getPosVector());
-        return pathFinding.aStar(curr, target);
+        return PathFinding.findPath(new RoadPointGraph(), curr, target);
     }
 
     public boolean followTrajectory(float time) {
