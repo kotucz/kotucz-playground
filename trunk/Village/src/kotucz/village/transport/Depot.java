@@ -4,8 +4,6 @@
  */
 package kotucz.village.transport;
 
-import com.google.common.collect.EnumMultiset;
-import com.google.common.collect.Multiset;
 import com.jme3.material.Material;
 import kotucz.village.build.Building;
 import kotucz.village.game.Player;
@@ -16,40 +14,28 @@ import kotucz.village.tiles.Pos;
  *
  * @author Petr Dluhoš
  */
-public class Depot extends Building {
+public interface Depot  {
 
-    //    private final List<Storage> storages = new LinkedList<Storage>();
-//    private final List<Vehicle> vehicles = new LinkedList<Vehicle>();
-    private int progress;
-    private WorkingState workingState;
-    private static final int LOADING_SPEED = 200;
-    private static final long FUEL_EFFICIENCY = 2000; //TODO : should be different for different types of fuel
+    //    private static final long FUEL_EFFICIENCY = 2000; //TODO : should be different for different types of fuel
 //    private Vehicle operatedVehicle;
 
 
-    final Multiset<GoodsType> goods = EnumMultiset.create(GoodsType.class);
-
-
-//    Storage localStorage;
+    //    Storage localStorage;
 
     //    public Depot(Goods.Type type, Player owner, Point3d upperLeft) {
-    public Depot(Pos type, Player owner, Material mat) {
-        super(type, mat, owner);
+//    public Depot(Pos pos, Player owner, Material mat) {
+//        super(pos, mat, owner);
 //        super(type, owner, upperLeft);
 
-        workingState = WorkingState.WAITING_FOR_REQUEST;
-        progress = 0;
+        //        localStorage = new Storage(100);
+//        localStorage.getType().addGoods(new Goods(Goods.Type.PETROL, 20, owner)); //TODO: To remove - onlz for testing
+//        localStorage.getType().addGoods(new Goods(Goods.Type.WOOD, 20, owner)); //TODO: To remove - onlz for testing
 
-//        localStorage = new Storage(100);
-//        localStorage.getPayload().addGoods(new Goods(Goods.Type.PETROL, 20, owner)); //TODO: To remove - onlz for testing
-//        localStorage.getPayload().addGoods(new Goods(Goods.Type.WOOD, 20, owner)); //TODO: To remove - onlz for testing
 
-        goods.add(GoodsType.WOOD, 20);
-        goods.add(GoodsType.PETROL, 20);
 
 //        panel = new DepotPanel(this);
 
-    }
+//    }
 
 //    public void buildVehicle(Vehicle.Type type) {
 ////        Vehicle vehicle = new Truck(this.getOwner(), type, this.getEntrance());
@@ -59,7 +45,7 @@ public class Depot extends Building {
 //    private Storage findFreeStorage(int spaceRequired) {
 //
 //        for (Storage storage : storages) {
-//            if (storage.getPayload().getFreeVolume() >= spaceRequired) {
+//            if (storage.getType().getFreeVolume() >= spaceRequired) {
 //                return storage;
 //            }
 //
@@ -67,101 +53,22 @@ public class Depot extends Building {
 //        return null;
 //    }
 
-    private void doStep() {
-
-        if (WorkingState.WORKING.equals(workingState)) {
-            if (progress >= LOADING_SPEED) {
-                workingState = WorkingState.DONE;
-            } else {
-                progress++;
-                System.out.println("" + progress);
-            }
-        }
-    }
-
-    public boolean requestLoadVehicle(Vehicle vehicle, GoodsType type, Player owner) {
-
-        // TODO remove hack
-        doStep();
-
-
-        if (WorkingState.WAITING_FOR_REQUEST.equals(workingState)) {
-
-            if (goods.contains(type)) {
-//                operatedVehicle = vehicle;
-
-                goods.remove(type);
-//                operatedVehicle.setPayload(type);
-
-                progress = 0;
-                workingState = WorkingState.WORKING;
-
-            }
-
-            return false;
-        }
-        if (WorkingState.DONE.equals(workingState)) {
-
-//            if (vehicle.equals(operatedVehicle)) {
-                workingState = WorkingState.WAITING_FOR_REQUEST;
-//                operatedVehicle = null;
-                return true;
-        }
-
-
-        return false;
-    }
-
-    public boolean requestUnloadVehicle(Vehicle vehicle, GoodsType type, Player owner) {
-
-        // TODO remove hack
-        doStep();
-
-//        if (vehicles.contains(vehicle)) {
-
-            if (WorkingState.WAITING_FOR_REQUEST.equals(workingState)) {
-
-
-//                Storage storage = findFreeStorage(1);
-
-//                    operatedVehicle = vehicle;
-//                    Goods targetGoods = new Goods(type, 1, owner);
-                    goods.add(type);
-                    vehicle.setPayload(null);
-
-                    progress = 0;
-                    workingState = WorkingState.WORKING;
-            }
-//            }
-            if (WorkingState.DONE.equals(workingState)) {
-
-//                if (vehicle.equals(operatedVehicle)) {
-                    workingState = WorkingState.WAITING_FOR_REQUEST;
-//                    operatedVehicle = null;
-                    return true;
-
-            }
-
-
-            return false;
-    }
-
-//    private void tankVehicle(Vehicle vehicle) {
+    //    private void tankVehicle(Vehicle vehicle) {
 //
 //        for (Storage storage : storages) {
 //
-//            Goods targetGoods = storage.getPayload().findGoodsPile(vehicle.getFuelType(), getOwner());//TODO : Should be vehicle's owner?);
+//            Goods targetGoods = storage.getType().findGoodsPile(vehicle.getFuelType(), getOwner());//TODO : Should be vehicle's owner?);
 //            if (targetGoods != null) {
 //
 //                targetGoods = new Goods(vehicle.getFuelType(), 1, getOwner());
-//                storage.getPayload().removeGoods(targetGoods);
+//                storage.getType().removeGoods(targetGoods);
 //                vehicle.addFuel(FUEL_EFFICIENCY);
 //                break;
 //            }
 //        }
 //    }
 
-//    public void addVehicle(Vehicle vehicle) {
+//    public void putVehicle(Vehicle vehicle) {
 //
 //        vehicles.add(vehicle);
 //        System.out.println("Fuel : " + vehicle.getFuel());
@@ -186,11 +93,7 @@ public class Depot extends Building {
 //        return vehicles;
 //    }
 
-    public WorkingState getWorkingState() {
-        return workingState;
-    }
-
-//    public Pos getEntrance() {
+    //    public Pos getEntrance() {
 ////        Pos point = new Pos(getType().getWidthx() / 2.0 - 1.0, -getType().getWidthy() / 2.0, 0);
 //        Pos point = new Pos(0, 0);
 ////        point.add(getPosVector());
@@ -238,11 +141,9 @@ public class Depot extends Building {
 //    }
 
 
+    Pos getEntrancePos();
 
-    public enum WorkingState {
+    boolean requestUnloadVehicle(Vehicle vehicle, GoodsType type);
 
-        WORKING,
-        WAITING_FOR_REQUEST,
-        DONE;
-    }
+    boolean requestLoadVehicle(Vehicle vehicle, GoodsType type);
 }

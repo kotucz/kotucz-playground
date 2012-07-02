@@ -1,4 +1,4 @@
-package kotucz.village.transport;
+package kotucz.village.transport.paths;
 
 /**
  * @author Kotuc

@@ -1,5 +1,8 @@
 package kotucz.village.transport;
 
+import kotucz.village.transport.paths.Edge;
+import kotucz.village.transport.paths.PathGraph;
+
 /**
 * @author Kotuc
 */

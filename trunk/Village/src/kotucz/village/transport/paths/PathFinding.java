@@ -1,4 +1,4 @@
-package kotucz.village.transport;
+package kotucz.village.transport.paths;
 
 import com.google.common.base.Preconditions;
 
@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * @author Kotuc
  */
-public final  class PathFinding {
+public final class PathFinding {
 
 //    private PathNetwork network;
 //

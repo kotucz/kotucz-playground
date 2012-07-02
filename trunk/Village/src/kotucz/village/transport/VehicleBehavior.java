@@ -4,6 +4,7 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import kotucz.village.game.MyGame;
+import kotucz.village.transport.paths.PathFinding;
 
 import java.util.LinkedList;
 import java.util.List;

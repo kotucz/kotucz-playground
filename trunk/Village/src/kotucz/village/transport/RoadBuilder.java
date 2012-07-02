@@ -1,15 +1,13 @@
 package kotucz.village.transport;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.sun.istack.internal.Nullable;
 import kotucz.village.common.Dir;
 import kotucz.village.common.Dir4;
 import kotucz.village.game.GameMap;
 import kotucz.village.tiles.Pos;
+import kotucz.village.transport.paths.Edge;
+import kotucz.village.transport.paths.PathFinding;
+import kotucz.village.transport.paths.PathGraph;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +16,7 @@ import java.util.List;
  */
 public class RoadBuilder {
 
-    GameMap map;
+//    GameMap map;
 
     private final GameMap gameMap;
     private final UnidirectionalPathNetwork pnet;
@@ -28,7 +26,7 @@ public class RoadBuilder {
         this.pnet = pnet;
     }
 
-    public List<Pos> buildPath(Pos from, Pos to) {
+    public List<Pos> findPath(Pos from, Pos to) {
         List<Pos> path = PathFinding.findPath(new PathGraph<Pos>() {
             @Override
             public Iterable<Edge<Pos>> getNexts(final Pos pos) {
