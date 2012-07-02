@@ -31,17 +31,17 @@ public class RoadBuilder {
     public List<Pos> buildPath(Pos from, Pos to) {
         List<Pos> path = PathFinding.findPath(new PathGraph<Pos>() {
             @Override
-            public Iterable<Pos> getNexts(final Pos pos) {
+            public Iterable<Edge<Pos>> getNexts(final Pos pos) {
 
-                List<Pos> list = new LinkedList<Pos>();
+                List<Edge<Pos>> list = new LinkedList<Edge<Pos>>();
 
                 for (Dir dir4 : Dir4.values()) {
                     Pos pos1 = pos.inDir(dir4);
                     if (pnet.lingrid.isOutOfBounds(pos1)) {
                         continue;
-                    } else if (gameMap.isBuildable(pos)) {
+                    } else if (gameMap.isRoadBuildable(pos)) {
 
-                        list.add(pos1);
+                        list.add(new Edge<Pos>(pos1, 1));
                     }
 
 
@@ -56,11 +56,11 @@ public class RoadBuilder {
 //                    }
 //                });
             }
-
-            @Override
-            public double getEdgeDistance(Pos from, Pos to) {
-                return 1;
-            }
+//
+//            @Override
+//            public double getEdgeDistance(Pos from, Pos to) {
+//                return 1;
+//            }
 
         }, from, to);
 

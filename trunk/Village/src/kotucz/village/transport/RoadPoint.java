@@ -1,6 +1,9 @@
 package kotucz.village.transport;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.jme3.math.Vector3f;
+import com.sun.istack.internal.Nullable;
 import kotucz.village.tiles.Pos;
 
 import java.util.HashSet;
@@ -78,4 +81,16 @@ public class RoadPoint {
     public Set<RoadPoint> getNexts() {
         return nexts;
     }
+
+
+    public Iterable<Edge<RoadPoint>> getEdges() {
+        return Iterables.transform(getNexts(), new Function<RoadPoint, Edge<RoadPoint>>() {
+            @Override
+            public Edge<RoadPoint> apply(@Nullable RoadPoint roadPoint) {
+                return new Edge<RoadPoint>(roadPoint, 1.0);
+
+            }
+        });
+    }
+
 }

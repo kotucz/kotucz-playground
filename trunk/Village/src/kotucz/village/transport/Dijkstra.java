@@ -51,11 +51,11 @@ class Dijkstra<T> implements Comparator<T> {
 
             // expand poll
 
-            for (T next : graph.getNexts(current)) {
+            for (Edge<T> edge : graph.getNexts(current)) {
 
-                explore(current, next);
+                explore(current, edge.to, edge.dist);
 
-                queue.add(next);
+//                queue.add(edge);
 //                opened.add(next);
             }
         }
@@ -80,10 +80,11 @@ class Dijkstra<T> implements Comparator<T> {
         return path;
     }
 
-    void explore(T from, T explore) {
+    void explore(T from, T explore, double dist) {
 //        System.out.println("explore "+from+" "+explore);
 //            double edgeValue = explore.getPosVector().distance(from.getPosVector());
-        double edgeValue = graph.getEdgeDistance(from, explore);
+//        double edgeValue = graph.getEdgeDistance(from, explore);
+        final double edgeValue = dist;
         if (edgeValue < 0) {
             throw new AssertionError(" edge value < 0 breaks algorithm invatriant ");
         }
