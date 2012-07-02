@@ -1,15 +1,18 @@
-package kotucz.village.transport;
+package kotucz.village.transport.paths;
+
+import kotucz.village.transport.paths.Dijkstra;
+import kotucz.village.transport.paths.PathGraph;
 
 import java.util.Comparator;
 
 /**
 * @author Kotuc
 */
-class AStarHeuristics<T> extends Dijkstra<T> implements Comparator<T> {
+class AStar<T> extends Dijkstra<T> implements Comparator<T> {
 
     final T dest;
 
-    public AStarHeuristics(PathGraph<T> graph, T start, T dest) {
+    public AStar(PathGraph<T> graph, T start, T dest) {
         super(graph, start);
         this.dest = dest;
 

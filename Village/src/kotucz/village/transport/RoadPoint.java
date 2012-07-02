@@ -5,6 +5,7 @@ import com.google.common.collect.Iterables;
 import com.jme3.math.Vector3f;
 import com.sun.istack.internal.Nullable;
 import kotucz.village.tiles.Pos;
+import kotucz.village.transport.paths.Edge;
 
 import java.util.HashSet;
 import java.util.Set;

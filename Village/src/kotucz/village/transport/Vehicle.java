@@ -27,7 +27,7 @@ public class Vehicle {
 
 
 //    private long fuel;
-//    protected final Payload payload;
+//    protected final Payload type;
 //    private AbstractGridPathNetwork network;
     protected final Type type;
     private Player owner;
@@ -101,8 +101,8 @@ public class Vehicle {
 //        this.model = new Vehicle3D(this);
 //        this.setPos(point);
 
-//        payload = new Payload(type.maxPayload);
-//        payload = new Payload(1); //TODO: To be changed - depends on truck type
+//        type = new Payload(type.maxPayload);
+//        type = new Payload(1); //TODO: To be changed - depends on truck type
     }
 
 

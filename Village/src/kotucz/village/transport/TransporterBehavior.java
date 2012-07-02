@@ -76,11 +76,11 @@ public class TransporterBehavior extends BlockingVehicleBehavior {
                     path = null;
                     // reset path
                     setState(State.LOADING);
-//                    srcDepot.addVehicle(vehicle);
+//                    srcDepot.putVehicle(vehicle);
                 }
                 break;
             case LOADING:
-                if (srcDepot.requestLoadVehicle(vehicle, GoodsType.WOOD, srcDepot.getOwner())) {
+                if (srcDepot.requestLoadVehicle(vehicle, GoodsType.WOOD)) {
 //                    destLong = null; // dest depot
                     setState(State.GO_FOR_UNLOAD);
 //                    srcDepot.removeVehicle(vehicle);
@@ -91,11 +91,11 @@ public class TransporterBehavior extends BlockingVehicleBehavior {
                     path = null;
                     // reset path
                     setState(State.UNLOADING);
-//                    destDepot.addVehicle(vehicle);
+//                    destDepot.putVehicle(vehicle);
                 }
                 break;
             case UNLOADING:
-                if (destDepot.requestUnloadVehicle(vehicle, GoodsType.WOOD, destDepot.getOwner())) {
+                if (destDepot.requestUnloadVehicle(vehicle, GoodsType.WOOD)) {
 //                    destLong = null; // next depot
                     setState(State.GO_FOR_LOAD);
 //                    destDepot.removeVehicle(vehicle);

@@ -32,10 +32,8 @@
 package kotucz.village.game;
 
 import com.jme3.asset.plugins.FileLocator;
-import com.jme3.bullet.BulletAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.TextureKey;
-import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.collision.CollisionResult;
@@ -55,7 +53,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
-import com.jme3.scene.shape.AbstractBox;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.shadow.BasicShadowRenderer;
@@ -66,7 +63,6 @@ import java.util.*;
 import kotucz.village.common.Dir;
 import kotucz.village.common.Dir4;
 import kotucz.village.tiles.*;
-import kotucz.village.common.MyBox;
 import kotucz.village.build.Building;
 import kotucz.village.transport.*;
 
@@ -77,7 +73,7 @@ public class MyGame extends SimpleApplication {
 
     public static final Vector3f UP = new Vector3f(0, 0, 1);
     public static final int NUM_CARS = 00;
-//    static float bLength = 1f;
+    //    static float bLength = 1f;
 //    static float bWidth = 1f;
 //    static float bHeight = 1f;
     public static final String LEFT_CLICK = "LeftClick";
@@ -114,11 +110,12 @@ public class MyGame extends SimpleApplication {
 
 
     public GameMap map;
-    private Material buildingsMat;
+    private Material matBuildings;
     private BitmapText textSelection;
     private Player player;
     private Material spriteMaterial;
     private RoadBuilder roadBuilder;
+    private Material matResources;
 
     public static void main(String args[]) {
         MyGame f = new MyGame();
@@ -136,7 +133,6 @@ public class MyGame extends SimpleApplication {
         rootNode.attachChild(selectables);
 
 
-
         map = new GameMap(this, rootNode);
 
         initMaterial();
@@ -147,9 +143,9 @@ public class MyGame extends SimpleApplication {
         initMark();       // a red sphere to mark the hit
 
 
-        roadBuilder = new RoadBuilder(map, map .pnet);
+        roadBuilder = new RoadBuilder(map, map.pnet);
 
-        roadBuilder.buildPath(new Pos(2, 2), new Pos(8, 14));
+        roadBuilder.findPath(new Pos(2, 2), new Pos(8, 14));
 
         player = new Player("Kotuc", null, 10000);
 
@@ -168,6 +164,12 @@ public class MyGame extends SimpleApplication {
             cam.lookAt(new Vector3f(8, 8, 0), UP);
             cam.setFrustumFar(500);
         }
+
+        {
+            Mineral mineral = new Mineral(GoodsType.WOOD, new Vector3f(5f, 5f, 0f), matResources);
+            rootNode.attachChild(mineral.getSpatial());
+        }
+
 
         initInputs();
 
@@ -198,7 +200,7 @@ public class MyGame extends SimpleApplication {
         Vehicle car = vehicle;
         car.setBehavior(new VehicleBehavior(car, map.pnet));
         selectables.attachChild(car.getNode());
-        map.traffic.addVehicle(car);
+        map.traffic.putVehicle(car);
     }
 
     @Override
@@ -292,7 +294,6 @@ public class MyGame extends SimpleApplication {
         }
 
 
-
         // 5. Use the results (we mark the hit object)
         if (results.size() > 0) {
             // The closest collision point is what was truly hit:
@@ -335,7 +336,7 @@ public class MyGame extends SimpleApplication {
 //                selectGrid.add(x, y);
 //                selectGrid.updateGrid();
                 Pos pos = new Pos(x, y);
-                textSelection.setText("pozice "+pos);
+                textSelection.setText("pozice " + pos);
                 return pos;
             }
 
@@ -407,7 +408,7 @@ public class MyGame extends SimpleApplication {
 
 
             // TODO refactor
-            int i1 = random.nextInt(lingrid.getTotalNum()/4);
+            int i1 = random.nextInt(lingrid.getTotalNum() / 4);
             for (int i = 0; i < i1; i++) {
                 watter.set.add(lingrid.randomPos(random));
             }
@@ -612,7 +613,24 @@ public class MyGame extends SimpleApplication {
             material.setTexture("ColorMap", texture);
             material.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 
-            buildingsMat = material;
+            matBuildings = material;
+
+        }
+
+        {
+            Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+
+            TextureKey textureKey = new TextureKey("Textures/tiles.png");
+//            TextureKey key4 = new TextureKey("Textures/watr16.png");
+//            TextureKey key3 = new TextureKey("Textures/tex16.png");
+//            key3.setGenerateMips(true);`
+            Texture texture = assetManager.loadTexture(textureKey);
+            texture.setMagFilter(Texture.MagFilter.Nearest);
+//        tex3.setWrap(WrapMode.Repeat);
+            material.setTexture("ColorMap", texture);
+            material.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+
+            matResources = material;
 
         }
 
@@ -768,7 +786,7 @@ public class MyGame extends SimpleApplication {
             }
             if (start != null && current != null) {
 //            c = simplepath4(start, current);
-                c = roadBuilder.buildPath(start, current);
+                c = roadBuilder.findPath(start, current);
                 selectTileGrid.setAllTo(c, TexturesSelect.SELECTED);
             }
 
@@ -840,6 +858,9 @@ public class MyGame extends SimpleApplication {
 
         Pos start;
         Pos current;
+//        Building.Type buildingType = Building.Type.FACTORY;
+//        Building.Type buildingType = Building.Type.HOUSE;
+        Building.Type buildingType = Building.Type.MINE;
 
         @Override
         void updateGui() {
@@ -849,7 +870,7 @@ public class MyGame extends SimpleApplication {
                 selectTileGrid.setTexture(start, TexturesSelect.SELECTED);
             }
             if (current != null) {
-                Set<Pos> occupyPosses = Building.getOccupyPosses(current);
+                Set<Pos> occupyPosses = Building.getOccupyPosses(current, buildingType);
 
 
 //                selectGrid.set.addAll(occupyPosses);
@@ -877,8 +898,8 @@ public class MyGame extends SimpleApplication {
         @Override
         void onMouseUp() {
             if (this.current != null) {
-//                Building building = new Building(this.current, buildingsMat);
-                Building building = new Depot(this.current, player, buildingsMat);
+//                Building building = new Building(this.current, matBuildings);
+                Building building = new Building(this.current, matBuildings, buildingType, player);
                 selectables.attachChild(building.getNode());
                 map.buildings.putBuilding(building);
             }

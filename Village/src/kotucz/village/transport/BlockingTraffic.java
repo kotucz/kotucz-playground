@@ -39,7 +39,7 @@ public class BlockingTraffic {
 
     }
 
-    public void addVehicle(Vehicle car) {
+    public void putVehicle(Vehicle car) {
 
 
 
