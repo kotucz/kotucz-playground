@@ -406,7 +406,8 @@ public class MyGame extends SimpleApplication {
             watter.set.clear();
 
 
-            int i1 = random.nextInt(lingrid.getTotalNum()/16);
+            // TODO refactor
+            int i1 = random.nextInt(lingrid.getTotalNum()/4);
             for (int i = 0; i < i1; i++) {
                 watter.set.add(lingrid.randomPos(random));
             }

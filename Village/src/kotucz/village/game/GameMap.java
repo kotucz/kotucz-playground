@@ -60,9 +60,16 @@ public class GameMap {
     }
 
     public boolean isBuildable(Pos pos) {
-        return water.getNodesHash(pos)==0 && buildings.get(pos) == null && pnet.getRoadPoint(pos) == null;
+        return //water.getNodesHash(pos)==0 &&
+               buildings.get(pos) == null && pnet.getRoadPoint(pos) == null;
     }
 
+    public boolean isRoadBuildable(Pos pos) {
+        return //water.getNodesHash(pos)==0 &&
+                buildings.get(pos) == null
+                //        && pnet.getRoadPoint(pos) == null
+                ;
+    }
 
 
     
