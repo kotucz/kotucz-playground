@@ -7,6 +7,7 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import kotucz.village.common.MyBox;
+import kotucz.village.game.MyGame;
 import kotucz.village.game.Player;
 import kotucz.village.tiles.LinearGrid;
 import kotucz.village.tiles.Multitexture1;
@@ -95,6 +96,10 @@ public class Vehicle {
             node.attachChild(reBoxg);
         }
 
+
+        Mineral mineral = new Mineral(GoodsType.WOOD, new Vector3f(0.5f, 0, 0.125f), MyGame.matResources);
+
+        node.attachChild(mineral.getSpatial());
 
 //        updateModel();
 
