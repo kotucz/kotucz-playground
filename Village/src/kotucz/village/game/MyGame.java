@@ -115,7 +115,7 @@ public class MyGame extends SimpleApplication {
     private Player player;
     private Material spriteMaterial;
     private RoadBuilder roadBuilder;
-    private Material matResources;
+    public static Material matResources;
 
     public static void main(String args[]) {
         MyGame f = new MyGame();
