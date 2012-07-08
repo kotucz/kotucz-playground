@@ -277,7 +277,7 @@ public class MyGame extends SimpleApplication {
         // 3. Collect intersections between Ray and Shootables in results list.
         selectables.collideWith(ray, results);
         // 4. Print the results
-        System.out.println("----- Collisions? " + results.size() + "-----");
+//        System.out.println("----- Collisions? " + results.size() + "-----");
         for (int i = 0; i < results.size(); i++) {
             // For each hit, we know distance, impact point, name of geometry.
             float dist = results.getCollision(i).getDistance();
@@ -287,8 +287,8 @@ public class MyGame extends SimpleApplication {
 //            results.getCollision(i).getGeometry().getMaterial().setColor("Color", ColorRGBA.randomColor());
 
 
-            System.out.println("* Collision #" + i);
-            System.out.println("  You shot " + hit + " at " + pt + ", " + dist + " wu away.");
+//            System.out.println("* Collision #" + i);
+//            System.out.println("  You shot " + hit + " at " + pt + ", " + dist + " wu away.");
 
 
         }
@@ -303,7 +303,7 @@ public class MyGame extends SimpleApplication {
             rootNode.attachChild(mark);
             {
                 Object userData = closest.getGeometry().getUserData(Building.ID_KEY);
-                System.out.println("Test user value: " + userData);
+//                System.out.println("Test user value: " + userData);
                 Building building = map.buildings.map.get(userData);
 
 
@@ -316,7 +316,7 @@ public class MyGame extends SimpleApplication {
 
             {
                 Object userData = closest.getGeometry().getUserData(Vehicle.ID_KEY);
-                System.out.println("Test user value: " + userData);
+//                System.out.println("Test user value: " + userData);
                 Vehicle vehicle = map.traffic.vehicleFindById.get(userData);
 
 
@@ -336,7 +336,7 @@ public class MyGame extends SimpleApplication {
 //                selectGrid.add(x, y);
 //                selectGrid.updateGrid();
                 Pos pos = new Pos(x, y);
-                textSelection.setText("pozice " + pos);
+//                textSelection.setText("pozice " + pos);
                 return pos;
             }
 

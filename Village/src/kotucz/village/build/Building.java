@@ -241,7 +241,7 @@ public class Building implements Depot {
 //                operatedVehicle = vehicle;
 
                 goods.remove(type);
-//                operatedVehicle.setPayload(type);
+                vehicle.setPayload(type);
 
                 progress = 0;
                 workingState = WorkingState.WORKING;

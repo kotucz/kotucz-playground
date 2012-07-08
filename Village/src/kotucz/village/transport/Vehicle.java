@@ -6,6 +6,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import kotucz.village.common.MyBox;
 import kotucz.village.game.MyGame;
 import kotucz.village.game.Player;
@@ -35,7 +36,7 @@ public class Vehicle {
     private String name;
 
 
-    GoodsType payload;
+    private   GoodsType payload;
 
     /**
      * Pos intendet to get grant to.
@@ -56,6 +57,7 @@ public class Vehicle {
     private VehicleBehavior behavior;
 
     private final String id;
+    private final Mineral mineral;
 
     //    public Vehicle(Player owner, Type type, RoadPoint roadPoint, Material mat, AbstractGridPathNetwork network) {
     public Vehicle(Player owner, Type type, RoadPoint roadPoint, Material mat) {
@@ -97,9 +99,12 @@ public class Vehicle {
         }
 
 
-        Mineral mineral = new Mineral(GoodsType.WOOD, new Vector3f(0.5f, 0, 0.125f), MyGame.matResources);
+        this.mineral = new Mineral(GoodsType.WOOD, new Vector3f(0.5f, 0, 0.125f), MyGame.matResources);
 
-        node.attachChild(mineral.getSpatial());
+
+
+
+//             pick(mineral);
 
 //        updateModel();
 
@@ -198,6 +203,11 @@ public class Vehicle {
 
     public void setPayload(GoodsType payload) {
         this.payload = payload;
+        if (payload!= null) {
+            pick(mineral);
+        } else {
+            drop(mineral);
+        }
     }
 
 
@@ -282,7 +292,7 @@ public class Vehicle {
 
     public enum Element {
 
-        ROAD, TRAIN, WATTER, AIR;
+        ROAD, TRAIN, WATTER, AIR, OFFROAD;
     }
 
     public Node getNode() {
@@ -301,7 +311,35 @@ public class Vehicle {
         return id;
     }
 
+    public void pick(Mineral mineral) {
+        Spatial mineralSpatial = mineral.getSpatial();
+        Node parent = mineralSpatial.getParent();
+        if (parent!=null) {
+            parent.detachChild(mineralSpatial);
+        }
+        Vector3f vector3f = new Vector3f(0.5f, 0, 0.125f);
+        mineralSpatial.setLocalTranslation(vector3f);
+        this.node.attachChild(mineralSpatial);
 
+//        mineralSpatial.setLocalTranslation(new Vector3f(0.5f, 0, 0.125f));
+
+
+    }
+
+    public void drop(Mineral mineral) {
+        Spatial mineralSpatial = mineral.getSpatial();
+        Node parent = mineralSpatial.getParent();
+        if (parent!=null) {
+            parent.detachChild(mineralSpatial);
+        }
+//        this.node.attachChild(mineralSpatial);
+
+//        mineralSpatial.setLocalTranslation(new Vector3f(0.5f, 0, 0.125f));
+        Vector3f vector3f = this.node.localToWorld(new Vector3f(0.5f, 0, 0.125f), null);
+        mineralSpatial.setLocalTranslation(vector3f);
+        this.node.getParent().getParent().attachChild(mineralSpatial);
+
+    }
 
 }
 

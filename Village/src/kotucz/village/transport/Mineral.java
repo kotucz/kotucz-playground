@@ -43,8 +43,8 @@ public class Mineral {
 
         this.posVector = posVector;
 
-        mat = mat.clone();
-        mat.setColor("Color", new ColorRGBA((float)Math.random(), (float)Math.random(),(float)Math.random(), 1f));
+//        mat = mat.clone();
+//        mat.setColor("Color", new ColorRGBA((float)Math.random(), (float)Math.random(),(float)Math.random(), 1f));
 
         id = "M"+idGen.incrementAndGet();
 
@@ -73,6 +73,8 @@ public class Mineral {
 
 
         updateModel();
+
+
 
 //        this.model = new Vehicle3D(this);
 //        this.setPos(point);
