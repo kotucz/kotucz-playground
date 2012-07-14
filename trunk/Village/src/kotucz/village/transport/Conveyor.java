@@ -39,6 +39,8 @@ public class Conveyor {
 
     Spatial spatial;
     private final MyBox box;
+    private final RigidBodyControl control;
+    private Vector3f velocity = new Vector3f();
 
 
     //    public Vehicle(Player owner, Type type, RoadPoint roadPoint, , AbstractGridPathNetwork network) {
@@ -46,6 +48,7 @@ public class Conveyor {
 
 
         this.posVector = posVector;
+//        this.dir = dir;
 
 //        mat = mat.clone();
 //        mat.setColor("Color", new ColorRGBA((float)Math.random(), (float)Math.random(),(float)Math.random(), 1f));
@@ -81,15 +84,16 @@ public class Conveyor {
 
         spatial.addControl(new AbstractControl() {
 
-            float offset = 0;
+            Vector3f offset = new Vector3f();
 
             @Override
             protected void controlUpdate(float tpf) {
-                offset += tpf;
+                offset = offset.add(velocity.mult(tpf));
                 Multitexture mtex = new Multitexture(256, 256);
-                float x = -(offset % 1f);
-                System.out.println("offset " + offset + " " + x);
-                box.setTexture(MyBox.FACE_TOP, mtex.createRealSubtexture(16 * (1+x), 5 * 16, 16 * (x + 2f), 6 * 16));
+                float x = 1-((1 + (offset.getX()%1)) % 1f);
+                float y = ((1 + (offset.getY()%1)) % 1f);
+                System.out.println("offset " + offset + " " + x+" "+y);
+                box.setTexture(MyBox.FACE_TOP, mtex.createRealSubtexture(16 * (x), (5+y) * 16, 16 * (x + 1f), (6+y) * 16));
 
 
                 updateModel();
@@ -106,8 +110,8 @@ public class Conveyor {
             }
         });
 
-        RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(halfSize, halfSize, halfSize)), 0);
-        control.setLinearVelocity(new Vector3f(1, 0, 0));;
+        control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(halfSize, halfSize, halfSize)), 0);
+
         spatial.addControl(control);
         control.setPhysicsLocation(posVector);
 
@@ -116,6 +120,11 @@ public class Conveyor {
 
 //        type = new Payload(type.maxPayload);
 //        type = new Payload(1); //TODO: To be changed - depends on truck type
+    }
+
+    public void setDir(Vector3f vec) {
+        velocity = vec;
+        control.setLinearVelocity(velocity);;
     }
 
 

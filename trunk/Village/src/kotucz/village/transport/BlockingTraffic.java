@@ -43,8 +43,8 @@ public class BlockingTraffic {
 
 
 
-//        BlockingVehicleBehavior blockingVehicleBehavior = new BlockingVehicleBehavior(car, this);
-        BlockingVehicleBehavior blockingVehicleBehavior = new TransporterBehavior(car, this, game.map.buildings);
+        BlockingVehicleBehavior blockingVehicleBehavior = new BlockingVehicleBehavior(car, this);
+//        BlockingVehicleBehavior blockingVehicleBehavior = new TransporterBehavior(car, this, game.map.buildings);
         car.setBehavior(blockingVehicleBehavior);
 
         car.setName("Car "+cars.size());

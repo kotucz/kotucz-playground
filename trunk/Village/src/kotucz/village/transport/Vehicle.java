@@ -1,5 +1,7 @@
 package kotucz.village.transport;
 
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -75,13 +77,14 @@ public class Vehicle {
         mat.setColor("Color", new ColorRGBA((float)Math.random(), (float)Math.random(),(float)Math.random(), 1f));
 
         id = "V"+idGen.incrementAndGet();
+        final float halfSize = 0.25f;
 
+            Geometry reBoxg;
         {
 //            MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
-            final float halfSize = 0.25f;
 
             MyBox box = new MyBox(new Vector3f(-halfSize, -halfSize, 0), new Vector3f(halfSize, halfSize, 2*halfSize));
-            Geometry reBoxg = new Geometry("kapota", box);
+            reBoxg = new Geometry("kapota", box);
             reBoxg.setUserData(ID_KEY, id);
             reBoxg.setMaterial(mat);
             reBoxg.setLocalTranslation(new Vector3f(0, 0, 0));
@@ -93,7 +96,7 @@ public class Vehicle {
             box.setTexture(MyBox.FACE_BOTTOM, mtex.getTex(off +5));
             box.setTexture(MyBox.FACE_TOP, mtex.getTex(off +2));
             box.setTexture(MyBox.FACE_LEFT, mtex.getTex(off +1));
-            reBoxg.setQueueBucket(RenderQueue.Bucket.Transparent);
+        reBoxg.setQueueBucket(RenderQueue.Bucket.Transparent);
 
             node.attachChild(reBoxg);
         }
@@ -101,6 +104,11 @@ public class Vehicle {
 
         this.mineral = new Mineral(GoodsType.WOOD, new Vector3f(0.5f, 0, 0.125f), MyGame.matResources);
 
+
+        RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(halfSize, halfSize, halfSize)), 0);
+        reBoxg.addControl(control);
+        control.setKinematic(true);
+        control.setPhysicsLocation(posVector);
 
 
 
