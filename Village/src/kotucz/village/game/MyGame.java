@@ -176,8 +176,8 @@ public class MyGame extends SimpleApplication {
 
         {
 
-            for (int i = 0; i < 50; i++) {
-                Mineral mineral = new Mineral(GoodsType.WOOD, new Vector3f(5+random.nextFloat()*1, 5+    random.nextFloat(), random.nextFloat()*5), matResources);
+            for (int i = 0; i < 500; i++) {
+                Mineral mineral = new Mineral(GoodsType.WOOD, new Vector3f(5+random.nextFloat()*1, 5+    random.nextFloat(), random.nextFloat()*5+2), matResources);
                 rootNode.attachChild(mineral.getSpatial());
                 getPhysicsSpace().add(mineral.getSpatial());
             }
@@ -186,6 +186,22 @@ public class MyGame extends SimpleApplication {
         }
         {
             Conveyor conveyor = new Conveyor(new Vector3f(5.5f, 5.5f, 0.5f), matResources);
+            conveyor.setDir(new Vector3f(1, 0, 0));
+            rootNode.attachChild(conveyor.getSpatial());
+            getPhysicsSpace().add(conveyor.getSpatial());
+        }{
+            Conveyor conveyor = new Conveyor(new Vector3f(6.5f, 5.5f, 0.5f), matResources);
+            conveyor.setDir(new Vector3f(0, 1, 0));
+            rootNode.attachChild(conveyor.getSpatial());
+            getPhysicsSpace().add(conveyor.getSpatial());
+        }{
+            Conveyor conveyor = new Conveyor(new Vector3f(6.5f, 6.5f, 0.5f), matResources);
+            conveyor.setDir(new Vector3f(-1, 0, 0));
+            rootNode.attachChild(conveyor.getSpatial());
+            getPhysicsSpace().add(conveyor.getSpatial());
+        }{
+            Conveyor conveyor = new Conveyor(new Vector3f(5.5f, 6.5f, 0.5f), matResources);
+            conveyor.setDir(new Vector3f(0, -1, 0));
             rootNode.attachChild(conveyor.getSpatial());
             getPhysicsSpace().add(conveyor.getSpatial());
         }
@@ -203,12 +219,12 @@ public class MyGame extends SimpleApplication {
 //        Plane plane = new Plane();
 //        plane.setOriginNormal(new Vector3f(0, 0.25f, 0), Vector3f.UNIT_Y);
 //        floorGeometry.addControl(new RigidBodyControl(new PlaneCollisionShape(plane), 0));
-            RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(140, 140, 0.25f)), 0);
-
-            control.setPhysicsLocation(new Vector3f(0, 0, -0.25f));
-
+            RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(lingrid.getSizeX()/2f, lingrid.getSizeY()/2f, 0.25f)), 0);
             Node node = new Node();
             node.addControl(control);
+            control.setPhysicsLocation(new Vector3f(lingrid.getSizeX()/2f, lingrid.getSizeY()/2f, -0.25f));
+
+
             rootNode.attachChild(node);
             getPhysicsSpace().add(node);
         }
@@ -239,6 +255,7 @@ public class MyGame extends SimpleApplication {
         car.setBehavior(new VehicleBehavior(car, map.pnet));
         selectables.attachChild(car.getNode());
         map.traffic.putVehicle(car);
+        getPhysicsSpace().add(car.getNode().getChild(0));
     }
 
     @Override
