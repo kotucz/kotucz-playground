@@ -47,6 +47,13 @@ public class Multitexture {
                 (float) (height - startY) / height);
     }
 
+    public Subtexture createRealSubtexture(float startX, float startY, float endX, float endY) {
+        return new Subtexture((float) startX / width,
+                (float) (height - endY) / height,
+                (float) endX / width,
+                (float) (height - startY) / height);
+    }
+
     
     int numx;
     int numy;

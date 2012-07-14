@@ -1,5 +1,7 @@
 package kotucz.village.transport;
 
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -47,13 +49,13 @@ public class Mineral {
 //        mat.setColor("Color", new ColorRGBA((float)Math.random(), (float)Math.random(),(float)Math.random(), 1f));
 
         id = "M"+idGen.incrementAndGet();
+        final float halfSize = 0.125f;
 
         {
 //            MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
-            final float halfSize = 0.125f;
 //            final float halfSize = 1.25f;
 
-            MyBox box = new MyBox(new Vector3f(-halfSize, -halfSize, 0), new Vector3f(halfSize, halfSize, 2*halfSize));
+            MyBox box = new MyBox(new Vector3f(-halfSize, -halfSize, -halfSize), new Vector3f(halfSize, halfSize, halfSize));
             Geometry reBoxg = new Geometry("kapota", box);
             reBoxg.setUserData(ID_KEY, id);
             reBoxg.setMaterial(mat);
@@ -71,6 +73,10 @@ public class Mineral {
             this.spatial = reBoxg;
         }
 
+
+        RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(halfSize, halfSize, halfSize)), 1);
+        spatial.addControl(control);
+        control.setPhysicsLocation(posVector);
 
         updateModel();
 

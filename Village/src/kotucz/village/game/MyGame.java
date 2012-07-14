@@ -34,6 +34,8 @@ package kotucz.village.game;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.TextureKey;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.collision.CollisionResult;
@@ -70,6 +72,8 @@ import kotucz.village.transport.*;
  * @author kotucz
  */
 public class MyGame extends SimpleApplication {
+
+    private BulletAppState bulletAppState;
 
     public static final Vector3f UP = new Vector3f(0, 0, 1);
     public static final int NUM_CARS = 00;
@@ -126,6 +130,11 @@ public class MyGame extends SimpleApplication {
     @Override
     public void simpleInitApp() {
 
+        bulletAppState = new BulletAppState();
+        stateManager.attach(bulletAppState);
+        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+        getPhysicsSpace().setGravity(new Vector3f(0, 0, -9.81f));
+
         assetManager.registerLocator("assets/", FileLocator.class);
 
 
@@ -166,10 +175,20 @@ public class MyGame extends SimpleApplication {
         }
 
         {
-            Mineral mineral = new Mineral(GoodsType.WOOD, new Vector3f(5f, 5f, 0f), matResources);
-            rootNode.attachChild(mineral.getSpatial());
-        }
 
+            for (int i = 0; i < 50; i++) {
+                Mineral mineral = new Mineral(GoodsType.WOOD, new Vector3f(5+random.nextFloat()*1, 5+    random.nextFloat(), random.nextFloat()*5), matResources);
+                rootNode.attachChild(mineral.getSpatial());
+                getPhysicsSpace().add(mineral.getSpatial());
+            }
+
+
+        }
+        {
+            Conveyor conveyor = new Conveyor(new Vector3f(5.5f, 5.5f, 0.5f), matResources);
+            rootNode.attachChild(conveyor.getSpatial());
+            getPhysicsSpace().add(conveyor.getSpatial());
+        }
 
         initInputs();
 
@@ -178,6 +197,25 @@ public class MyGame extends SimpleApplication {
         bsr = new BasicShadowRenderer(assetManager, 256);
         bsr.setDirection(new Vector3f(-1, -1, -1).normalizeLocal());
         viewPort.addProcessor(bsr);
+
+        {
+            // add floor
+//        Plane plane = new Plane();
+//        plane.setOriginNormal(new Vector3f(0, 0.25f, 0), Vector3f.UNIT_Y);
+//        floorGeometry.addControl(new RigidBodyControl(new PlaneCollisionShape(plane), 0));
+            RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(140, 140, 0.25f)), 0);
+
+            control.setPhysicsLocation(new Vector3f(0, 0, -0.25f));
+
+            Node node = new Node();
+            node.addControl(control);
+            rootNode.attachChild(node);
+            getPhysicsSpace().add(node);
+        }
+    }
+
+    private PhysicsSpace getPhysicsSpace() {
+        return bulletAppState.getPhysicsSpace();
     }
 
     private void initInputs() {
@@ -858,7 +896,7 @@ public class MyGame extends SimpleApplication {
 
         Pos start;
         Pos current;
-//        Building.Type buildingType = Building.Type.FACTORY;
+        //        Building.Type buildingType = Building.Type.FACTORY;
 //        Building.Type buildingType = Building.Type.HOUSE;
         Building.Type buildingType = Building.Type.MINE;
 
