@@ -61,14 +61,24 @@ public class Mineral {
             reBoxg.setMaterial(mat);
             reBoxg.setLocalTranslation(new Vector3f(0, 0, 0));
             Multitexture1 mtex = new Multitexture1(new LinearGrid(16, 16));
-            final int off = 16*3;
-            box.setTexture(MyBox.FACE_FRONT, mtex.getTex(off +3));
-            box.setTexture(MyBox.FACE_RIGHT, mtex.getTex(off +0));
-            box.setTexture(MyBox.FACE_BACK, mtex.getTex(off +4));
-            box.setTexture(MyBox.FACE_BOTTOM, mtex.getTex(off +5));
-            box.setTexture(MyBox.FACE_TOP, mtex.getTex(off +2));
-            box.setTexture(MyBox.FACE_LEFT, mtex.getTex(off +1));
-            reBoxg.setQueueBucket(RenderQueue.Bucket.Transparent);
+            final int off = 16*3 + type.ordinal();
+
+            box.setTexture(MyBox.FACE_FRONT, mtex.getTex(off));
+            box.setTexture(MyBox.FACE_RIGHT, mtex.getTex(off));
+            box.setTexture(MyBox.FACE_BACK, mtex.getTex(off));
+            box.setTexture(MyBox.FACE_BOTTOM, mtex.getTex(off));
+            box.setTexture(MyBox.FACE_TOP, mtex.getTex(off));
+            box.setTexture(MyBox.FACE_LEFT, mtex.getTex(off));
+
+
+//            box.setTexture(MyBox.FACE_FRONT, mtex.getTex(off +3));
+//            box.setTexture(MyBox.FACE_RIGHT, mtex.getTex(off +0));
+//            box.setTexture(MyBox.FACE_BACK, mtex.getTex(off +4));
+//            box.setTexture(MyBox.FACE_BOTTOM, mtex.getTex(off +5));
+//            box.setTexture(MyBox.FACE_TOP, mtex.getTex(off +2));
+//            box.setTexture(MyBox.FACE_LEFT, mtex.getTex(off +1));
+
+//            reBoxg.setQueueBucket(RenderQueue.Bucket.Transparent);
 
             this.spatial = reBoxg;
         }
@@ -77,6 +87,8 @@ public class Mineral {
         RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(halfSize, halfSize, halfSize)), 1);
         spatial.addControl(control);
         control.setPhysicsLocation(posVector);
+
+        spatial.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
 
         updateModel();
 

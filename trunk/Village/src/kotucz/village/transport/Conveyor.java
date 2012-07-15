@@ -110,9 +110,12 @@ public class Conveyor {
             }
         });
 
+        spatial.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+
         control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(halfSize, halfSize, halfSize)), 0);
 
         spatial.addControl(control);
+
         control.setPhysicsLocation(posVector);
 
 //        this.model = new Vehicle3D(this);
