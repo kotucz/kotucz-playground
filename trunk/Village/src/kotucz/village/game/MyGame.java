@@ -46,6 +46,7 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
@@ -65,7 +66,11 @@ import com.jme3.texture.Texture;
 import java.util.*;
 
 import kotucz.village.common.Dir;
+import kotucz.village.common.Dir3D;
+import kotucz.village.common.Dir3D6;
 import kotucz.village.common.Dir4;
+import kotucz.village.cubes.Cube;
+import kotucz.village.cubes.Pos3D;
 import kotucz.village.tiles.*;
 import kotucz.village.build.Building;
 import kotucz.village.transport.*;
@@ -75,12 +80,14 @@ import kotucz.village.transport.*;
  */
 public class MyGame extends SimpleApplication {
 
+    public static final boolean CONFIG_USE_SHADOWS = true;
+    public static final int NUM_CARS = 00;
+
     public static final String COMMON_MAT_DEFS_MISC_UNSHADED_J3MD = "Common/MatDefs/Misc/Unshaded.j3md";
     public static final String COMMON_MAT_DEFS_LIGHT_LIGHTING_J3MD = "Common/MatDefs/Light/Lighting.j3md";
     private BulletAppState bulletAppState;
 
     public static final Vector3f UP = new Vector3f(0, 0, 1);
-    public static final int NUM_CARS = 00;
     //    static float bLength = 1f;
 //    static float bWidth = 1f;
 //    static float bHeight = 1f;
@@ -124,6 +131,7 @@ public class MyGame extends SimpleApplication {
     private Material spriteMaterial;
     private RoadBuilder roadBuilder;
     public static Material matResources;
+    private Dir3D dir3D;
 
     public static void main(String args[]) {
         MyGame f = new MyGame();
@@ -177,7 +185,9 @@ public class MyGame extends SimpleApplication {
             cam.lookAt(new Vector3f(8, 8, 0), UP);
             cam.setFrustumFar(500);
         }
-
+        {
+            createCubeOnPos3D(new Pos3D(5, 3, 0));
+        }
         {
 
             for (int i = 0; i < 500; i++) {
@@ -186,19 +196,23 @@ public class MyGame extends SimpleApplication {
 
 
         }
+
         {
             Conveyor conveyor = new Conveyor(new Vector3f(5.5f, 5.5f, 0.5f), matResources);
             conveyor.setDir(new Vector3f(1, 0, 0));
             putConveyor(conveyor);
-        }{
+        }
+        {
             Conveyor conveyor = new Conveyor(new Vector3f(6.5f, 5.5f, 0.5f), matResources);
             conveyor.setDir(new Vector3f(0, 1, 0));
             putConveyor(conveyor);
-        }{
+        }
+        {
             Conveyor conveyor = new Conveyor(new Vector3f(6.5f, 6.5f, 0.5f), matResources);
             conveyor.setDir(new Vector3f(-1, 0, 0));
             putConveyor(conveyor);
-        }{
+        }
+        {
             Conveyor conveyor = new Conveyor(new Vector3f(5.5f, 6.5f, 0.5f), matResources);
             conveyor.setDir(new Vector3f(0, -1, 0));
             putConveyor(conveyor);
@@ -206,27 +220,33 @@ public class MyGame extends SimpleApplication {
 
         initInputs();
 
-
-        rootNode.setShadowMode(ShadowMode.Off);
-        bsr = new BasicShadowRenderer(assetManager, 1024);
-        bsr.setDirection(new Vector3f(-1, 1, -2).normalizeLocal());
-        viewPort.addProcessor(bsr);
-
-        /** Must add a light to make the lit object visible! */
-        DirectionalLight sun = new DirectionalLight();
-        sun.setDirection(new Vector3f(-1 , 1, -2).normalizeLocal());
-        sun.setColor(ColorRGBA.White);
-        rootNode.addLight(sun);
-
+        {
+            rootNode.setShadowMode(ShadowMode.Off);
+            bsr = new BasicShadowRenderer(assetManager, 1024);
+            bsr.setDirection(new Vector3f(-1, 1, -2).normalizeLocal());
+            viewPort.addProcessor(bsr);
+        }
+        {
+            AmbientLight ambientLight = new AmbientLight();
+            ambientLight.setColor(ColorRGBA.White);
+            rootNode.addLight(ambientLight);
+        }
+        {
+            /** Must add a light to make the lit object visible! */
+            DirectionalLight sun = new DirectionalLight();
+            sun.setDirection(new Vector3f(-1, 1, -2).normalizeLocal());
+            sun.setColor(ColorRGBA.White);
+            rootNode.addLight(sun);
+        }
         {
             // add floor
 //        Plane plane = new Plane();
 //        plane.setOriginNormal(new Vector3f(0, 0.25f, 0), Vector3f.UNIT_Y);
 //        floorGeometry.addControl(new RigidBodyControl(new PlaneCollisionShape(plane), 0));
-            RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(lingrid.getSizeX()/2f, lingrid.getSizeY()/2f, 0.25f)), 0);
+            RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(lingrid.getSizeX() / 2f, lingrid.getSizeY() / 2f, 0.25f)), 0);
             Node node = new Node();
             node.addControl(control);
-            control.setPhysicsLocation(new Vector3f(lingrid.getSizeX()/2f, lingrid.getSizeY()/2f, -0.25f));
+            control.setPhysicsLocation(new Vector3f(lingrid.getSizeX() / 2f, lingrid.getSizeY() / 2f, -0.25f));
 
 
             rootNode.attachChild(node);
@@ -239,10 +259,20 @@ public class MyGame extends SimpleApplication {
         getPhysicsSpace().add(conveyor.getSpatial());
     }
 
+
     private void putMineral(Mineral mineral1) {
         Mineral mineral = mineral1;
         rootNode.attachChild(mineral.getSpatial());
         getPhysicsSpace().add(mineral.getSpatial());
+    }
+
+    public final Map<String, Cube> cubeFindById = new HashMap<String, Cube>();
+
+    private void putCube(Cube mineral1) {
+        Cube cube = mineral1;
+        selectables.attachChild(cube.getSpatial());
+        getPhysicsSpace().add(cube.getSpatial());
+        cubeFindById.put(cube.getId(), cube);
     }
 
     private PhysicsSpace getPhysicsSpace() {
@@ -274,6 +304,11 @@ public class MyGame extends SimpleApplication {
         getPhysicsSpace().add(car.getNode().getChild(0));
     }
 
+    public void createCubeOnPos3D(Pos3D pos) {
+        Vector3f vector3f = new Vector3f(pos.x + 0.5f, pos.y + 0.5f, pos.z + 0.5f);
+        putCube(new Cube(pos, vector3f, matResources));
+
+    }
 
 
     float dropper;
@@ -283,8 +318,10 @@ public class MyGame extends SimpleApplication {
     public void simpleUpdate(float tpf) {
         super.simpleUpdate(tpf);
 
+        textSelection.setText("No selection");
+
         dropper += tpf;
-        if (dropper>nextDrop) {
+        if (dropper > nextDrop) {
             putMineral(new Mineral(GoodsType.values()[random.nextInt(5)], new Vector3f(5 + random.nextFloat() * 1, 5 + random.nextFloat(), random.nextFloat() * 5 + 2), matResources));
             nextDrop += 3; // drop interval
         }
@@ -409,6 +446,25 @@ public class MyGame extends SimpleApplication {
                 }
             }
 
+            {
+                Object kode = closest.getGeometry().getUserData(Cube.ID_KEY);
+//                System.out.println("Test user value: " + userData);
+                Cube cube = cubeFindById.get(kode);
+
+
+                if (cube != null) {
+                    Vector3f contactNormal = closest.getContactNormal();
+                    dir3D = Dir3D6.valueOfVector(contactNormal);
+                    textSelection.setText("" + cube + " " + contactNormal+" "+dir3D);
+
+
+
+//                    vehicle.mark(ColorRGBA.randomColor());
+//                    selectTileGrid.setTexture(vehicle.requestPos, TexturesSelect.SELECTED);
+                    return cube;
+                }
+            }
+
 
             if ("selgrid".equals(closest.getGeometry().getName())) {
                 Vector3f contactPoint = closest.getContactPoint();
@@ -477,7 +533,6 @@ public class MyGame extends SimpleApplication {
             geometry.setQueueBucket(RenderQueue.Bucket.Sky);
 
             grids.attachChild(geometry);
-
 
 
         }
@@ -727,7 +782,7 @@ public class MyGame extends SimpleApplication {
         }
 
         {   // resources unshaded
-             Material material = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
+            Material material = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
 
             TextureKey textureKey = new TextureKey("Textures/tiles.png");
 //            TextureKey key4 = new TextureKey("Textures/watr16.png");
@@ -852,7 +907,8 @@ public class MyGame extends SimpleApplication {
     }
 
     //    MyAction currentAction = new SelectAction();
-    MyAction currentAction = new BuildRoadAction();
+//    MyAction currentAction = new BuildRoadAction();
+    MyAction currentAction = new CubeAction();
 
 
     class SelectAction extends MyAction {
@@ -1079,6 +1135,49 @@ public class MyGame extends SimpleApplication {
                 }
             }
             this.start = null;
+        }
+
+//        void cancel() {
+//            selectGrid.set.clear();
+//            selectGrid.updateGrid();
+//        }
+    }
+
+    class CubeAction extends MyAction {
+
+
+        Cube current;
+
+
+        @Override
+        void updateGui() {
+            Object pick = pick();
+            if (pick instanceof Cube) {
+                current = (Cube)pick;
+            } else {
+                current = null;
+            }
+//            selectGrid.set.clear();
+            if (current != null) {
+//                selectTileGrid.setTexture(current, TexturesSelect.SELECTED);
+//                selectTileGrid.add(current.x, current.y + 1);
+//                selectTileGridd.add(current.x + 1, current.y + 1);
+            }
+//            selectGrid.updateGrid();
+        }
+
+        @Override
+        void onMouseDown() {
+  //          this.start = pickPos();
+        }
+
+        @Override
+        void onMouseUp() {
+            if (this.current != null) {
+                // put new cube
+                Pos3D pos3D = current.getPos().inDir(dir3D);
+                createCubeOnPos3D(pos3D);
+            }
         }
 
 //        void cancel() {
