@@ -46,12 +46,14 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -73,6 +75,8 @@ import kotucz.village.transport.*;
  */
 public class MyGame extends SimpleApplication {
 
+    public static final String COMMON_MAT_DEFS_MISC_UNSHADED_J3MD = "Common/MatDefs/Misc/Unshaded.j3md";
+    public static final String COMMON_MAT_DEFS_LIGHT_LIGHTING_J3MD = "Common/MatDefs/Light/Lighting.j3md";
     private BulletAppState bulletAppState;
 
     public static final Vector3f UP = new Vector3f(0, 0, 1);
@@ -177,9 +181,7 @@ public class MyGame extends SimpleApplication {
         {
 
             for (int i = 0; i < 500; i++) {
-                Mineral mineral = new Mineral(GoodsType.WOOD, new Vector3f(5+random.nextFloat()*1, 5+    random.nextFloat(), random.nextFloat()*5+2), matResources);
-                rootNode.attachChild(mineral.getSpatial());
-                getPhysicsSpace().add(mineral.getSpatial());
+                putMineral(new Mineral(GoodsType.values()[random.nextInt(5)], new Vector3f(5 + random.nextFloat() * 1, 5 + random.nextFloat(), random.nextFloat() * 5 + 2), matResources));
             }
 
 
@@ -187,32 +189,34 @@ public class MyGame extends SimpleApplication {
         {
             Conveyor conveyor = new Conveyor(new Vector3f(5.5f, 5.5f, 0.5f), matResources);
             conveyor.setDir(new Vector3f(1, 0, 0));
-            rootNode.attachChild(conveyor.getSpatial());
-            getPhysicsSpace().add(conveyor.getSpatial());
+            putConveyor(conveyor);
         }{
             Conveyor conveyor = new Conveyor(new Vector3f(6.5f, 5.5f, 0.5f), matResources);
             conveyor.setDir(new Vector3f(0, 1, 0));
-            rootNode.attachChild(conveyor.getSpatial());
-            getPhysicsSpace().add(conveyor.getSpatial());
+            putConveyor(conveyor);
         }{
             Conveyor conveyor = new Conveyor(new Vector3f(6.5f, 6.5f, 0.5f), matResources);
             conveyor.setDir(new Vector3f(-1, 0, 0));
-            rootNode.attachChild(conveyor.getSpatial());
-            getPhysicsSpace().add(conveyor.getSpatial());
+            putConveyor(conveyor);
         }{
             Conveyor conveyor = new Conveyor(new Vector3f(5.5f, 6.5f, 0.5f), matResources);
             conveyor.setDir(new Vector3f(0, -1, 0));
-            rootNode.attachChild(conveyor.getSpatial());
-            getPhysicsSpace().add(conveyor.getSpatial());
+            putConveyor(conveyor);
         }
 
         initInputs();
 
 
         rootNode.setShadowMode(ShadowMode.Off);
-        bsr = new BasicShadowRenderer(assetManager, 256);
-        bsr.setDirection(new Vector3f(-1, -1, -1).normalizeLocal());
+        bsr = new BasicShadowRenderer(assetManager, 1024);
+        bsr.setDirection(new Vector3f(-1, 1, -2).normalizeLocal());
         viewPort.addProcessor(bsr);
+
+        /** Must add a light to make the lit object visible! */
+        DirectionalLight sun = new DirectionalLight();
+        sun.setDirection(new Vector3f(-1 , 1, -2).normalizeLocal());
+        sun.setColor(ColorRGBA.White);
+        rootNode.addLight(sun);
 
         {
             // add floor
@@ -230,6 +234,17 @@ public class MyGame extends SimpleApplication {
         }
     }
 
+    private void putConveyor(Conveyor conveyor) {
+        rootNode.attachChild(conveyor.getSpatial());
+        getPhysicsSpace().add(conveyor.getSpatial());
+    }
+
+    private void putMineral(Mineral mineral1) {
+        Mineral mineral = mineral1;
+        rootNode.attachChild(mineral.getSpatial());
+        getPhysicsSpace().add(mineral.getSpatial());
+    }
+
     private PhysicsSpace getPhysicsSpace() {
         return bulletAppState.getPhysicsSpace();
     }
@@ -237,6 +252,7 @@ public class MyGame extends SimpleApplication {
     private void initInputs() {
         inputManager.addMapping(SHOOT, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addListener(actionListener, SHOOT);
+
         inputManager.addMapping(GC, new KeyTrigger(KeyInput.KEY_X));
         inputManager.addListener(actionListener, GC);
 
@@ -258,9 +274,20 @@ public class MyGame extends SimpleApplication {
         getPhysicsSpace().add(car.getNode().getChild(0));
     }
 
+
+
+    float dropper;
+    float nextDrop;
+
     @Override
     public void simpleUpdate(float tpf) {
         super.simpleUpdate(tpf);
+
+        dropper += tpf;
+        if (dropper>nextDrop) {
+            putMineral(new Mineral(GoodsType.values()[random.nextInt(5)], new Vector3f(5 + random.nextFloat() * 1, 5 + random.nextFloat(), random.nextFloat() * 5 + 2), matResources));
+            nextDrop += 3; // drop interval
+        }
 
         selectTileGrid.setAllTo(TexturesSelect.VOID);
 
@@ -435,6 +462,7 @@ public class MyGame extends SimpleApplication {
             TileGrid tileGrid = new TileGrid(lingrid, matgrass, this);
             final Geometry geometry = tileGrid.getGeometry();
 
+
 //            geometry.setQueueBucket(RenderQueue.Bucket.Transparent);
 //            geometry.setMaterial(matwtr);
 //            geometry.setShadowMode(ShadowMode.Receive);
@@ -443,8 +471,14 @@ public class MyGame extends SimpleApplication {
             }
             tileGrid.updateTexture();
 
-            geometry.setLocalTranslation(new Vector3f(0, 0, layerZ += epsz));
+//            geometry.setLocalTranslation(new Vector3f(0, 0, layerZ += epsz));
+            geometry.setLocalTranslation(new Vector3f(0, 0, 0.1f));
+            geometry.setShadowMode(ShadowMode.Receive);
+            geometry.setQueueBucket(RenderQueue.Bucket.Sky);
+
             grids.attachChild(geometry);
+
+
 
         }
 
@@ -586,7 +620,7 @@ public class MyGame extends SimpleApplication {
 
     public void initMaterial() {
         {
-            mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            mat = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
             TextureKey key = new TextureKey("Textures/tex1.png");
 //        key.setTextureTypeHint(Texture.Type.TwoDimensionalArray);       
             key.setGenerateMips(true);
@@ -599,7 +633,7 @@ public class MyGame extends SimpleApplication {
 //        mat2 = mat;
 //        mat3 = mat;
         {
-            mat16 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            mat16 = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
             TextureKey key2 = new TextureKey("Textures/tex16.png");
 //            key2.setGenerateMips(true);
 
@@ -607,8 +641,10 @@ public class MyGame extends SimpleApplication {
             tex2.setMagFilter(Texture.MagFilter.Nearest);
             mat16.setTexture("ColorMap", tex2);
         }
-        {
-            matgrass = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+
+        {  // unshaded
+            Material matgrass = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
+
             TextureKey key3 = new TextureKey("Textures/gras16.png");
 //            key3.setGenerateMips(true);
 
@@ -616,9 +652,27 @@ public class MyGame extends SimpleApplication {
             tex3.setMagFilter(Texture.MagFilter.Nearest);
 
             matgrass.setTexture("ColorMap", tex3);
+
+//            this.matgrass = matgrass;
+
         }
         {
-            matwtr = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+
+            Material matgrass = new Material(assetManager, COMMON_MAT_DEFS_LIGHT_LIGHTING_J3MD);
+
+            TextureKey key3 = new TextureKey("Textures/gras16.png");
+//            key3.setGenerateMips(true);
+
+            Texture tex3 = assetManager.loadTexture(key3);
+            tex3.setMagFilter(Texture.MagFilter.Nearest);
+
+            matgrass.setTexture("m_DiffuseMap", tex3); // light
+
+            this.matgrass = matgrass;
+
+        }
+        {
+            matwtr = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
 //            TextureKey key4 = new TextureKey("Textures/road16.png");
             TextureKey key4 = new TextureKey("Textures/watrnodes16.png");
 //            TextureKey key3 = new TextureKey("Textures/tex16.png");
@@ -630,7 +684,7 @@ public class MyGame extends SimpleApplication {
             matwtr.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
         }
         {
-            matroad = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            matroad = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
             TextureKey key4 = new TextureKey("Textures/road16.png");
 //            TextureKey key4 = new TextureKey("Textures/watr16.png");
 //            TextureKey key3 = new TextureKey("Textures/tex16.png");
@@ -642,7 +696,7 @@ public class MyGame extends SimpleApplication {
             matroad.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
         }
         {
-            Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            Material material = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
 
             TextureKey key4 = new TextureKey("Textures/roadarrows16.png");
 //            TextureKey key4 = new TextureKey("Textures/watr16.png");
@@ -656,7 +710,7 @@ public class MyGame extends SimpleApplication {
             matroadarrows = material;
         }
         {
-            Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            Material material = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
 
             TextureKey textureKey = new TextureKey("Textures/buildings.png");
 //            TextureKey key4 = new TextureKey("Textures/watr16.png");
@@ -672,8 +726,8 @@ public class MyGame extends SimpleApplication {
 
         }
 
-        {
-            Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        {   // resources unshaded
+             Material material = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
 
             TextureKey textureKey = new TextureKey("Textures/tiles.png");
 //            TextureKey key4 = new TextureKey("Textures/watr16.png");
@@ -685,12 +739,28 @@ public class MyGame extends SimpleApplication {
             material.setTexture("ColorMap", texture);
             material.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 
+//            matResources = material;
+
+        }
+        {   // resources shaded
+            Material material = new Material(assetManager, COMMON_MAT_DEFS_LIGHT_LIGHTING_J3MD);
+
+            TextureKey textureKey = new TextureKey("Textures/tiles.png");
+//            TextureKey key4 = new TextureKey("Textures/watr16.png");
+//            TextureKey key3 = new TextureKey("Textures/tex16.png");
+//            key3.setGenerateMips(true);`
+            Texture texture = assetManager.loadTexture(textureKey);
+            texture.setMagFilter(Texture.MagFilter.Nearest);
+//        tex3.setWrap(WrapMode.Repeat);
+            material.setTexture("m_DiffuseMap", texture);
+            material.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+
             matResources = material;
 
         }
 
         {
-            matsel = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            matsel = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
             TextureKey key4 = new TextureKey("Textures/select16.png");
 //            TextureKey key4 = new TextureKey("Textures/watr16.png");
 //            TextureKey key3 = new TextureKey("Textures/tex16.png");
@@ -702,7 +772,7 @@ public class MyGame extends SimpleApplication {
             matsel.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
         }
         {
-            matveh = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            matveh = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
             TextureKey key4 = new TextureKey("Textures/veh256.png");
 //            TextureKey key4 = new TextureKey("Textures/watr16.png");
 //            TextureKey key3 = new TextureKey("Textures/tex16.png");
@@ -776,7 +846,7 @@ public class MyGame extends SimpleApplication {
     protected void initMark() {
         Sphere sphere = new Sphere(30, 30, 0.2f);
         mark = new Geometry("BOOM!", sphere);
-        Material mark_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mark_mat = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
         mark_mat.setColor("Color", ColorRGBA.Red);
         mark.setMaterial(mark_mat);
     }
