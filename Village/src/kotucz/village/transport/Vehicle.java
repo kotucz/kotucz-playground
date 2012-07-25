@@ -9,6 +9,7 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import kotucz.village.common.Entities;
 import kotucz.village.common.MyBox;
 import kotucz.village.game.MyGame;
 import kotucz.village.game.Player;
@@ -23,11 +24,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Vehicle {
 
-    public static final String ID_KEY = "VehicleUserDataIdKey";
+//    public static final String ID_KEY = "VehicleUserDataIdKey";
+//
+//    //    private Vector3f destShort = new Vector3f();
+//
+//    static final AtomicInteger idGen = new AtomicInteger();
 
-    //    private Vector3f destShort = new Vector3f();
-
-    static final AtomicInteger idGen = new AtomicInteger();
+    private final String id = Entities.acquireUniqueKey(this);
 
 
 //    private long fuel;
@@ -58,7 +61,7 @@ public class Vehicle {
     final Node node = new Node("Vozidlo");
     private VehicleBehavior behavior;
 
-    private final String id;
+//    private final String id;
     private final Mineral mineral;
 
     //    public Vehicle(Player owner, Type type, RoadPoint roadPoint, Material mat, AbstractGridPathNetwork network) {
@@ -76,7 +79,7 @@ public class Vehicle {
         mat = mat.clone();
         mat.setColor("Color", new ColorRGBA((float)Math.random(), (float)Math.random(),(float)Math.random(), 1f));
 
-        id = "V"+idGen.incrementAndGet();
+//        id = "V"+idGen.incrementAndGet();
         final float halfSize = 0.25f;
 
             Geometry reBoxg;
@@ -85,7 +88,7 @@ public class Vehicle {
 
             MyBox box = new MyBox(new Vector3f(-halfSize, -halfSize, 0), new Vector3f(halfSize, halfSize, 2*halfSize));
             reBoxg = new Geometry("kapota", box);
-            reBoxg.setUserData(ID_KEY, id);
+            reBoxg.setUserData(Entities.ID_KEY, id);
             reBoxg.setMaterial(mat);
             reBoxg.setLocalTranslation(new Vector3f(0, 0, 0));
             Multitexture1 mtex = new Multitexture1(new LinearGrid(16, 16));
