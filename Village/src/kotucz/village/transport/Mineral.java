@@ -8,6 +8,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
+import kotucz.village.common.Entities;
 import kotucz.village.common.MyBox;
 import kotucz.village.tiles.LinearGrid;
 import kotucz.village.tiles.Multitexture1;
@@ -20,14 +21,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Mineral {
 
-    public static final String ID_KEY = "MineralUserDataIdKey";
+//    public static final String ID_KEY = "MineralUserDataIdKey";
 
     //    private Vector3f destShort = new Vector3f();
 
-    static final AtomicInteger idGen = new AtomicInteger();
+//    static final AtomicInteger idGen = new AtomicInteger();
 
 
-    private final String id;
+    private final String id = Entities.acquireUniqueKey(this);
 
     final GoodsType type;
 
@@ -48,7 +49,7 @@ public class Mineral {
 //        mat = mat.clone();
 //        mat.setColor("Color", new ColorRGBA((float)Math.random(), (float)Math.random(),(float)Math.random(), 1f));
 
-        id = "M"+idGen.incrementAndGet();
+//        id = "M"+idGen.incrementAndGet();
         final float halfSize = 0.125f;
 
         {
@@ -57,7 +58,7 @@ public class Mineral {
 
             MyBox box = new MyBox(new Vector3f(-halfSize, -halfSize, -halfSize), new Vector3f(halfSize, halfSize, halfSize));
             Geometry reBoxg = new Geometry("kapota", box);
-            reBoxg.setUserData(ID_KEY, id);
+            reBoxg.setUserData(Entities.ID_KEY, id);
             reBoxg.setMaterial(mat);
             reBoxg.setLocalTranslation(new Vector3f(0, 0, 0));
             Multitexture1 mtex = new Multitexture1(new LinearGrid(16, 16));

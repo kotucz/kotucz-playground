@@ -32,7 +32,6 @@
 package kotucz.village.game;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.TextureKey;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
@@ -44,12 +43,12 @@ import com.jme3.font.BitmapText;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
-import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
@@ -61,7 +60,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.shadow.BasicShadowRenderer;
-import com.jme3.texture.Texture;
 import kotucz.village.build.Building;
 import kotucz.village.character.Avatar;
 import kotucz.village.common.*;
@@ -95,14 +93,6 @@ public class MyGame extends SimpleApplication {
     public static final String BUILD_BUILDING = "buildBuilding";
     public static final String BUILD_ROAD = "buildRoad";
     public static final String BUILD_CAR = "buildCAR";
-    Material mat;
-    Material mat16;
-    Material matgrass;
-    Material matroad;
-    Material matroadarrows;
-    Material matwtr;
-    Material matsel;
-    Material matVehicles;
     BasicShadowRenderer bsr;
 
     private BitmapText textAction;
@@ -125,15 +115,14 @@ public class MyGame extends SimpleApplication {
 
 
     public GameMap map;
-    private Material matBuildings;
     private BitmapText textSelection;
     private Player player;
     private Material spriteMaterial;
     private RoadBuilder roadBuilder;
-    public static Material matResources;
     private Dir3D dir3D;
 
-    Avatar hero;
+    private Avatar hero;
+    final Modeler modeler = new Modeler(this);
 
     public static void main(String args[]) {
         MyGame f = new MyGame();
@@ -158,7 +147,7 @@ public class MyGame extends SimpleApplication {
 
         map = new GameMap(this, rootNode);
 
-        initMaterial();
+        modeler.initMaterial();
         initGrids();
         initCrossHairs();
 
@@ -174,7 +163,7 @@ public class MyGame extends SimpleApplication {
 
 
         for (int i = 0; i < NUM_CARS; i++) {
-            putCar(new Vehicle(player, Vehicle.Type.SKODA120, map.pnet.randomRoadPoint(random), matVehicles));
+            putCar(new Vehicle(player, Vehicle.Type.SKODA120, map.pnet.randomRoadPoint(random), modeler.matVehicles));
         }
 
 
@@ -192,9 +181,9 @@ public class MyGame extends SimpleApplication {
         }
         {
 
-            for (int i = 0; i < 500; i++) {
+            for (int i = 0; i < 5; i++) {
 
-                putMineral(new Mineral(GoodsType.values()[random.nextInt(5)], new Vector3f(5 + random.nextFloat() * 1, 5 + random.nextFloat(), random.nextFloat() * 5 + 2), matResources));
+                putMineral(new Mineral(GoodsType.values()[random.nextInt(5)], new Vector3f(5 + random.nextFloat() * 1, 5 + random.nextFloat(), random.nextFloat() * 5 + 2), Modeler.matResources));
 
             }
 
@@ -202,28 +191,29 @@ public class MyGame extends SimpleApplication {
         }
 
         {
-            Conveyor conveyor = new Conveyor(new Vector3f(5.5f, 5.5f, 0.5f), matResources);
+            Conveyor conveyor = new Conveyor(new Vector3f(5.5f, 5.5f, 0.5f), Modeler.matResources);
             conveyor.setDir(new Vector3f(1, 0, 0));
             putConveyor(conveyor);
         }
         {
-            Conveyor conveyor = new Conveyor(new Vector3f(6.5f, 5.5f, 0.5f), matResources);
+            Conveyor conveyor = new Conveyor(new Vector3f(6.5f, 5.5f, 0.5f), Modeler.matResources);
             conveyor.setDir(new Vector3f(0, 1, 0));
             putConveyor(conveyor);
         }
         {
-            Conveyor conveyor = new Conveyor(new Vector3f(6.5f, 6.5f, 0.5f), matResources);
+            Conveyor conveyor = new Conveyor(new Vector3f(6.5f, 6.5f, 0.5f), Modeler.matResources);
             conveyor.setDir(new Vector3f(-1, 0, 0));
             putConveyor(conveyor);
         }
         {
-            Conveyor conveyor = new Conveyor(new Vector3f(5.5f, 6.5f, 0.5f), matResources);
+            Conveyor conveyor = new Conveyor(new Vector3f(5.5f, 6.5f, 0.5f), Modeler.matResources);
             conveyor.setDir(new Vector3f(0, -1, 0));
             putConveyor(conveyor);
         }
 
         {
-            hero = new Avatar(matVehicles, new Vector3f(10, 10, 3));
+            hero = new Avatar(modeler.matVehicles, new Vector3f(10, 10, 1));
+            putCharacter(hero);
         }
 
         initInputs();
@@ -283,7 +273,7 @@ public class MyGame extends SimpleApplication {
 
     private void putCharacter(Avatar c) {
         selectables.attachChild(c.getSpatial());
-        getPhysicsSpace().add(c.getSpatial());
+        getPhysicsSpace().add(c.getPhysics());
         entities.put(c.getId(), c);
     }
 
@@ -313,6 +303,19 @@ public class MyGame extends SimpleApplication {
 
         inputManager.addMapping(BUILD_CAR, new KeyTrigger(KeyInput.KEY_V));
         inputManager.addListener(actionListener, BUILD_CAR);
+
+        inputManager.addMapping("CharUp", new KeyTrigger(KeyInput.KEY_I));
+        inputManager.addMapping("CharDown", new KeyTrigger(KeyInput.KEY_K));
+        inputManager.addMapping("CharLeft", new KeyTrigger(KeyInput.KEY_J));
+        inputManager.addMapping("CharRight", new KeyTrigger(KeyInput.KEY_L));
+
+        inputManager.addListener(analogListener, "CharLeft");
+        inputManager.addListener(analogListener, "CharRight");
+        inputManager.addListener(analogListener, "CharUp");
+        inputManager.addListener(analogListener, "CharDown");
+
+
+
     }
 
     private void putCar(Vehicle vehicle) {
@@ -325,7 +328,7 @@ public class MyGame extends SimpleApplication {
 
     public void createCubeOnPos3D(Pos3D pos) {
         Vector3f vector3f = new Vector3f(pos.x + 0.5f, pos.y + 0.5f, pos.z + 0.5f);
-        putCube(new Cube(CubeType.values()[random.nextInt(2)], pos, vector3f, matResources));
+        putCube(new Cube(CubeType.values()[random.nextInt(2)], pos, vector3f, Modeler.matResources));
 
     }
 
@@ -337,11 +340,13 @@ public class MyGame extends SimpleApplication {
     public void simpleUpdate(float tpf) {
         super.simpleUpdate(tpf);
 
+
+
         textSelection.setText("No selection");
 
         dropper += tpf;
         if (dropper > nextDrop) {
-            putMineral(new Mineral(GoodsType.values()[random.nextInt(5)], new Vector3f(5 + random.nextFloat() * 1, 5 + random.nextFloat(), random.nextFloat() * 5 + 2), matResources));
+            putMineral(new Mineral(GoodsType.values()[random.nextInt(5)], new Vector3f(5 + random.nextFloat() * 1, 5 + random.nextFloat(), random.nextFloat() * 5 + 2), Modeler.matResources));
             nextDrop += 3; // drop interval
         }
 
@@ -363,7 +368,16 @@ public class MyGame extends SimpleApplication {
         trafficGrid.updateGrid();
         selectTileGrid.updateTexture();
 
+
+        hero.setDir(new Vector3f(1f*avatarwalkx, 1f*avatarwalky, 0));
+
+        avatarwalkx = 0;
+        avatarwalky = 0;
+
     }
+
+    transient float avatarwalkx = 0;
+    transient float avatarwalky = 0;
 
 
     private ActionListener actionListener = new ActionListener() {
@@ -404,8 +418,29 @@ public class MyGame extends SimpleApplication {
                 }
             }
 
+
+
+
         }
     };
+
+    private AnalogListener analogListener = new AnalogListener() {
+
+        public void onAnalog(String name, float value, float tpf) {
+            System.out.println(" "+name +" = "+value);
+            if (name.equals("CharLeft")) {
+                avatarwalkx -= Math.signum(value);
+            } else if (name.equals("CharRight")) {
+                avatarwalkx += Math.signum(value);
+            } else if (name.equals("CharUp")) {
+                avatarwalky += Math.signum(value);
+            } else if (name.equals("CharDown")) {
+                avatarwalky -= Math.signum(value);
+            }
+
+        }
+    };
+
 
     Object pick() {
         // 1. Reset results list.
@@ -524,7 +559,7 @@ public class MyGame extends SimpleApplication {
 //            this.rootNode.attachChild(geometry);
 
             Multitexture1 mtex = new Multitexture1(new LinearGrid(4, 4));
-            TileGrid tileGrid = new TileGrid(lingrid, matgrass, this);
+            TileGrid tileGrid = new TileGrid(lingrid, modeler.matgrass, this);
             final Geometry geometry = tileGrid.getGeometry();
 
 
@@ -554,7 +589,7 @@ public class MyGame extends SimpleApplication {
 
 
 //            final Geometry geometry = new Geometry("grid16", new NodedefTileGrid(pnet));
-            TileGrid tileGrid = new TileGrid(lingrid, matwtr, this);
+            TileGrid tileGrid = new TileGrid(lingrid, modeler.matwtr, this);
             final Geometry geometry = tileGrid.getGeometry();
             NodeSetGrid watter = new NodeSetGrid(tileGrid);
             watter.set.clear();
@@ -578,9 +613,9 @@ public class MyGame extends SimpleApplication {
         {
 
 
-            roadTileGrid = new RoadTextureTileGrid(map.pnet, matroad, this);
+            roadTileGrid = new RoadTextureTileGrid(map.pnet, modeler.matroad, this);
             roadTileGrid.updateTexture();
-            arrowsTileGrid = new UnidirectionalRoadTileGrid(map.pnet, matroadarrows, this);
+            arrowsTileGrid = new UnidirectionalRoadTileGrid(map.pnet, modeler.matroadarrows, this);
             arrowsTileGrid.updateTexture();
             {
                 final Geometry geometry = roadTileGrid.getGeometry();
@@ -608,7 +643,7 @@ public class MyGame extends SimpleApplication {
 //            PathNetwork pnet = new PathNetwork(16, 16);
 //            pnet.randomlySelect(20);
 
-            Material matsel1 = matsel.clone();
+            Material matsel1 = modeler.matsel.clone();
             matsel1.setColor("Color", ColorRGBA.Orange);
 
 
@@ -639,7 +674,7 @@ public class MyGame extends SimpleApplication {
 //            PathNetwork pnet = new PathNetwork(16, 16);
 //            pnet.randomlySelect(20);
 
-            Material matsel1 = matsel.clone();
+            Material matsel1 = modeler.matsel.clone();
             matsel1.setColor("Color", ColorRGBA.Green);
 
             selectTileGrid = new TileGrid(lingrid, matsel1, this);
@@ -674,7 +709,7 @@ public class MyGame extends SimpleApplication {
         floorBox.scaleTextureCoordinates(new Vector2f(3, 6));
 
         Geometry floor = new Geometry("floor", floorBox);
-        floor.setMaterial(matgrass);
+        floor.setMaterial(modeler.matgrass);
         floor.setShadowMode(ShadowMode.Receive);
         floor.setLocalTranslation(0, -0.1f, 0);
         floor.addControl(new RigidBodyControl(new BoxCollisionShape(new Vector3f(10f, 0.1f, 5f)), 0));
@@ -683,179 +718,10 @@ public class MyGame extends SimpleApplication {
     }
 
     public void initMaterial() {
-        {
-            mat = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
-            TextureKey key = new TextureKey("Textures/tex1.png");
-//        key.setTextureTypeHint(Texture.Type.TwoDimensionalArray);       
-            key.setGenerateMips(true);
-//        key.setAnisotropy();
-            Texture tex = assetManager.loadTexture(key);
-            tex.setMagFilter(Texture.MagFilter.Nearest);
-//        tex.setMinFilter(Texture.MinFilter.BilinearNoMipMaps);
-            mat.setTexture("ColorMap", tex);
-        }
-//        mat2 = mat;
+        //        mat2 = mat;
 //        mat3 = mat;
-        {
-            mat16 = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
-            TextureKey key2 = new TextureKey("Textures/tex16.png");
-//            key2.setGenerateMips(true);
 
-            Texture tex2 = assetManager.loadTexture(key2);
-            tex2.setMagFilter(Texture.MagFilter.Nearest);
-            mat16.setTexture("ColorMap", tex2);
-        }
-
-        {  // unshaded
-            Material matgrass = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
-
-            TextureKey key3 = new TextureKey("Textures/gras16.png");
-//            key3.setGenerateMips(true);
-
-            Texture tex3 = assetManager.loadTexture(key3);
-            tex3.setMagFilter(Texture.MagFilter.Nearest);
-
-            matgrass.setTexture("ColorMap", tex3);
-
-//            this.matgrass = matgrass;
-
-        }
-        {
-
-            Material matgrass = new Material(assetManager, COMMON_MAT_DEFS_LIGHT_LIGHTING_J3MD);
-
-            TextureKey key3 = new TextureKey("Textures/gras16.png");
-//            key3.setGenerateMips(true);
-
-            Texture tex3 = assetManager.loadTexture(key3);
-            tex3.setMagFilter(Texture.MagFilter.Nearest);
-
-            matgrass.setTexture("m_DiffuseMap", tex3); // light
-
-            this.matgrass = matgrass;
-
-        }
-        {
-            matwtr = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
-//            TextureKey key4 = new TextureKey("Textures/road16.png");
-            TextureKey key4 = new TextureKey("Textures/watrnodes16.png");
-//            TextureKey key3 = new TextureKey("Textures/tex16.png");
-//            key3.setGenerateMips(true);`
-            Texture tex4 = assetManager.loadTexture(key4);
-            tex4.setMagFilter(Texture.MagFilter.Nearest);
-//        tex3.setWrap(WrapMode.Repeat);
-            matwtr.setTexture("ColorMap", tex4);
-            matwtr.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
-        }
-        {
-            matroad = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
-            TextureKey key4 = new TextureKey("Textures/road16.png");
-//            TextureKey key4 = new TextureKey("Textures/watr16.png");
-//            TextureKey key3 = new TextureKey("Textures/tex16.png");
-//            key3.setGenerateMips(true);`
-            Texture tex4 = assetManager.loadTexture(key4);
-            tex4.setMagFilter(Texture.MagFilter.Nearest);
-//        tex3.setWrap(WrapMode.Repeat);
-            matroad.setTexture("ColorMap", tex4);
-            matroad.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
-        }
-        {
-            Material material = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
-
-            TextureKey key4 = new TextureKey("Textures/roadarrows16.png");
-//            TextureKey key4 = new TextureKey("Textures/watr16.png");
-//            TextureKey key3 = new TextureKey("Textures/tex16.png");
-//            key3.setGenerateMips(true);`
-            Texture tex4 = assetManager.loadTexture(key4);
-            tex4.setMagFilter(Texture.MagFilter.Nearest);
-//        tex3.setWrap(WrapMode.Repeat);
-            material.setTexture("ColorMap", tex4);
-            material.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
-            matroadarrows = material;
-        }
-        {
-            Material material = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
-
-            TextureKey textureKey = new TextureKey("Textures/buildings.png");
-//            TextureKey key4 = new TextureKey("Textures/watr16.png");
-//            TextureKey key3 = new TextureKey("Textures/tex16.png");
-//            key3.setGenerateMips(true);`
-            Texture texture = assetManager.loadTexture(textureKey);
-            texture.setMagFilter(Texture.MagFilter.Nearest);
-//        tex3.setWrap(WrapMode.Repeat);
-            material.setTexture("ColorMap", texture);
-            material.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
-
-            matBuildings = material;
-
-        }
-
-        {   // resources unshaded
-            Material material = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
-
-            TextureKey textureKey = new TextureKey("Textures/tiles.png");
-//            TextureKey key4 = new TextureKey("Textures/watr16.png");
-//            TextureKey key3 = new TextureKey("Textures/tex16.png");
-//            key3.setGenerateMips(true);`
-            Texture texture = assetManager.loadTexture(textureKey);
-            texture.setMagFilter(Texture.MagFilter.Nearest);
-//        tex3.setWrap(WrapMode.Repeat);
-            material.setTexture("ColorMap", texture);
-            material.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
-
-//            matResources = material;
-
-        }
-        {   // resources shaded
-            Material material = new Material(assetManager, COMMON_MAT_DEFS_LIGHT_LIGHTING_J3MD);
-
-            TextureKey textureKey = new TextureKey("Textures/tiles.png");
-//            TextureKey key4 = new TextureKey("Textures/watr16.png");
-//            TextureKey key3 = new TextureKey("Textures/tex16.png");
-//            key3.setGenerateMips(true);`
-            Texture texture = assetManager.loadTexture(textureKey);
-            texture.setMagFilter(Texture.MagFilter.Nearest);
-//        tex3.setWrap(WrapMode.Repeat);
-            material.setTexture("m_DiffuseMap", texture);
-            material.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
-
-            matResources = material;
-
-        }
-
-        {
-            matsel = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
-            TextureKey key4 = new TextureKey("Textures/select16.png");
-//            TextureKey key4 = new TextureKey("Textures/watr16.png");
-//            TextureKey key3 = new TextureKey("Textures/tex16.png");
-//            key3.setGenerateMips(true);`
-            Texture tex4 = assetManager.loadTexture(key4);
-            tex4.setMagFilter(Texture.MagFilter.Nearest);
-//        tex3.setWrap(WrapMode.Repeat);
-            matsel.setTexture("ColorMap", tex4);
-            matsel.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
-        }
-        {
-            Material matveh = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
-            TextureKey key4 = new TextureKey("Textures/veh256.png");
-//            TextureKey key4 = new TextureKey("Textures/watr16.png");
-//            TextureKey key3 = new TextureKey("Textures/tex16.png");
-//            key3.setGenerateMips(true);`
-            Texture tex4 = assetManager.loadTexture(key4);
-            tex4.setMagFilter(Texture.MagFilter.Nearest);
-//        tex3.setWrap(WrapMode.Repeat);
-            matveh.setColor("Color", new ColorRGBA(1f, 0f, 1f, 1f));
-            matveh.setTexture("ColorMap", tex4);
-            matveh.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
-            this.matVehicles = matveh;
-        }
-
-        {
-//            Material mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-//            mat.setBoolean("PointSprite", true);
-//            mat.setTexture("Texture", assetManager.loadTexture("Effects/Smoke/Smoke.png"));
-            spriteMaterial = mat;
-        }
+        modeler.initMaterial();
     }
 
     protected void initCrossHairs() {
@@ -1090,7 +956,7 @@ public class MyGame extends SimpleApplication {
         void onMouseUp() {
             if (this.current != null) {
 //                Building building = new Building(this.current, matBuildings);
-                putBuilding(new Building(this.current, matBuildings, buildingType, player));
+                putBuilding(new Building(this.current, modeler.matBuildings, buildingType, player));
             }
             this.start = null;
         }
@@ -1141,7 +1007,7 @@ public class MyGame extends SimpleApplication {
             if (this.current != null) {
 
                 if (roadPoint != null) {
-                    putCar(new Vehicle(player, Vehicle.Type.SKODA120, roadPoint, matVehicles));
+                    putCar(new Vehicle(player, Vehicle.Type.SKODA120, roadPoint, modeler.matVehicles));
                 }
             }
             this.start = null;
