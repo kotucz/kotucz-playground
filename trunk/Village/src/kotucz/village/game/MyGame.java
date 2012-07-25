@@ -31,9 +31,9 @@
  */
 package kotucz.village.game;
 
-import com.jme3.asset.plugins.FileLocator;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.TextureKey;
+import com.jme3.asset.plugins.FileLocator;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
@@ -62,18 +62,16 @@ import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.texture.Texture;
-
-import java.util.*;
-
-import kotucz.village.common.Dir;
-import kotucz.village.common.Dir3D;
-import kotucz.village.common.Dir3D6;
-import kotucz.village.common.Dir4;
+import kotucz.village.build.Building;
+import kotucz.village.character.Avatar;
+import kotucz.village.common.*;
 import kotucz.village.cubes.Cube;
+import kotucz.village.cubes.CubeType;
 import kotucz.village.cubes.Pos3D;
 import kotucz.village.tiles.*;
-import kotucz.village.build.Building;
 import kotucz.village.transport.*;
+
+import java.util.*;
 
 /**
  * @author kotucz
@@ -104,10 +102,12 @@ public class MyGame extends SimpleApplication {
     Material matroadarrows;
     Material matwtr;
     Material matsel;
-    Material matveh;
+    Material matVehicles;
     BasicShadowRenderer bsr;
 
     private BitmapText textAction;
+
+    final Entities entities = new Entities();
 
     Geometry mark;
     Node selectables;
@@ -132,6 +132,8 @@ public class MyGame extends SimpleApplication {
     private RoadBuilder roadBuilder;
     public static Material matResources;
     private Dir3D dir3D;
+
+    Avatar hero;
 
     public static void main(String args[]) {
         MyGame f = new MyGame();
@@ -172,7 +174,7 @@ public class MyGame extends SimpleApplication {
 
 
         for (int i = 0; i < NUM_CARS; i++) {
-            putCar(new Vehicle(player, Vehicle.Type.SKODA120, map.pnet.randomRoadPoint(random), matveh));
+            putCar(new Vehicle(player, Vehicle.Type.SKODA120, map.pnet.randomRoadPoint(random), matVehicles));
         }
 
 
@@ -191,7 +193,9 @@ public class MyGame extends SimpleApplication {
         {
 
             for (int i = 0; i < 500; i++) {
+
                 putMineral(new Mineral(GoodsType.values()[random.nextInt(5)], new Vector3f(5 + random.nextFloat() * 1, 5 + random.nextFloat(), random.nextFloat() * 5 + 2), matResources));
+
             }
 
 
@@ -216,6 +220,10 @@ public class MyGame extends SimpleApplication {
             Conveyor conveyor = new Conveyor(new Vector3f(5.5f, 6.5f, 0.5f), matResources);
             conveyor.setDir(new Vector3f(0, -1, 0));
             putConveyor(conveyor);
+        }
+
+        {
+            hero = new Avatar(matVehicles, new Vector3f(10, 10, 3));
         }
 
         initInputs();
@@ -266,14 +274,25 @@ public class MyGame extends SimpleApplication {
         getPhysicsSpace().add(mineral.getSpatial());
     }
 
-    public final Map<String, Cube> cubeFindById = new HashMap<String, Cube>();
-
-    private void putCube(Cube mineral1) {
-        Cube cube = mineral1;
+    private void putCube(Cube cube) {
         selectables.attachChild(cube.getSpatial());
         getPhysicsSpace().add(cube.getSpatial());
-        cubeFindById.put(cube.getId(), cube);
+        entities.put(cube.getId(), cube);
     }
+
+
+    private void putCharacter(Avatar c) {
+        selectables.attachChild(c.getSpatial());
+        getPhysicsSpace().add(c.getSpatial());
+        entities.put(c.getId(), c);
+    }
+
+    private void putBuilding(Building building) {
+        entities.put(building.getId(), building);
+        selectables.attachChild(building.getNode());
+        map.buildings.putBuilding(building);
+    }
+
 
     private PhysicsSpace getPhysicsSpace() {
         return bulletAppState.getPhysicsSpace();
@@ -306,7 +325,7 @@ public class MyGame extends SimpleApplication {
 
     public void createCubeOnPos3D(Pos3D pos) {
         Vector3f vector3f = new Vector3f(pos.x + 0.5f, pos.y + 0.5f, pos.z + 0.5f);
-        putCube(new Cube(pos, vector3f, matResources));
+        putCube(new Cube(CubeType.values()[random.nextInt(2)], pos, vector3f, matResources));
 
     }
 
@@ -420,49 +439,39 @@ public class MyGame extends SimpleApplication {
             // Let's interact - we mark the hit with a red dot.
             mark.setLocalTranslation(closest.getContactPoint());
             rootNode.attachChild(mark);
-            {
-                Object userData = closest.getGeometry().getUserData(Building.ID_KEY);
+
+            String kode = closest.getGeometry().getUserData(Entities.ID_KEY);
 //                System.out.println("Test user value: " + userData);
-                Building building = map.buildings.map.get(userData);
+            final Object pick = entities.find(kode);
+
+            if (pick != null) {
+                if (pick instanceof Cube) {
+                    Cube cube = (Cube) pick;
+                    Vector3f contactNormal = closest.getContactNormal();
+                    dir3D = Dir3D6.valueOfVector(contactNormal);
+                    textSelection.setText("" + pick + " " + contactNormal + " " + dir3D);
 
 
-                if (building != null) {
+//                    vehicle.mark(ColorRGBA.randomColor());
+//                    selectTileGrid.setTexture(vehicle.requestPos, TexturesSelect.SELECTED);
+                    return pick;
+                }
+
+                if (pick instanceof Building) {
+                    Building building = (Building) pick;
                     textSelection.setText("" + building);
                     building.mark(ColorRGBA.randomColor());
                     selectTileGrid.setTexture(building.getEntrancePos(), TexturesSelect.SELECTED);
                 }
-            }
 
-            {
-                Object userData = closest.getGeometry().getUserData(Vehicle.ID_KEY);
-//                System.out.println("Test user value: " + userData);
-                Vehicle vehicle = map.traffic.vehicleFindById.get(userData);
+                if (pick instanceof Vehicle) {
+                    Vehicle vehicle = (Vehicle) pick;
 
-
-                if (vehicle != null) {
                     textSelection.setText("" + vehicle);
 //                    vehicle.mark(ColorRGBA.randomColor());
 //                    selectTileGrid.setTexture(vehicle.requestPos, TexturesSelect.SELECTED);
                 }
-            }
 
-            {
-                Object kode = closest.getGeometry().getUserData(Cube.ID_KEY);
-//                System.out.println("Test user value: " + userData);
-                Cube cube = cubeFindById.get(kode);
-
-
-                if (cube != null) {
-                    Vector3f contactNormal = closest.getContactNormal();
-                    dir3D = Dir3D6.valueOfVector(contactNormal);
-                    textSelection.setText("" + cube + " " + contactNormal+" "+dir3D);
-
-
-
-//                    vehicle.mark(ColorRGBA.randomColor());
-//                    selectTileGrid.setTexture(vehicle.requestPos, TexturesSelect.SELECTED);
-                    return cube;
-                }
             }
 
 
@@ -827,7 +836,7 @@ public class MyGame extends SimpleApplication {
             matsel.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
         }
         {
-            matveh = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
+            Material matveh = new Material(assetManager, COMMON_MAT_DEFS_MISC_UNSHADED_J3MD);
             TextureKey key4 = new TextureKey("Textures/veh256.png");
 //            TextureKey key4 = new TextureKey("Textures/watr16.png");
 //            TextureKey key3 = new TextureKey("Textures/tex16.png");
@@ -838,6 +847,7 @@ public class MyGame extends SimpleApplication {
             matveh.setColor("Color", new ColorRGBA(1f, 0f, 1f, 1f));
             matveh.setTexture("ColorMap", tex4);
             matveh.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+            this.matVehicles = matveh;
         }
 
         {
@@ -1080,12 +1090,12 @@ public class MyGame extends SimpleApplication {
         void onMouseUp() {
             if (this.current != null) {
 //                Building building = new Building(this.current, matBuildings);
-                Building building = new Building(this.current, matBuildings, buildingType, player);
-                selectables.attachChild(building.getNode());
-                map.buildings.putBuilding(building);
+                putBuilding(new Building(this.current, matBuildings, buildingType, player));
             }
             this.start = null;
         }
+
+
 
 //        void cancel() {
 //            selectGrid.set.clear();
@@ -1131,7 +1141,7 @@ public class MyGame extends SimpleApplication {
             if (this.current != null) {
 
                 if (roadPoint != null) {
-                    putCar(new Vehicle(player, Vehicle.Type.SKODA120, roadPoint, matveh));
+                    putCar(new Vehicle(player, Vehicle.Type.SKODA120, roadPoint, matVehicles));
                 }
             }
             this.start = null;
@@ -1153,7 +1163,7 @@ public class MyGame extends SimpleApplication {
         void updateGui() {
             Object pick = pick();
             if (pick instanceof Cube) {
-                current = (Cube)pick;
+                current = (Cube) pick;
             } else {
                 current = null;
             }
@@ -1168,7 +1178,7 @@ public class MyGame extends SimpleApplication {
 
         @Override
         void onMouseDown() {
-  //          this.start = pickPos();
+            //          this.start = pickPos();
         }
 
         @Override

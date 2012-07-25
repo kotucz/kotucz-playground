@@ -9,6 +9,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import kotucz.village.common.Dir4;
 import kotucz.village.common.Dir8;
+import kotucz.village.common.Entities;
 import kotucz.village.common.MyBox;
 import kotucz.village.game.Player;
 import kotucz.village.tiles.Multitexture;
@@ -26,8 +27,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Building implements Depot {
 
-    public static final String ID_KEY = "BuildingUserDataIdKey";
+//    public static final String ID_KEY = "BuildingUserDataIdKey";
     private static final int LOADING_SPEED = 200;
+    private final String id = Entities.acquireUniqueKey(this);
 
     final Pos pos;
 
@@ -36,7 +38,7 @@ public class Building implements Depot {
     final Node node = new Node("Budova");
 
     static final AtomicInteger idGen = new AtomicInteger();
-    private final String id;
+//    private final String id;
     private final Material mat;
 
     Player owner;
@@ -87,10 +89,10 @@ public class Building implements Depot {
                 // error
                 box = null;
         }
-        id = "B" + idGen.incrementAndGet();
+//        id = "B" + idGen.incrementAndGet();
 
         Geometry reBoxg = new Geometry("brick3", box);
-        reBoxg.setUserData(ID_KEY, id);
+        reBoxg.setUserData(Entities.ID_KEY, id);
         mat = mat16.clone();
         reBoxg.setMaterial(mat);
         reBoxg.setLocalTranslation(new Vector3f(pos.x, pos.y, 0));

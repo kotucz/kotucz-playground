@@ -11,6 +11,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.control.Control;
+import kotucz.village.common.Entities;
 import kotucz.village.common.MyBox;
 import kotucz.village.tiles.LinearGrid;
 import kotucz.village.tiles.Multitexture;
@@ -24,14 +25,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Cube {
 
-    public static final String ID_KEY = "CubeUserDataIdKey";
+//    public static final String ID_KEY = "CubeUserDataIdKey";
 
     //    private Vector3f destShort = new Vector3f();
 
-    static final AtomicInteger idGen = new AtomicInteger();
+//    static final AtomicInteger idGen = new AtomicInteger();
 
 
-    private final String id;
+    private final String id = Entities.acquireUniqueKey(this);
 
 
     Vector3f posVector;
@@ -43,8 +44,9 @@ public class Cube {
     private Vector3f velocity = new Vector3f();
 
 
+
     //    public Vehicle(Player owner, Type type, RoadPoint roadPoint, , AbstractGridPathNetwork network) {
-    public Cube(Pos3D pos, Vector3f posVector, Material mat) {
+    public Cube(CubeType type, Pos3D pos, Vector3f posVector, Material mat) {
         this.pos = pos;
 
         this.posVector = posVector;
@@ -53,7 +55,7 @@ public class Cube {
 //        mat = mat.clone();
 //        mat.setColor("Color", new ColorRGBA((float)Math.random(), (float)Math.random(),(float)Math.random(), 1f));
 
-        id = "Cube" + idGen.incrementAndGet();
+//        id = "Cube" + idGen.incrementAndGet();
 
         final float halfSize = 0.5f;
         {
@@ -62,11 +64,13 @@ public class Cube {
 
             box = new MyBox(new Vector3f(-halfSize, -halfSize, -halfSize), new Vector3f(halfSize, halfSize, halfSize));
             Geometry reBoxg = new Geometry("kapota", box);
-            reBoxg.setUserData(ID_KEY, id);
+            reBoxg.setUserData(Entities.ID_KEY, id);
             reBoxg.setMaterial(mat);
             reBoxg.setLocalTranslation(new Vector3f(0, 0, 0));
             Multitexture1 mtex = new Multitexture1(new LinearGrid(16, 16));
-            final int off = 16 * 10;
+            int off = 16 * 10;
+            off += type.ordinal()*4;
+
             box.setTexture(MyBox.FACE_STATIC_S, mtex.getTex(off + 0));
             box.setTexture(MyBox.FACE_STATIC_E, mtex.getTex(off + 1));
             box.setTexture(MyBox.FACE_STATIC_N, mtex.getTex(off + 2));
