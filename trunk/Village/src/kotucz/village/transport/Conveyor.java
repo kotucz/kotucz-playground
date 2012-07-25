@@ -92,7 +92,7 @@ public class Conveyor {
                 Multitexture mtex = new Multitexture(256, 256);
                 float x = 1-((1 + (offset.getX()%1)) % 1f);
                 float y = ((1 + (offset.getY()%1)) % 1f);
-                System.out.println("offset " + offset + " " + x+" "+y);
+//                System.out.println("offset " + offset + " " + x+" "+y);
                 box.setTexture(MyBox.FACE_TOP, mtex.createRealSubtexture(16 * (x), (5+y) * 16, 16 * (x + 1f), (6+y) * 16));
 
 

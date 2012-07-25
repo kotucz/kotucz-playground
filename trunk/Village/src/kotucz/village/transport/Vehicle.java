@@ -11,13 +11,11 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import kotucz.village.common.Entities;
 import kotucz.village.common.MyBox;
-import kotucz.village.game.MyGame;
+import kotucz.village.game.Modeler;
 import kotucz.village.game.Player;
 import kotucz.village.tiles.LinearGrid;
 import kotucz.village.tiles.Multitexture1;
 import kotucz.village.tiles.Pos;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Kotuc
@@ -105,7 +103,7 @@ public class Vehicle {
         }
 
 
-        this.mineral = new Mineral(GoodsType.WOOD, new Vector3f(0.5f, 0, 0.125f), MyGame.matResources);
+        this.mineral = new Mineral(GoodsType.WOOD, new Vector3f(0.5f, 0, 0.125f), Modeler.matResources);
 
 
         RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(halfSize, halfSize, halfSize)), 0);
