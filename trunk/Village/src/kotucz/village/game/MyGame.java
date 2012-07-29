@@ -66,6 +66,8 @@ import kotucz.village.common.*;
 import kotucz.village.cubes.Cube;
 import kotucz.village.cubes.CubeType;
 import kotucz.village.cubes.Pos3D;
+import kotucz.village.pipes.Animal;
+import kotucz.village.pipes.SimplePipe;
 import kotucz.village.tiles.*;
 import kotucz.village.transport.*;
 
@@ -206,7 +208,7 @@ public class MyGame extends SimpleApplication {
             putConveyor(conveyor);
         }
         {
-            Conveyor conveyor = new Conveyor(new Vector3f(5.5f, 6.5f, 0.5f), Modeler.matResources);
+            Conveyor conveyor = new Conveyor(new Vector3f(5.5f, 6.5f, 0.5f), modeler.matResources);
             conveyor.setDir(new Vector3f(0, -1, 0));
             putConveyor(conveyor);
         }
@@ -214,6 +216,26 @@ public class MyGame extends SimpleApplication {
         {
             hero = new Avatar(modeler.matVehicles, new Vector3f(10, 10, 1));
             putCharacter(hero);
+        }
+
+        {
+            SimplePipe simplePipe = new SimplePipe(new Vector3f(5, 5, 2f), new Vector3f(6, 6, 2), modeler.matPipes);
+            rootNode.attachChild(simplePipe.getSpatial());
+            getPhysicsSpace().add(simplePipe.getPhysics());
+
+            SimplePipe simplePipe2 = new SimplePipe(new Vector3f(4, 2, 5f), new Vector3f(6, 4, 2), modeler.matPipes);
+            rootNode.attachChild(simplePipe2.getSpatial());
+
+        }
+
+        {
+            Animal simplePipe = new Animal(modeler, getPhysicsSpace());
+            rootNode.attachChild(simplePipe.getNode());
+//            getPhysicsSpace().add(simplePipe.getPhysics());
+
+//            SimplePipe simplePipe2 = new SimplePipe(new Vector3f(4, 2, 5f), new Vector3f(6, 4, 2), modeler.matPipes);
+//            rootNode.attachChild(simplePipe2.getSpatial());
+
         }
 
         initInputs();
@@ -278,8 +300,8 @@ public class MyGame extends SimpleApplication {
     }
 
     private void putBuilding(Building building) {
-        entities.put(building.getId(), building);
         selectables.attachChild(building.getNode());
+        entities.put(building.getId(), building);
         map.buildings.putBuilding(building);
     }
 
@@ -476,10 +498,18 @@ public class MyGame extends SimpleApplication {
             rootNode.attachChild(mark);
 
             String kode = closest.getGeometry().getUserData(Entities.ID_KEY);
-//                System.out.println("Test user value: " + userData);
+                System.out.println("Kode: " + kode);
+
+
             final Object pick = entities.find(kode);
 
+            if (kode != null) {
+                System.out.println("P "+pick);
+            }
+
+
             if (pick != null) {
+                System.out.println("Pick "+pick);
                 if (pick instanceof Cube) {
                     Cube cube = (Cube) pick;
                     Vector3f contactNormal = closest.getContactNormal();
@@ -507,10 +537,7 @@ public class MyGame extends SimpleApplication {
 //                    selectTileGrid.setTexture(vehicle.requestPos, TexturesSelect.SELECTED);
                 }
 
-            }
-
-
-            if ("selgrid".equals(closest.getGeometry().getName())) {
+            } else  if ("selgrid".equals(closest.getGeometry().getName())) {
                 Vector3f contactPoint = closest.getContactPoint();
                 int x = (int) Math.floor(contactPoint.x);
                 int y = (int) Math.floor(contactPoint.y);

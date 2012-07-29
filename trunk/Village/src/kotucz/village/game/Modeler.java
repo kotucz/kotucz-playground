@@ -17,6 +17,7 @@ public class Modeler {
     public Material matsel;
     public Material matVehicles;
     public Material matBuildings;
+    public Material matPipes;
     public static Material matResources;
 
     public Modeler(MyGame myGame) {
@@ -189,6 +190,21 @@ public class Modeler {
             matveh.setTexture("ColorMap", tex4);
             matveh.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
             this.matVehicles = matveh;
+        }
+
+        {
+            Material matveh = new Material(myGame.getAssetManager(), MyGame.COMMON_MAT_DEFS_LIGHT_LIGHTING_J3MD);
+//            TextureKey key4 = new TextureKey("Textures/veh256.png");
+//            TextureKey key4 = new TextureKey("Textures/watr16.png");
+//            TextureKey key3 = new TextureKey("Textures/tex16.png");
+//            key3.setGenerateMips(true);`
+//            Texture tex4 = myGame.getAssetManager().loadTexture(key4);
+//            tex4.setMagFilter(Texture.MagFilter.Nearest);
+//        tex3.setWrap(WrapMode.Repeat);
+            matveh.setColor("Diffuse", new ColorRGBA(1f, 0f, 1f, 1f));
+//            matveh.setTexture("ColorMap", tex4);
+  //          matveh.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+            this.matPipes = matveh;
         }
 
         {
