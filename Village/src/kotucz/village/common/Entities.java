@@ -31,7 +31,7 @@ public class Entities<T> {
 
 
     public void put(String key, T obj) {
-
+         map.put(key, obj);
     }
 
     public T find(String key) {
