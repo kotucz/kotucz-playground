@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<project name="odejava-java3d" basedir="." default="all">
+
+	<property name="root" value="." />
+	<property name="src" value="${root}/src" />
+	<property name="lib" value="${root}/lib" />
+	<property name="javadoc" value="${root}/doc/javadoc" />
+	<property name="classes" value="${root}/classes" />
+	
+	<path id="javadoc.ref.src">
+		<pathelement location="../odejava/src/"/>
+		<pathelement location="../../xith3d/src/"/>
+	</path>
+	
+	<property name="classpath" value="../odejava/odejava.jar:../odejava/lib/vecmath.jar" />
+	
+	<property name="java_home" value="${env.JAVA_HOME}" />
+	<property name="javac" value="${java_home}/bin/javac" />
+	
+	<target name="init">
+		<mkdir dir="${classes}"/>
+		<mkdir dir="${javadoc}"/>
+	</target>
+
+	<target name="all" depends="jar" >
+	</target>
+
+	<!-- 	javadoc  -d javadocs/ -sourcepath src/ -subpackages com-->
+	<target name="jar" depends="build" >
+	      <jar jarfile="odejava-java3d.jar">
+		  <fileset dir="${classes}"/>
+			<manifest>
+				<attribute name="Main-Class" value=""/>
+				<attribute name="Class-Path" value=""/>
+			</manifest>		       
+
+	      </jar>			
+	</target>
+
+	<target name="javadoc" depends="init">
+		<javadoc sourcepath="${src}"
+			source="1.4" 
+			sourcepathref="javadoc.ref.src"
+			destdir="${javadoc}"
+			packagenames="*" >
+		<link href="http://java.sun.com/j2se/1.4.2/docs/api/" />
+		<!--<classpath refid="classpath"/>-->
+		</javadoc>
+	</target>
+	
+	<target name="clean">
+		<delete failonerror="false">
+			<fileset dir="${classes}" />
+			<fileset file="odejava-java3d.jar" />
+			<fileset dir="${javadoc}" />			
+		</delete>
+	</target>
+
+	<target name="build" depends="init">
+		<depend srcdir="${src}"
+			destdir="${classes}"
+			cache="depcache"
+			closure="yes"/>
+		<javac destdir="${classes}" srcdir="${src}" fork="true"
+			 debug="on" debuglevel="lines,vars,source"
+			 deprecation="true"
+			classpath="${classpath}">
+		</javac>
+	</target>
+	
+	
+</project>

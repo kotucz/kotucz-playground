@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xode version="1.0r23" name="boxsphere"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://tanksoftware.com/xode/1.0r23/xode.xsd">
+
+	<world>
+	
+		<space>
+			
+			<!-- simple static geometry --> 
+			<geom name="plane">
+				<transform>
+					<position x="0.1" y="-7" z="0" />
+				</transform>
+			
+				<box
+					sizex="100"
+					sizey="1"
+					sizez="100"
+				/>
+			</geom>
+				
+		</space>
+	</world>
+</xode>

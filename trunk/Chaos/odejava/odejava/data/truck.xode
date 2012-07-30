@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xode version="1.0r23" name="truck"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://tanksoftware.com/xode/1.0r23/xode.xsd">
+	
+<world>
+	
+	<space>
+		
+	
+		<body name="chassis">
+			<transform>
+				<position x="-2.5" y="2.5" z="-3" />
+				<rotation>
+					<euler x="0" y="90" z="0" aformat="degrees" />
+				</rotation>
+			</transform>
+			
+			<geom name="chassisGeom">
+				<box
+					sizex="5"
+					sizey="6"
+					sizez="7"
+				/>
+			</geom>
+				
+			<geom name="frontCabin">
+				<transform>
+					<position x="0" y="0" z="4.5" />
+				</transform>
+				<box
+					sizex="3"
+					sizey="4"
+					sizez="3"
+				/>
+			</geom>
+		
+				
+			<body name="FrontLeft">
+				<transform>
+					<position x="3" y="-3.5" z="-2.5" />
+				</transform>
+	
+				<geom name="FrontLeftGeom">
+					
+					<sphere
+						radius="1.5"
+					/>
+					
+				</geom>
+							
+				<joint name="FrontLeftJoint">
+				
+					<link1 body="chassis" />
+					
+					<hinge2>
+						<axis x="0" y="1" z="0"
+							FMax="100"
+							LowStop="0"
+						HiStop="0"
+						/>
+						<axis x="0" y="0" z="1"
+							SuspensionERP="1"
+							SuspensionCFM="0.1"
+							FMax="500"
+						/>
+					</hinge2>	
+				</joint>	
+					
+				<mass><adjust density="0.2" /></mass>
+				
+			</body>	
+		
+			<body name="FrontRight">
+				<transform>
+					<position x="3" y="-3.5" z="2.5" />
+				</transform>
+	
+				
+				<geom name="FrontLeftGeom">
+					
+					<sphere
+						radius="1.5"
+					/>
+					
+				</geom>
+										
+				<joint name="FrontRightJoint">
+				
+					<link1 body="chassis" />
+					
+					<hinge2>
+					
+						
+						<axis x="0" y="1" z="0"
+							FMax="100"
+							LowStop="0"
+							HiStop="0"
+						/>
+						<axis x="0" y="0" z="1"
+							SuspensionERP="1"
+							SuspensionCFM="0.1"
+							FMax="500"
+						/>
+					
+					
+					</hinge2>
+				</joint>	
+						
+					
+				<mass><adjust density="0.2" /></mass>
+				
+			</body>		
+		
+			<body name="BackLeft">
+				<transform>
+					<position x="-4" y="-3.5" z="-2.5" />
+				</transform>
+	
+				<geom name="FrontLeftGeom">
+					<sphere
+						radius="1.5"
+					/>
+				</geom>
+										
+				<joint name="BackLeftJoint">
+				
+					<link1 body="chassis" />
+				
+					<hinge2>
+						<axis x="0" y="1" z="0"
+							FMax="100"
+							LowStop="0"
+							HiStop="0"
+						/>
+						<axis x="0" y="0" z="1"
+							SuspensionERP="1"
+							SuspensionCFM="0.1"
+							FMax="500"
+						/>
+					
+					</hinge2>
+				</joint>	
+
+					
+				<mass><adjust density="0.2" /></mass>
+				
+			</body>
+			<body name="BackRight">
+				<transform>
+					<position x="-4" y="-3.5" z="2.5" />
+				</transform>
+	
+				<geom name="BackRightGeom">
+					<sphere
+						radius="1.5"
+					/>
+				</geom>
+							
+				<joint name="BackRightJoint">
+			
+					<link1 body="chassis" />
+					
+					<hinge2>
+						
+					    <axis x="0" y="1" z="0"
+						FMax="100"
+						LowStop="0"
+						HiStop="0"
+					    />
+					    <axis x="0" y="0" z="1"
+						SuspensionERP="1"
+						SuspensionCFM="0.1"
+						FMax="500"
+									
+					    />
+			
+					</hinge2>
+				</joint>	
+						
+				<mass><adjust density="0.2" /></mass>
+				
+			</body>	
+
+			<mass><adjust density="30" /></mass>
+							
+		</body>
+				
+	</space>
+</world>
+</xode>

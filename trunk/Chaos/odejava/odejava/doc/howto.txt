@@ -1,0 +1,21 @@
+Deprecated, needs to be updated.
+
+1. How to use?
+
+Windows users can try clicking odejava\run*.bat icons.
+
+For windows users this is easy, other operating systems need to compile their own odejava native library (see section 2). Please send me email if you have compiled other than win32 native library, I will add it to this package. Basically you only need to add odejava.dll into your library path and package net.java.dev.odejava to your classpath.
+
+1.1 Add odejava to your library path
+-add following JVM argument: -Djava.library.path="d:\odejava\lib\win32". Or on linux you can use also: export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/odejava/lib/linux/odejava.so. Change the sample path accordingly.
+
+1.2 Add odejava package to your classpath
+
+1.3 Try examples
+-net.java.dev.odejava.test.OdeHelloWorld is a standalone console test, not bound to any rendered
+-net.java.dev.odejava.test.xith3d.CarApp requires Xith3d
+-net.java.dev.odejava.test.xith3d.BoxApp requires Xith3d
+-Add following JVM arguments: -Djava.library.path="D:\eclipse\workspace\xith3d\third-party\jogl\jogl-win32;D:\eclipse\workspace\odejava\lib\win32", again change the paths
+-Set working directory under /odejava so example classes find textures and ase export file.
+-Classes have some documentation about what can you do with the tests (keybindings etc).
+

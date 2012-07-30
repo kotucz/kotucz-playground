@@ -1,0 +1,17 @@
+<p>
+XODE is an XML based scene format for ODE.  This package is a sample
+implementation of an XODE parser.  The classes XODEBody, XODEObject etc
+corrilate to elements in the file format.  As the format has additional
+data which is not stored in ODE (such as groups) - this is stored
+in a tree using these objects.  Those that have ODE representations 
+such as Body - will have a Body object with that data so it isn't 
+duplicated.
+</p>
+
+<p>
+The sample implementation uses a DOM parser which may not be the most
+suitable for every use.  Adding SAX support shouln't be too hard - 
+probably the easiest way would be to add an overloaded constructor
+to the XODE* objects to take the relevent SAX objects (as they currently
+do the DOM ones.
+</p>

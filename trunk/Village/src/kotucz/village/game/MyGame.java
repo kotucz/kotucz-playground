@@ -124,7 +124,7 @@ public class MyGame extends SimpleApplication {
     private Dir3D dir3D;
 
     private Avatar hero;
-    final Modeler modeler = new Modeler(this);
+    public final Modeler modeler = new Modeler(this);
 
     public static void main(String args[]) {
         MyGame f = new MyGame();
@@ -164,9 +164,7 @@ public class MyGame extends SimpleApplication {
         player = new Player("Kotuc", null, 10000);
 
 
-        for (int i = 0; i < NUM_CARS; i++) {
-            putCar(new Vehicle(player, Vehicle.Type.SKODA120, map.pnet.randomRoadPoint(random), modeler.matVehicles));
-        }
+
 
 
         {
@@ -178,6 +176,50 @@ public class MyGame extends SimpleApplication {
             cam.lookAt(new Vector3f(8, 8, 0), UP);
             cam.setFrustumFar(500);
         }
+
+        initEntities();
+
+        initInputs();
+
+        {
+            rootNode.setShadowMode(ShadowMode.Off);
+            bsr = new BasicShadowRenderer(assetManager, 1024);
+            bsr.setDirection(new Vector3f(-1, 1, -2).normalizeLocal());
+            viewPort.addProcessor(bsr);
+        }
+        {
+            AmbientLight ambientLight = new AmbientLight();
+            ambientLight.setColor(ColorRGBA.White);
+            rootNode.addLight(ambientLight);
+        }
+        {
+            /** Must add a light to make the lit object visible! */
+            DirectionalLight sun = new DirectionalLight();
+            sun.setDirection(new Vector3f(-1, 1, -2).normalizeLocal());
+            sun.setColor(ColorRGBA.White);
+            rootNode.addLight(sun);
+        }
+        {
+            // add floor
+//        Plane plane = new Plane();
+//        plane.setOriginNormal(new Vector3f(0, 0.25f, 0), Vector3f.UNIT_Y);
+//        floorGeometry.addControl(new RigidBodyControl(new PlaneCollisionShape(plane), 0));
+            RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(lingrid.getSizeX() / 2f, lingrid.getSizeY() / 2f, 0.25f)), 0);
+            Node node = new Node();
+            node.addControl(control);
+            control.setPhysicsLocation(new Vector3f(lingrid.getSizeX() / 2f, lingrid.getSizeY() / 2f, -0.25f));
+
+
+            rootNode.attachChild(node);
+            getPhysicsSpace().add(node);
+        }
+    }
+
+    protected void initEntities() {
+        for (int i = 0; i < NUM_CARS; i++) {
+            putCar(new Vehicle(player, Vehicle.Type.SKODA120, map.pnet.randomRoadPoint(random), modeler.matVehicles));
+        }
+
         {
             createCubeOnPos3D(new Pos3D(5, 3, 0));
         }
@@ -229,48 +271,13 @@ public class MyGame extends SimpleApplication {
         }
 
         {
-            Animal simplePipe = new Animal(modeler, getPhysicsSpace());
+            Animal simplePipe = new Animal(modeler, getPhysicsSpace(), new Vector3f(10, 2, 0));
             rootNode.attachChild(simplePipe.getNode());
 //            getPhysicsSpace().add(simplePipe.getPhysics());
 
 //            SimplePipe simplePipe2 = new SimplePipe(new Vector3f(4, 2, 5f), new Vector3f(6, 4, 2), modeler.matPipes);
 //            rootNode.attachChild(simplePipe2.getSpatial());
 
-        }
-
-        initInputs();
-
-        {
-            rootNode.setShadowMode(ShadowMode.Off);
-            bsr = new BasicShadowRenderer(assetManager, 1024);
-            bsr.setDirection(new Vector3f(-1, 1, -2).normalizeLocal());
-            viewPort.addProcessor(bsr);
-        }
-        {
-            AmbientLight ambientLight = new AmbientLight();
-            ambientLight.setColor(ColorRGBA.White);
-            rootNode.addLight(ambientLight);
-        }
-        {
-            /** Must add a light to make the lit object visible! */
-            DirectionalLight sun = new DirectionalLight();
-            sun.setDirection(new Vector3f(-1, 1, -2).normalizeLocal());
-            sun.setColor(ColorRGBA.White);
-            rootNode.addLight(sun);
-        }
-        {
-            // add floor
-//        Plane plane = new Plane();
-//        plane.setOriginNormal(new Vector3f(0, 0.25f, 0), Vector3f.UNIT_Y);
-//        floorGeometry.addControl(new RigidBodyControl(new PlaneCollisionShape(plane), 0));
-            RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(lingrid.getSizeX() / 2f, lingrid.getSizeY() / 2f, 0.25f)), 0);
-            Node node = new Node();
-            node.addControl(control);
-            control.setPhysicsLocation(new Vector3f(lingrid.getSizeX() / 2f, lingrid.getSizeY() / 2f, -0.25f));
-
-
-            rootNode.attachChild(node);
-            getPhysicsSpace().add(node);
         }
     }
 
@@ -306,7 +313,7 @@ public class MyGame extends SimpleApplication {
     }
 
 
-    private PhysicsSpace getPhysicsSpace() {
+    protected PhysicsSpace getPhysicsSpace() {
         return bulletAppState.getPhysicsSpace();
     }
 
@@ -390,8 +397,8 @@ public class MyGame extends SimpleApplication {
         trafficGrid.updateGrid();
         selectTileGrid.updateTexture();
 
-
-        hero.setDir(new Vector3f(1f*avatarwalkx, 1f*avatarwalky, 0));
+        if (hero!=null) {
+        hero.setDir(new Vector3f(1f*avatarwalkx, 1f*avatarwalky, 0));}
 
         avatarwalkx = 0;
         avatarwalky = 0;

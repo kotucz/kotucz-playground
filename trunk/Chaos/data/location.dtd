@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='us-ascii'?>
+
+<!--
+    DTD for kotuc 3d system.
+-->
+
+<!ELEMENT location ((player, phasemap?),(tree|house|darkball)*)>
+<!ATTLIST location 
+			width CDATA #IMPLIED
+			height CDATA #IMPLIED
+			random CDATA #IMPLIED			
+>
+
+<!ELEMENT tree EMPTY>
+<!ATTLIST tree 
+            x	CDATA	#REQUIRED
+            y	CDATA	#REQUIRED
+>
+
+<!ELEMENT house EMPTY>
+<!ATTLIST house 
+            x	CDATA	#REQUIRED	
+            y	CDATA	#REQUIRED
+            rotz	CDATA	#REQUIRED
+>
+
+<!ELEMENT player (item*)>
+<!ATTLIST player 
+            x	CDATA	#REQUIRED
+            y	CDATA	#REQUIRED
+            z	CDATA	#REQUIRED
+            rotz CDATA	#REQUIRED
+>
+
+<!ELEMENT darkball (item*)>
+<!ATTLIST darkball 
+            x	CDATA	#REQUIRED
+            y	CDATA	#REQUIRED
+            z	CDATA	#REQUIRED
+            rotz CDATA	#REQUIRED
+>
+
+
+<!ELEMENT item EMPTY>
+<!ATTLIST item
+            x	CDATA	#IMPLIED
+            y	CDATA	#IMPLIED
+            z	CDATA	#IMPLIED
+            equiped CDATA	#IMPLIED
+            type CDATA	#IMPLIED
+            name CDATA	#IMPLIED
+>
+
+<!ELEMENT phasemap (phasex*)>
+<!ATTLIST phasemap
+            widthx	CDATA	#IMPLIED
+>
+
+<!ELEMENT phasex (phasey*)>
+<!ATTLIST phasex
+            widthy	CDATA	#IMPLIED
+>
+
+<!ELEMENT phasey (phase*)>
+<!ATTLIST phasey
+            height	CDATA	#IMPLIED
+>
+
+<!ELEMENT phase EMPTY>
+<!ATTLIST phase
+            type	(air|water|solid) #IMPLIED
+>

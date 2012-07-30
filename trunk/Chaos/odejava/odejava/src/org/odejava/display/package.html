@@ -1,0 +1,37 @@
+<!-- Summary by William Denniss -->
+<body>
+
+<p>
+Used to bind ODE to the display library of your choice.  As ODE is purely a
+mathematical physics library, it has no inherent way of displaying the 
+various objects in the scene.
+</p>
+
+<p>
+Using this package, ODE objects such as <code>Geom</code> and <code>Body</code> can be ``bound'' to
+display objects from any given display API.   This means that when those
+objects move in the ODE scene, the corrosponding representation in the display
+library will also be moved. The <code>DisplayBin</code> object is used to 
+maintain a list of such bound objects in the scene and keep them in sync.
+</p>
+
+<p>
+To use a graphics package with Odejava - all that is needed is to implement
+the <code>DisplayTransformable</code> interface with regards to the chosen
+display library.  All that interface specifies is a way for setting the
+translation and rotational components of the display object so it can be
+synched to the ODE one.
+</p>
+
+<p>
+In addition to implementing <code>DisplayTransformable</code>, display libraries
+can have a utility class which is given Odejava <code>Geom</code>S and <code>Body</code>S
+and can automatially generate appropriate representations of them in the display
+library using the Geometry properties.
+</p>
+
+<p>
+Examples of both a DisplayTransformable implementation and utility class can be seen
+in the <p>org.odejava.xith3d</p> package.
+</p>
+</body>

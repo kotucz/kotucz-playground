@@ -18,7 +18,6 @@ import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.control.Control;
 import com.jme3.scene.shape.Box;
 import kotucz.village.game.Modeler;
-import kotucz.village.game.MyGame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +33,7 @@ public class Animal {
 
     final List<Leg> legs = new ArrayList<Leg>();
 
-    public Animal(Modeler mat, PhysicsSpace physicsSpace) {
-
-        final Vector3f origin = new Vector3f(10, 2, 0);
+    public Animal(Modeler mat, PhysicsSpace physicsSpace, Vector3f origin) {
 
         Spatial torso = createBody(mat.matPipes, origin.add(0, 0, 2));
 
@@ -90,7 +87,7 @@ public class Animal {
 
             HingeJoint kneeHinge = new HingeJoint(leg1.getPhysics(), leg2.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, -0.5f), Vector3f.UNIT_Y, Vector3f.UNIT_Y);
             kneeHinge.setCollisionBetweenLinkedBodys(false);
-            kneeHinge.setLimit(-1.21f, 0.2f);
+            kneeHinge.setLimit(-2.21f, 0.2f);
 //            kneeHinge.enableMotor(true, -1, 0.1f);
             physicsSpace.add(kneeHinge);
 
@@ -105,7 +102,7 @@ public class Animal {
             HingeJoint hinge = new HingeJoint(leg2.getPhysics(), leg3.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, 0.f), Vector3f.UNIT_Y, t.transformVector(Vector3f.UNIT_Y, null));
 //            HingeJoint hinge = new HingeJoint(leg2.getPhysics(), leg3.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, 0.f), Vector3f.UNIT_Y, new Vector3f( (float)Math.cos(angle+0.5*Math.PI), (float)Math.sin(angle + 0.5 * Math.PI), 0));
             hinge.setCollisionBetweenLinkedBodys(false);
-            hinge.setLimit(-0.1f, 1.1f);
+            hinge.setLimit(-0.1f, 2.1f);
 //            hinge.enableMotor(true, 1, 0.1f);
             physicsSpace.add(hinge);
 
@@ -165,8 +162,8 @@ public class Animal {
             boolean even = (i % 2 != 0);
 
             leg.s1.setPos((float) Math.sin(off));
-            leg.s2.setPos((float) Math.sin(off));
-            leg.s3.setPos((float) Math.sin(off) * (even?1:-1));
+            leg.s2.setPos((float) Math.sin(off) + 1);
+            leg.s3.setPos((float) Math.sin(off) * (even ? 1 : -1));
 
             i++;
         }
@@ -247,7 +244,7 @@ public class Animal {
 
             System.out.println("hinge " + hingeAngle + " " + diff);
 
-            hinge.enableMotor(true, diff, 10.f);
+            hinge.enableMotor(true, 2*diff, 10.f);
 
         }
 

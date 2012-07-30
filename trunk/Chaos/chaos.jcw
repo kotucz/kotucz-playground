@@ -1,0 +1,19 @@
+<?xml?>
+<workspace>
+	<settings>
+		<label>chaos</label>
+	</settings>
+	<users>
+		<user>
+			<path>chaos.jcu</path>
+		</user>
+	</users>
+	<projects>
+		<project>
+			<path>chaos3d\chaos3d.jcp</path>
+		</project>
+		<project>
+			<path>..\Arena\Arena.jcp</path>
+		</project>
+	</projects>
+</workspace>

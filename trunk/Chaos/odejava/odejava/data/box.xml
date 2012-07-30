@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xode version="1.16" name="motorcycle"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://tankammo.com/xode/1.0r17/xode.xsd">
+	
+	<world transformstyle="vector" name="asdf">
+	
+		<body name="box">
+			<transform>
+				<position x="-1" y="0" z="4" />
+				<rotation x="0" y="0" z="0" />
+				<scale x="1" y="1" z="1" />
+			</transform>
+
+
+
+			
+			<mass_shape density="1">
+				<transform>
+					<position x="-1" y="0" z="4" />
+					<rotation x="0" y="0" z="0" />
+				</transform>
+			
+				<box
+					sizex="2"
+					sizey="2"
+					sizez="2"
+				/>
+			</mass_shape>
+			
+			<geom name="wheel1geom">
+				<transform>
+					<position x="-1" y="0" z="4" />
+					<rotation x="0" y="0" z="0" />
+					<scale x="1" y="1" z="1" />
+				</transform>
+				
+				<box
+					sizex="2"
+					sizey="2"
+					sizez="2"
+				/>
+				
+			</geom>
+		</body>
+	</world>
+</xode>

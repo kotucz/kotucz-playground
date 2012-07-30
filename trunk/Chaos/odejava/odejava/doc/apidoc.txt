@@ -1,0 +1,8 @@
+Higher level API
+-package org.odejava
+-run build ant script and documentation is generated into odejava/doc/javadoc 
+
+Lower level API
+-package org.odejava.ode
+-documentation is located at ODE's own www-site as this API conforms fully to ODE's C API. See http://q12.org/ode for documentation.
+

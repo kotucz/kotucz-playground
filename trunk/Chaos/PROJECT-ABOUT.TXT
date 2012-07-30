@@ -1,0 +1,10 @@
+Chaos is great project, on which I started learning Java 3D.
+Later it served as platform for several other small projects such as:
+Arachnoid - four legged spider
+Plants - genetic simulator with simple plants
+others...
+
+Trade world was partialy based on it too
+
+
+

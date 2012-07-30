@@ -1,0 +1,46 @@
+Changes for Odejava project. Date format is date.month.year.
+
+13.2.2004
+JavaCollision uses now NIO DirectBuffers. J2SDK 1.4 required.
+
+
+12.2.2004
+Several additions, mainly collision & callback support for Java.
+
+
+3.1.2004
+High Level API
+-temporary swig arrays fixed used in Geom and Geom* classes
+-fixed space's quadtree constructor
+-more methods added to Body
+-added Geom.setEnabled()
+-fixed Body.getRotation()
+-GeomTerrain, GeomCone are currently not in use (because ODE is now 0.39)
+Added libodejava.so for linux
+Win32 native library has now larger (2/4Mb) stackspace.
+ODE source code is now based on release 0.39 (not CVS head)
+
+
+23.12.2003
+Revised higher level API
+Revised package structure
+
+
+21.12.2003
+Complete project rewrite, new low level API conforms fully to ODE's C API as this is the main API on ODE.
+Old low level C++ (conviniency) API dropped
+Added high level API, this depends to low level API
+Added contrib sections: dCylinder, TerrainAndCone and GeomTransformGroup
+Reorganised file structure for package and upcoming CVS
+Updated documentation 
+Added ODE source code CVS head (21.12.2003), added contrib sections to sources
+New win32 and linux native libraries, mac version does not yet exist
+Changed tests to use new APIs
+
+
+4.12.2003
+Initial version 0.1.
+API conforms to ODE's C++ API
+Special thanks goes to Artur Matos who kindly contributed his Swig file for the project
+
+
