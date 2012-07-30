@@ -1,0 +1,97 @@
+package cz.kotuc.chaos;
+//import java.awt.*;
+
+import com.sun.j3d.loaders.*;
+import com.sun.j3d.loaders.objectfile.*;
+
+import com.sun.j3d.utils.geometry.*;
+import com.sun.j3d.utils.universe.*;
+import javax.media.j3d.*;
+import javax.vecmath.*;
+;
+
+public class GeneticEntity extends Entity {
+	final double VELOCITY = 0.01;
+	
+	public Animal() {
+		super();
+		pos = new Point3d(0.0, 0.0, 0.0);
+		angle = Math.random() * 6;
+		maxHitpoints=100;
+	}	
+	
+	public void go(int distance) {
+	  if (distance > 0) {
+	  
+	  	pos.x += Math.cos(angle) * VELOCITY;
+	  	pos.y += Math.sin(angle) * VELOCITY;
+//	  	endOfTurn();
+	  	System.out.println("Uzidu");
+//	  	go(--distance);
+	  }
+	}
+	
+	public void turnLeft(int angle) {
+		if (angle > 0) {
+			this.angle -= Math.toRadians(1.0);
+//			endOfTurn();
+//			turnLeft(angle - 1);
+		}
+	}
+ 	
+	public void turnRight(int angle) {
+		if (angle > 0) {
+			this.angle += Math.toRadians(1.0);
+//			endOfTurn();
+//			turnRight(angle - 1);
+		}
+	}
+	
+	public void hitted(Bullet bullet) {
+		this.hitpoints-=5;
+		if (this.hitpoints<1) {
+			this.kill();
+		} 
+	}
+	
+	public void kill() {
+		
+	}
+	
+	public void doEveryFrame(java.util.Enumeration enum) {					
+		this.pos.add(this.vel);
+	}
+	
+	Morph handMorph;
+	
+	public BranchGroup createAvatar() {
+		BranchGroup bg = new BranchGroup();
+		
+		String[] fNames = new String[3];
+		fNames[0] = "models/hand1.obj";	 		
+		fNames[1] = "models/hand2.obj";
+		fNames[2] = "models/hand3.obj";
+		
+		Appearance handAppear = new Appearance();
+		handAppear.setMaterial(new Material());
+		handMorph = new MorphLoader(fNames, handAppear);
+		bg.addChild(handMorph);
+		
+		this.refreshWeights();
+		
+		return bg;		 		
+ 	}	
+	
+	public void setStrength(int i) {
+		
+	}
+	
+	public void refreshWeights() {
+		double[] w = {0.2, 0.0, 0.8};
+		handMorph.setWeights(w);
+	}
+	
+	public String toString() {
+		return "Animal"+this.hitpoints+"HP\n";
+	}
+}

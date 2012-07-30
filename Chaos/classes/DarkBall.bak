@@ -1,0 +1,210 @@
+/**
+ *	DarkBall v 0.01;
+ *
+ *	Tomas Kotula as Kotuc (=disc)
+ */
+
+
+import java.awt.*;
+import java.applet.*;
+import java.awt.image.*;
+import java.awt.event.*;
+import java.util.*;
+import java.io.*;
+
+import com.sun.j3d.loaders.*;
+import com.sun.j3d.loaders.objectfile.*;
+import com.sun.j3d.utils.image.*;
+
+import com.sun.j3d.utils.geometry.*;
+import com.sun.j3d.utils.universe.*;
+import javax.media.j3d.*;
+import javax.vecmath.*;
+
+
+class DarkBall extends Entity {
+	
+//	TransformGroup objHeadTG = null;
+	
+	BranchGroup objBall = null;	
+
+
+	public DarkBall (Location location) {
+		super(location);
+		
+		setPos(9.0, 6.0, 3.0);
+		
+		velocity = new Vector3d(0.1*(Math.random()-0.5), 0.1*(Math.random()-0.5), 0);
+					
+		createCollisionDetector();
+	}	
+
+	
+	public BranchGroup createAvatar() {
+				
+		BranchGroup objBall = new BranchGroup();
+		
+//		objBall.addChild(new Sphere(0.2f, Sphere.GENERATE_NORMALS | Sphere.GENERATE_TEXTURE_COORDS, createDBAppear()));
+	
+//		LinearFog fog = new LinearFog(0.1f, 0f, 0f);
+//		fog.setInfluencingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 1000.0));
+//		objBall.addChild(fog);
+
+		PointSound sound = new PointSound(new MediaContainer("file:roar.au"), 1.0f, 0.0f, 0.0f, 0.0f);
+		//PointSound sound = new PointSound();
+		
+		sound.setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 1000.0));
+		sound.setBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 1000.0));
+		sound.setContinuousEnable(false);
+		
+		sound.setCapability(PointSound.ALLOW_ENABLE_WRITE);
+//        sound.setCapability(PointSound.ALLOW_INITIAL_GAIN_WRITE);
+//        sound.setCapability(PointSound.ALLOW_SOUND_DATA_WRITE);
+//        sound.setCapability(PointSound.ALLOW_SCHEDULING_BOUNDS_WRITE);
+//        sound.setCapability(PointSound.ALLOW_CONT_PLAY_WRITE);
+//        sound.setCapability(PointSound.ALLOW_RELEASE_WRITE);
+//        sound.setCapability(PointSound.ALLOW_DURATION_READ);
+//        sound.setCapability(PointSound.ALLOW_IS_PLAYING_READ);
+//        sound.setCapability(PointSound.ALLOW_LOOP_WRITE);
+		
+		sound.setLoop(Sound.INFINITE_LOOPS);
+		sound.setEnable(true);	
+				
+		objBall.addChild(sound);
+		
+//	create particles flying around	
+		Appearance partsAppear = new Appearance();
+//		partsAppear.setPointAttributes(new PointAttributes(3.0f, true));
+//		partsAppear.setLineAttributes(new LineAttributes(1.0f, LineAttributes.PATTERN_SOLID, true));
+		partsAppear.setColoringAttributes(new ColoringAttributes(0.6f, 0.8f, 1.0f, ColoringAttributes.NICEST));
+//		partsAppear.setMaterial(new Material(new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.0f, 0.3f, 0.6f), new Color3f(0.1f, 0.5f, 1.0f), 1.0f));
+//		partsAppear.setMaterial(new Material());
+
+		objBall.addChild(new Shape3D(createParticles(), partsAppear));
+		
+		return objBall;
+	}
+
+	public Appearance createDBAppear () {
+		Appearance dba = new Appearance();
+		
+		TextureLoader loader = new TextureLoader("darkball.jpg", null);
+    	ImageComponent2D image = loader.getImage();
+
+    	if(image == null) {
+            System.out.println("load failed for texture darkball.jpg");
+    	}
+    	Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA,
+                                        image.getWidth(), image.getHeight());
+    	texture.setImage(0, image);
+    	dba.setTexture(texture);
+		
+		TextureAttributes ta = new TextureAttributes();
+		ta.setTextureMode(TextureAttributes.MODULATE);
+		dba.setTextureAttributes(ta);		
+		dba.setTexCoordGeneration(new TexCoordGeneration(TexCoordGeneration.OBJECT_LINEAR, TexCoordGeneration.TEXTURE_COORDINATE_2));
+		
+		return dba;
+	}
+	
+	GeometryArray particles;
+	
+	GeometryArray createParticles () {
+		int N = 90;  // must be 3 dividable
+		
+//		int[] vCounts = new int[N/3];
+//		for (int i=0; i<vCounts.length; i++) vCounts[i]=3;
+//		particles = new TriangleStripArray(N*2, PointArray.COORDINATES|PointArray.BY_REFERENCE, vCounts);
+
+		particles = new LineArray(N*2, PointArray.COORDINATES|PointArray.BY_REFERENCE);
+		
+		particles.setCapability(GeometryArray.ALLOW_REF_DATA_WRITE);
+		particles.setCapability(GeometryArray.ALLOW_REF_DATA_READ);
+		particles.setCapability(GeometryArray.ALLOW_COUNT_READ);
+		
+		float[] coordinates = new float[N*2*3];
+		
+		for (int i = 0; i<N; i+=2) {
+			coordinates[i*3+0]=(float)Math.random()*0.2f-0.1f;		//	x
+			coordinates[i*3+1]=(float)Math.random()*0.2f-0.1f;		//	y
+			coordinates[i*3+2]=(float)Math.random()*0.2f-0.1f;		//	z
+			
+			coordinates[i*3+0+3]=(float)Math.random()*0.4f-0.2f;		//	x
+			coordinates[i*3+1+3]=(float)Math.random()*0.4f-0.2f;		//	y
+			coordinates[i*3+2+3]=(float)Math.random()*0.4f-0.2f;		//	z
+		}
+		
+		particles.setCoordRefFloat(coordinates);
+		
+		
+		return particles;
+	}
+	
+
+	
+	public void step () {
+		pos.x += velocity.x;
+		pos.y += velocity.y;
+		pos.z += velocity.z;
+		
+				double floorZ; 
+		if ((floorZ = location.getZatXY(pos.x, pos.y)+0.2)>pos.z) {
+			pos.z = floorZ;
+			velocity.z=0.2;
+		} else velocity.z-=0.01;
+		
+//		velocity.x*=0.8;
+//		velocity.y*=0.8;
+
+//		System.out.println("step");
+	}
+
+
+	
+//  abstract methods from entity
+	
+	GeometryUpdater particlesUpdater = new ParticlesUpdater();
+	
+	public void doEveryFrame(java.util.Enumeration enum) {
+		particles.updateData(location.waterUpdater);
+//		particles.updateData(particlesUpdater);
+//		particles.updateData(new ParticlesUpdater());
+		
+		
+		step();					
+	}
+	
+	public void collisionDetected (Enumeration enum) {
+		System.out.println("DarkBall"+location.time);	
+		
+		velocity.x*=-1.0;
+		velocity.y*=-1.0;
+		step();		
+		
+	}
+}
+		public class ParticlesUpdater implements GeometryUpdater {
+		public void updateData (Geometry geometry) {
+			GeometryArray geometryArray = (GeometryArray)geometry;
+			float[] coords = geometryArray.getCoordRefFloat();
+			
+			int N = geometryArray.getValidVertexCount();
+			
+			for (int i = 0; i<N; i+=2) {
+				float vx = coords[i*3+0+3]-coords[i*3+0];
+				float vy = coords[i*3+1+3]-coords[i*3+1];
+				float vz = coords[i*3+2+3]-coords[i*3+2];
+									
+				coords[i*3+0] += vx;
+				coords[i*3+1] += vy;
+				coords[i*3+2] += vz;
+				
+				coords[i*3+0+3] += vx + ((0<coords[i*3+0])?-0.01f:+0.01f);;
+				coords[i*3+1+3] += vy + ((0<coords[i*3+1])?-0.01f:+0.01f);;
+				coords[i*3+2+3] += vz + ((0<coords[i*3+2])?-0.01f:+0.01f);;
+			}
+			
+						
+			
+		} 
+	}

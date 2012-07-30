@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xode version="1.16" name="motorcycle"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://tankammo.com/xode/1.0r17/xode.xsd">
+    
+    <world transformstyle="vector">
+    
+        <group name="wheels">
+        
+            <body name="forwardWheel">
+                <transform>
+                    <position x="-1" y="0" z="4" />
+                    <rotation x="0" y="0" z="0" />
+                    <scale x="1" y="1" z="1" />
+                </transform>
+                
+                                    <mass_shape density="1">
+                        <transform>
+                            <position x="-1" y="0" z="4" />
+                            <rotation x="0" y="0" z="0" />
+                        </transform>
+                        
+                        <cylinder
+                            radius="2"
+                            length="6"
+                        />
+                    </mass_shape>
+                
+                <geom name="wheel1geom">
+                                    <transform>
+                            <position x="-1" y="0" z="4" />
+                            <rotation x="0" y="0" z="0" />
+                            <scale x="1" y="1" z="1" />
+                    </transform>
+                    
+                    <cylinder
+                        radius="2"
+                        length="6"
+                    />
+
+
+                </geom>
+                
+
+
+                <!-- example of an extension to specify the 3D model for this body -->
+                <ext ename="mesh-file-location">
+                    <location>./data/models/tire-small.3ds</location>
+                </ext>
+
+                <!-- example of an extension to specify the colour of this body -->
+                <ext ename="colour">
+                    <colour r="255" g="0" b="0" />
+                </ext>
+                                
+            </body>
+            
+            <body name="aftWheel">
+                <transform>
+                    <position x="1" y="0" z="4" />
+                    <rotation x="0" y="0" z="0" />
+                    <scale x="1" y="1" z="1" />
+                </transform>
+                
+                    <mass_shape total="1">
+                        <transform>
+                            <position x="-1" y="0" z="4" />
+                            <rotation x="0" y="0" z="0" />
+                        </transform>
+                        
+                        <cylinder
+                            radius="2"
+                            length="6"
+                        />
+                    </mass_shape>
+                
+                <torque x="0" y="0" z="0" />
+                <force x="0" y="0" z="0" />
+                
+                <geom name="wheel2geom">
+                                    <transform>
+                        <position x="-1" y="0" z="4" />
+                        <rotation x="0" y="0" z="0" />
+                        <scale x="1" y="1" z="1" />
+                    </transform>
+
+                    <cylinder
+                        radius="2"
+                        length="6"
+                    />
+                    
+                </geom>
+    
+                
+            </body>
+        
+        </group>
+        
+        <body name="chassis">
+            <transform>
+                <position x="0" y="0" z="4" />
+                <rotation x="0" y="0" z="0" />
+                <scale x="1" y="1" z="1" />
+            </transform>
+
+                <mass_shape density="10">
+                    <transform>
+                        <position x="0" y="0" z="0" />
+                        <rotation x="0" y="0" z="0" />
+                    </transform>
+                    
+                    <box
+                        sizex="2"
+                        sizey="2"
+                        sizez="2"
+                    />
+                </mass_shape>
+            
+            <geom name="forwardSection">
+                <transform>
+                    <position x="-0.5" y="0" z="4" />
+                    <rotation x="0" y="0" z="0" />
+                    <scale x="1" y="1" z="1" />
+                </transform>
+                <box
+                    sizex="2"
+                    sizey="2"
+                    sizez="2"
+                />
+            </geom>
+            
+            <geom name="aftSection">
+                <transform>
+                    <position x="-0.5" y="0" z="4" />
+                    <rotation x="0" y="0" z="0" />
+                    <scale x="1" y="1" z="1" />
+                </transform>
+                <box
+                    sizex="1"
+                    sizey="1"
+                    sizez="0.5"
+                />
+            </geom>
+
+           <joint name="jointForwardWheel">
+                <transform>
+                    <position x="-0.5" y="0" z="4" />
+                    <rotation x="0" y="0" z="0" />
+                    <scale x="1" y="1" z="1" />
+                </transform>
+        
+                <link2 body="forwardWheel" />
+                
+                <hinge2>
+                    <axis
+                        lowStop="0"
+                        hiStop="0"
+                        vel="0"
+                        fMax="0"
+                        fudgeFactor="0"
+                        bounce="0"
+                        CFM="0"
+                        stopERP="0"
+                        stopCFM="0"
+                        suspensionERP="0"
+                        suspensionCFM="0">
+                        <rotation x="0" y="0" z="1" aformat="radians" />
+                    </axis>
+                    <axis
+                        lowStop="0"
+                        hiStop="0"
+                        vel="0"
+                        fMax="0"
+                        fudgeFactor="0"
+                        bounce="0"
+                        CFM="0"
+                        stopERP="0"
+                        stopCFM="0"
+                        suspensionERP="0"
+                        suspensionCFM="0">
+                        <rotation x="0" y="0" z="1" aformat="radians" />
+                    </axis>
+                </hinge2>
+            </joint>
+            
+            <joint name="jointAftWheel">
+
+                <transform>
+                    <position x="-0.5" y="0" z="4" />
+                    <rotation x="0" y="0" z="0" />
+                </transform>
+                
+                <link2 body="aftWheel" />
+                
+                <hinge2>
+                    <axis
+                        lowStop="0"
+                        hiStop="0"
+                        vel="0"
+                        fMax="0"
+                        fudgeFactor="0"
+                        bounce="0"
+                        CFM="0"
+                        stopERP="0"
+                        stopCFM="0"
+                        suspensionERP="0"
+                        suspensionCFM="0" >
+                        <rotation x="0" y="0" z="1" aformat="radians" />
+                    </axis>
+                    <axis
+                        lowStop="0"
+                        hiStop="0"
+                        vel="0"
+                        fMax="0"
+                        fudgeFactor="0"
+                        bounce="0"
+                        CFM="0"
+                        stopERP="0"
+                        stopCFM="0"
+                        suspensionERP="0"
+                        suspensionCFM="0" >
+                        <rotation x="0" y="0" z="1" aformat="radians" />
+                    </axis>
+                </hinge2>
+            </joint>
+
+        </body>
+
+    </world>
+
+    
+    <world transformstyle="matrix">
+        <body name="box2">
+            <transform absolute="true">
+                <tmatrix
+                    d_1_1="0" d_1_2="1" d_1_3="2" d_1_4="0"
+                    d_2_1="1" d_2_2="0" d_2_3="1" d_2_4="3"
+                    d_3_1="0" d_3_2="1" d_3_3="0" d_3_4="1"
+                    d_4_1="2" d_4_2="0" d_4_3="2" d_4_4="0"
+                />
+            </transform>
+
+            <mass_struct total="1">
+                    <centerGravity x="1" y="1" z="1" />
+                    <imatrix
+                        d_1_1="0" d_1_2="1" d_1_3="2"
+                        d_2_1="1" d_2_2="0" d_2_3="1"
+                        d_3_1="0" d_3_2="1" d_3_3="0"
+                    />
+                </mass_struct>
+            
+            
+            <geom name="geometry">
+                <trimesh>
+                    <vertices>
+                        <v x="0" y="1" z="1" />
+                        <v x="1" y="2" z="2" />
+                        <v x="2" y="0" z="1" />
+                        <v x="0" y="1" z="2" />
+                        <v x="2" y="2" z="1" />
+                    </vertices>
+                    <triangles>
+                        <t ia="1" ib="2" ic="3" />
+                        <t ia="2" ib="1" ic="4" />
+                        <t ia="3" ib="2" ic="1" />
+                    </triangles>
+                </trimesh>
+            </geom>
+        </body>
+    </world>
+    
+</xode>

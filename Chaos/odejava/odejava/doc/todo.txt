@@ -1,0 +1,12 @@
+
+Todo
+
+Add support for specialised callbacks like TriMeshCallback, RayCallback..
+
+Add more getting started demos
+-jME, Openmind also
+
+More support for Higher level API
+-add methods and javadoc
+
+

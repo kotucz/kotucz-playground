@@ -1,0 +1,182 @@
+#
+# An unexpected error has been detected by Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x3f000000, pid=8692, tid=8924
+#
+# Java VM: Java HotSpot(TM) Client VM (1.6.0_03-b05 mixed mode, sharing)
+# Problematic frame:
+# C  0x3f000000
+#
+# If you would like to submit a bug report, please visit:
+#   http://java.sun.com/webapps/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x045c2800):  JavaThread "Thread-0" [_thread_in_native, id=8924]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x3f000000
+
+Registers:
+EAX=0x3f000000, EBX=0x00000000, ECX=0x053cf8c8, EDX=0x0a24f830
+ESP=0x0a24f818, EBP=0x0a24f868, ESI=0x00000000, EDI=0x045c2800
+EIP=0x3f000000, EFLAGS=0x00010246
+
+Top of Stack: (sp=0x0a24f818)
+0x0a24f818:   049e4f9a 0a24f830 0a24f85c 00000000
+0x0a24f828:   045c28ec 04cafc88 00000009 045c2800
+0x0a24f838:   0a24f85c 022901b1 045c28ec 0a24f85c
+0x0a24f848:   053cf8c8 00000000 0a24f854 239102f8
+0x0a24f858:   045c2805 273740f0 2329f3c8 2329f360
+0x0a24f868:   0a24f908 022916d4 053cf8c8 00000000
+0x0a24f878:   0a24f878 00000000 0a24f8b8 27374150
+0x0a24f888:   00000000 2736daa8 00000000 0a24f8a8 
+
+Instructions: (pc=0x3f000000)
+0x3efffff0:   
+[error occurred during error reporting, step 100, id 0xc0000005]
+
+Stack: [0x0a200000,0x0a250000),  sp=0x0a24f818,  free space=318k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  0x3f000000
+J  kotuc.chaos.physx.PhysXGame.synchronizeData()V
+j  kotuc.chaos.physx.PhysXGame.simpleUpdate()V+45
+j  kotuc.chaos.SimpleGame.run()V+5
+v  ~StubRoutines::call_stub
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+J  com.JPhysX.JPhysXAdapterJNI.NxActor_getGlobalPosition(JLcom/JPhysX/NxActor;)J
+J  kotuc.chaos.physx.PhysXGame.synchronizeData()V
+j  kotuc.chaos.physx.PhysXGame.simpleUpdate()V+45
+j  kotuc.chaos.SimpleGame.run()V+5
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x045c2c00 JavaThread "DestroyJavaVM" [_thread_blocked, id=10076]
+=>0x045c2800 JavaThread "Thread-0" [_thread_in_native, id=8924]
+  0x045c2000 JavaThread "J3D-InputDeviceScheduler-1" [_thread_blocked, id=8348]
+  0x045c1c00 JavaThread "J3D-SoundSchedulerUpdateThread-1" [_thread_blocked, id=9992]
+  0x045c1400 JavaThread "J3D-RenderStructureUpdateThread-1" [_thread_blocked, id=8448]
+  0x045c1000 JavaThread "J3D-BehaviorScheduler-1" [_thread_in_native, id=9808]
+  0x045c0800 JavaThread "J3D-TransformStructureUpdateThread-1" [_thread_blocked, id=6576]
+  0x045c0400 JavaThread "J3D-RenderingEnvironmentStructureUpdateThread-1" [_thread_blocked, id=9160]
+  0x045bfc00 JavaThread "J3D-SoundStructureUpdateThread-1" [_thread_blocked, id=9352]
+  0x0461cc00 JavaThread "J3D-GeometryStructureUpdateThread-1" [_thread_blocked, id=10116]
+  0x0461c800 JavaThread "J3D-BehaviorStructureUpdateThread-1" [_thread_blocked, id=7636]
+  0x045e2000 JavaThread "AWT-EventQueue-0" [_thread_blocked, id=8696]
+  0x045e1c00 JavaThread "AWT-Shutdown" [_thread_blocked, id=8412]
+  0x04658000 JavaThread "J3D-Renderer-1" [_thread_blocked, id=8932]
+  0x04657800 JavaThread "J3D-MasterControl-1" [_thread_blocked, id=684]
+  0x04657000 JavaThread "J3D-NotificationThread" [_thread_blocked, id=10052]
+  0x04656800 JavaThread "J3D-TimerThread" [_thread_blocked, id=9652]
+  0x04607800 JavaThread "J3D-RenderingAttributesStructureUpdateThread" [_thread_blocked, id=8364]
+  0x046e8800 JavaThread "AWT-Windows" daemon [_thread_in_native, id=8296]
+  0x04615000 JavaThread "Java2D Disposer" daemon [_thread_blocked, id=7524]
+  0x0201e000 JavaThread "Low Memory Detector" daemon [_thread_blocked, id=9296]
+  0x0201b000 JavaThread "CompilerThread0" daemon [_thread_in_native, id=4572]
+  0x0201a800 JavaThread "Attach Listener" daemon [_thread_blocked, id=9976]
+  0x0201a400 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=9152]
+  0x01fdf000 JavaThread "Finalizer" daemon [_thread_blocked, id=6624]
+  0x01fd3000 JavaThread "Reference Handler" daemon [_thread_blocked, id=9880]
+
+Other Threads:
+  0x01fd2000 VMThread [id=8384]
+  0x02037c00 WatcherThread [id=10232]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ def new generation   total 960K, used 381K [0x23240000, 0x23340000, 0x23720000)
+  eden space 896K,  42% used [0x23240000, 0x2329f758, 0x23320000)
+  from space 64K,   0% used [0x23320000, 0x23320000, 0x23330000)
+  to   space 64K,   0% used [0x23330000, 0x23330000, 0x23340000)
+ tenured generation   total 6092K, used 3654K [0x23720000, 0x23d13000, 0x27240000)
+   the space 6092K,  59% used [0x23720000, 0x23ab1b00, 0x23ab1c00, 0x23d13000)
+ compacting perm gen  total 12288K, used 4467K [0x27240000, 0x27e40000, 0x2b240000)
+   the space 12288K,  36% used [0x27240000, 0x2769cdc0, 0x2769ce00, 0x27e40000)
+    ro space 8192K,  66% used [0x2b240000, 0x2b78f860, 0x2b78fa00, 0x2ba40000)
+    rw space 12288K,  52% used [0x2ba40000, 0x2c08f078, 0x2c08f200, 0x2c640000)
+
+Dynamic libraries:
+0x00400000 - 0x00423000 	C:\Program Files\Java\jdk1.6.0_03\jre\bin\java.exe
+0x77780000 - 0x778a7000 	C:\Windows\system32\ntdll.dll
+0x76180000 - 0x7625b000 	C:\Windows\system32\kernel32.dll
+0x76000000 - 0x760c6000 	C:\Windows\system32\ADVAPI32.dll
+0x776b0000 - 0x77772000 	C:\Windows\system32\RPCRT4.dll
+0x00800000 - 0x0081b000 	C:\Windows\TEMP\logishrd\LVPrcInj01.dll
+0x77350000 - 0x773ed000 	C:\Windows\system32\USER32.dll
+0x76f00000 - 0x76f4b000 	C:\Windows\system32\GDI32.dll
+0x770b0000 - 0x770ce000 	C:\Windows\system32\IMM32.DLL
+0x76f50000 - 0x77018000 	C:\Windows\system32\MSCTF.dll
+0x773f0000 - 0x7749a000 	C:\Windows\system32\msvcrt.dll
+0x779d0000 - 0x779d9000 	C:\Windows\system32\LPK.DLL
+0x76100000 - 0x7617d000 	C:\Windows\system32\USP10.dll
+0x10000000 - 0x10005000 	C:\Windows\system32\avgrsstx.dll
+0x7c340000 - 0x7c396000 	C:\Program Files\Java\jdk1.6.0_03\jre\bin\msvcr71.dll
+0x6d870000 - 0x6daba000 	C:\Program Files\Java\jdk1.6.0_03\jre\bin\client\jvm.dll
+0x74880000 - 0x748b2000 	C:\Windows\system32\WINMM.dll
+0x77120000 - 0x77264000 	C:\Windows\system32\ole32.dll
+0x77620000 - 0x776ad000 	C:\Windows\system32\OLEAUT32.dll
+0x74840000 - 0x74879000 	C:\Windows\system32\OLEACC.dll
+0x75e30000 - 0x75e5c000 	C:\Windows\system32\apphelp.dll
+0x6d3c0000 - 0x6d3c8000 	C:\Program Files\Java\jdk1.6.0_03\jre\bin\hpi.dll
+0x75ff0000 - 0x75ff7000 	C:\Windows\system32\PSAPI.DLL
+0x6d820000 - 0x6d82c000 	C:\Program Files\Java\jdk1.6.0_03\jre\bin\verify.dll
+0x6d460000 - 0x6d47f000 	C:\Program Files\Java\jdk1.6.0_03\jre\bin\java.dll
+0x6d860000 - 0x6d86f000 	C:\Program Files\Java\jdk1.6.0_03\jre\bin\zip.dll
+0x049d0000 - 0x04a4b000 	C:\Users\Kotuc\NetBeansProjects\chaos\JPhysX.dll
+0x00c60000 - 0x00c72000 	C:\Windows\system32\PhysXLoader.dll
+0x75880000 - 0x75899000 	C:\Windows\system32\iphlpapi.dll
+0x75840000 - 0x75875000 	C:\Windows\system32\dhcpcsvc.DLL
+0x75b40000 - 0x75b6c000 	C:\Windows\system32\DNSAPI.dll
+0x778b0000 - 0x778dd000 	C:\Windows\system32\WS2_32.dll
+0x77940000 - 0x77946000 	C:\Windows\system32\NSI.dll
+0x75e90000 - 0x75ea4000 	C:\Windows\system32\Secur32.dll
+0x75830000 - 0x75837000 	C:\Windows\system32\WINNSI.DLL
+0x75800000 - 0x75821000 	C:\Windows\system32\dhcpcsvc6.DLL
+0x04cb0000 - 0x04f4e000 	C:\Program Files\AGEIA Technologies\v2.7.2\PhysXCore.dll
+0x76260000 - 0x763ea000 	C:\Windows\system32\SETUPAPI.dll
+0x00e10000 - 0x00e1e000 	C:\Program Files\Java\jdk1.6.0_03\jre\bin\j3dcore-ogl-chk.dll
+0x67bf0000 - 0x67cbb000 	C:\Windows\system32\OPENGL32.dll
+0x73a10000 - 0x73a33000 	C:\Windows\system32\GLU32.dll
+0x6a3c0000 - 0x6a4a5000 	C:\Windows\system32\DDRAW.dll
+0x745a0000 - 0x745a6000 	C:\Windows\system32\DCIMAN32.dll
+0x70a80000 - 0x70a8c000 	C:\Windows\system32\dwmapi.dll
+0x74c20000 - 0x74c5f000 	C:\Windows\system32\uxtheme.dll
+0x69500000 - 0x69a7d000 	C:\Windows\system32\nvoglv32.dll
+0x6d0b0000 - 0x6d273000 	C:\Program Files\Java\jdk1.6.0_03\jre\bin\awt.dll
+0x702a0000 - 0x702e2000 	C:\Windows\system32\WINSPOOL.DRV
+0x6d490000 - 0x6d496000 	C:\Program Files\Java\jdk1.6.0_03\jre\bin\jawt.dll
+0x020f0000 - 0x02119000 	C:\Program Files\Java\jdk1.6.0_03\jre\bin\j3dcore-ogl.dll
+0x6d360000 - 0x6d3b3000 	C:\Program Files\Java\jdk1.6.0_03\jre\bin\fontmanager.dll
+0x763f0000 - 0x76f00000 	C:\Windows\system32\shell32.dll
+0x778e0000 - 0x77938000 	C:\Windows\system32\SHLWAPI.dll
+0x74c60000 - 0x74dfe000 	C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.6001.18000_none_5cdbaa5a083979cc\comctl32.dll
+
+VM Arguments:
+java_command: kotuc.chaos.physx.PhysXGame
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+CLASSPATH=.;.;C:\PROGRA~1\JMF21~1.1E\lib\sound.jar;C:\PROGRA~1\JMF21~1.1E\lib\jmf.jar;C:\PROGRA~1\JMF21~1.1E\lib;
+PATH=C:\Program Files\Borland\Delphi7\Bin;C:\Program Files\Borland\Delphi7\Projects\Bpl\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Program Files\Common Files\Roxio Shared\DLLShared\;C:\Program Files\Common Files\Roxio Shared\DLLShared\;C:\Program Files\Common Files\Roxio Shared\9.0\DLLShared\;C:\Program Files\QuickTime\QTSystem\
+USERNAME=Kotuc
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=x86 Family 6 Model 14 Stepping 12, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows Vista Build 6001 Service Pack 1
+
+CPU:total 2 (2 cores per cpu, 1 threads per core) family 6 model 14 stepping 12, cmov, cx8, fxsr, mmx, sse, sse2, sse3
+
+Memory: 4k page, physical 1045824k(64148k free), swap 2362324k(624248k free)
+
+vm_info: Java HotSpot(TM) Client VM (1.6.0_03-b05) for windows-x86, built on Sep 24 2007 22:24:33 by "java_re" with unknown MS VC++:1310
+

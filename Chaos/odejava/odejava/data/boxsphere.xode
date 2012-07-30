@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xode version="1.0r23" name="boxsphere"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://tanksoftware.com/xode/1.0r23/xode.xsd">
+
+	<world>
+	
+		<space>
+			
+			<body name="box">
+				<transform>
+					<position x="0.1" y="4" z="2" />
+				</transform>
+				
+				<geom name="boxGeom">
+					<box
+						sizex="4"
+						sizey="4"
+						sizez="4"
+					/>
+				
+				</geom>
+			
+				<mass>
+					<adjust total="1" />
+				</mass>
+			</body>
+				
+			<body name="sphere">
+				<transform>
+					<position x="0.5" y="1.8" z="2.3" />
+				</transform>
+				
+				<geom name="sphereGeom">
+					<sphere
+						radius="2"
+					/>
+				
+				</geom>
+			
+				<mass>
+					<adjust total="1" />
+				</mass>
+			</body>
+		</space>
+	</world>
+</xode>

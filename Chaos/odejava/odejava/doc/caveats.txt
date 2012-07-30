@@ -1,0 +1,19 @@
+Caveats
+
+
+High level API (package org.odejava)
+
+There exists some documentation but it is still unfinished. Also some API changes are likely to happen.
+
+
+Low level API documentation (package org.odejava.ode)
+
+No javadoc, full documentation is at q12.org/ode
+
+
+ODE at odejava/compile/ode
+
+Package has been tested with ODE source code that is based on 0.39 release.
+dCylinder contrib section has been integrated to code, also minor changes
+have been done to couple of ODE's function headers.
+
