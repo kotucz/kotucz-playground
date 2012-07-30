@@ -498,7 +498,8 @@ public class MyGame extends SimpleApplication {
             rootNode.attachChild(mark);
 
             String kode = closest.getGeometry().getUserData(Entities.ID_KEY);
-                System.out.println("Kode: " + kode);
+//                System.out.println("Kode: " + kode);
+
 
 
             final Object pick = entities.find(kode);
