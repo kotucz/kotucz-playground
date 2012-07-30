@@ -40,7 +40,7 @@ public class SimplePipe {
     public SimplePipe(Vector3f posVector, Vector3f endVector, Material mat) {
 
 
-        final float radius = 0.25f;
+        final float radius = 0.125f;
 
         this.posVector = posVector;
 //        this.dir = dir;
@@ -102,6 +102,7 @@ public class SimplePipe {
     }
 
 
+
     public RigidBodyControl getPhysics() {
         return control;
     }
@@ -119,6 +120,8 @@ public class SimplePipe {
     public Spatial getSpatial() {
         return spatial;
     }
+
+
 
 
 }
