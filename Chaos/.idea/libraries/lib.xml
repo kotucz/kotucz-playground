@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/odejava/odejava/lib/vecmath.jar!/" />
+      <root url="jar://$PROJECT_DIR$/odejava/odejava/lib/commons-logging.jar!/" />
+      <root url="jar://$PROJECT_DIR$/odejava/odejava/lib/log4j-1.2.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/odejava/odejava/lib/xercesImpl.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

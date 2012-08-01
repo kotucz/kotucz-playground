@@ -164,9 +164,6 @@ public class MyGame extends SimpleApplication {
         player = new Player("Kotuc", null, 10000);
 
 
-
-
-
         {
             // setup camera
             getFlyByCamera().setMoveSpeed(50);
@@ -271,7 +268,7 @@ public class MyGame extends SimpleApplication {
         }
 
         {
-            Animal simplePipe = new Animal(modeler, getPhysicsSpace(), new Vector3f(10, 2, 0));
+            Animal simplePipe = new Animal(modeler, getPhysicsSpace(), new Vector3f(10, 2, 0), false);
             rootNode.attachChild(simplePipe.getNode());
 //            getPhysicsSpace().add(simplePipe.getPhysics());
 
@@ -344,7 +341,6 @@ public class MyGame extends SimpleApplication {
         inputManager.addListener(analogListener, "CharDown");
 
 
-
     }
 
     private void putCar(Vehicle vehicle) {
@@ -368,7 +364,6 @@ public class MyGame extends SimpleApplication {
     @Override
     public void simpleUpdate(float tpf) {
         super.simpleUpdate(tpf);
-
 
 
         textSelection.setText("No selection");
@@ -397,16 +392,23 @@ public class MyGame extends SimpleApplication {
         trafficGrid.updateGrid();
         selectTileGrid.updateTexture();
 
-        if (hero!=null) {
-        hero.setDir(new Vector3f(1f*avatarwalkx, 1f*avatarwalky, 0));}
+        if (hero != null) {
+            hero.setDir(getJoystick());
+        }
 
-        avatarwalkx = 0;
-        avatarwalky = 0;
+//        avatarwalkx = 0;
+//        avatarwalky = 0;
+//        avatarwalky = 0;
 
     }
 
+
     transient float avatarwalkx = 0;
     transient float avatarwalky = 0;
+
+    protected Vector3f getJoystick() {
+        return new Vector3f(avatarwalkx, avatarwalky, 0);
+    }
 
 
     private ActionListener actionListener = new ActionListener() {
@@ -448,23 +450,25 @@ public class MyGame extends SimpleApplication {
             }
 
 
-
-
         }
     };
 
     private AnalogListener analogListener = new AnalogListener() {
 
         public void onAnalog(String name, float value, float tpf) {
-            System.out.println(" "+name +" = "+value);
+            System.out.println(" " + name + " = " + value);
             if (name.equals("CharLeft")) {
-                avatarwalkx -= Math.signum(value);
+//                avatarwalkx -= Math.signum(value);
+                avatarwalkx = -Math.signum(value);
             } else if (name.equals("CharRight")) {
-                avatarwalkx += Math.signum(value);
+//                avatarwalkx += Math.signum(value);
+                avatarwalkx = +Math.signum(value);
             } else if (name.equals("CharUp")) {
-                avatarwalky += Math.signum(value);
+//                avatarwalky += Math.signum(value);
+                avatarwalky = +Math.signum(value);
             } else if (name.equals("CharDown")) {
-                avatarwalky -= Math.signum(value);
+//                avatarwalky -= Math.signum(value);
+                avatarwalky = -Math.signum(value);
             }
 
         }
@@ -508,16 +512,15 @@ public class MyGame extends SimpleApplication {
 //                System.out.println("Kode: " + kode);
 
 
-
             final Object pick = entities.find(kode);
 
             if (kode != null) {
-                System.out.println("P "+pick);
+                System.out.println("P " + pick);
             }
 
 
             if (pick != null) {
-                System.out.println("Pick "+pick);
+                System.out.println("Pick " + pick);
                 if (pick instanceof Cube) {
                     Cube cube = (Cube) pick;
                     Vector3f contactNormal = closest.getContactNormal();
@@ -545,7 +548,7 @@ public class MyGame extends SimpleApplication {
 //                    selectTileGrid.setTexture(vehicle.requestPos, TexturesSelect.SELECTED);
                 }
 
-            } else  if ("selgrid".equals(closest.getGeometry().getName())) {
+            } else if ("selgrid".equals(closest.getGeometry().getName())) {
                 Vector3f contactPoint = closest.getContactPoint();
                 int x = (int) Math.floor(contactPoint.x);
                 int y = (int) Math.floor(contactPoint.y);
@@ -995,7 +998,6 @@ public class MyGame extends SimpleApplication {
             }
             this.start = null;
         }
-
 
 
 //        void cancel() {

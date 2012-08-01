@@ -31,6 +31,7 @@
  */
 package kotucz.village.pipes;
 
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import kotucz.village.game.*;
 
@@ -40,17 +41,46 @@ import kotucz.village.game.*;
 public class PipesTest extends MyGame {
 
 
+    private Animal ghostSpider;
+    private Animal spider;
+
     protected void initEntities() {
 
         {
-            Animal simplePipe = new Animal(modeler, getPhysicsSpace(), new Vector3f(8, 8, 0));
-            rootNode.attachChild(simplePipe.getNode());
+
+            ghostSpider = new Animal(modeler, getPhysicsSpace(), new Vector3f(8-4, 8, 0.5f), true);
+            rootNode.attachChild(ghostSpider.getNode());
+
+            spider = new Animal(modeler, getPhysicsSpace(), new Vector3f(8+4, 8, 0.5f), false);
+            rootNode.attachChild(spider.getNode());
+
+
+
 //            getPhysicsSpace().add(simplePipe.getPhysics());
 
 //            SimplePipe simplePipe2 = new SimplePipe(new Vector3f(4, 2, 5f), new Vector3f(6, 4, 2), modeler.matPipes);
 //            rootNode.attachChild(simplePipe2.getSpatial());
 
         }
+    }
+
+    @Override
+    public void simpleUpdate(float tpf) {
+        super.simpleUpdate(tpf);
+
+        RigidBodyControl control = ghostSpider.torso.getControl(RigidBodyControl.class);
+        Vector3f physicsLocation = control.getPhysicsLocation();
+        Vector3f joystick = getJoystick();
+        System.out.println("joystick "+joystick);
+        control .setPhysicsLocation(physicsLocation.add(joystick.mult(tpf)));
+
+        for (int i = 0; i < spider.servos.size(); i++) {
+            spider.servos.get(i).setPos(ghostSpider.servos.get(i).getAngle());
+            System.out.println("G "+ghostSpider.servos.get(i).getAngle() + " S "+spider.servos.get(i).getAngle());
+
+        }
+
+
     }
 
     public static void main(String args[]) {
