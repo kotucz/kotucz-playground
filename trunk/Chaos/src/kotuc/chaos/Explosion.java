@@ -92,7 +92,7 @@ class ExplosionUpdater implements GeometryUpdater {
      *
      *	@param N the count of particles to be created
      *	when N is too high, your graphic card may not be able to paint them
-     *	when N is too small, it wouldn´t look like an explosion
+     *	when N is too small, it wouldn't look like an explosion
      *
      *	@return new GeometryArray
      */

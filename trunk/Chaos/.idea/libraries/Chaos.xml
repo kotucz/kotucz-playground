@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="Chaos">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jinput.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jme.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lwjgl_util.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lwjgl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/stack-alloc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jinput-test.jar!/" />
+      <root url="jar://$PROJECT_DIR$/JPhysX.jar!/" />
+      <root url="jar://$PROJECT_DIR$/JPhysX.2.7.2wr0.51b6.zip!/" />
+      <root url="jar://$PROJECT_DIR$/asm-all-3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jme-awt.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

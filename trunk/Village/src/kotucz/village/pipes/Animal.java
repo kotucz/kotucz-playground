@@ -27,15 +27,22 @@ import java.util.List;
  */
 public class Animal {
 
+    final float EPS = 0.00001f;
+
     final Node node = new Node();
 
     final List<Servo> servos = new ArrayList<Servo>();
 
     final List<Leg> legs = new ArrayList<Leg>();
+    final Spatial torso;
 
-    public Animal(Modeler mat, PhysicsSpace physicsSpace, Vector3f origin) {
+    public Animal(Modeler mat, PhysicsSpace physicsSpace, Vector3f origin, boolean ghost) {
 
-        Spatial torso = createBody(mat.matPipes, origin.add(0, 0, 2));
+        torso = createBody(mat.matPipes, origin.add(0, 0, 2));
+
+        if (ghost) {
+            torso.getControl(RigidBodyControl.class).setMass(0); // kinematic
+        }
 
         node.attachChild(torso);
         physicsSpace.add(torso);
@@ -113,37 +120,40 @@ public class Animal {
 
             HingeJoint hipHinge = new HingeJoint(leg3.getPhysics(), torso.getControl(RigidBodyControl.class), new Vector3f(0, 0, 0.0f), vector3fs[i], Vector3f.UNIT_Z, Vector3f.UNIT_Z);
             hipHinge.setCollisionBetweenLinkedBodys(false);
-            hipHinge.setLimit(-1f, 1);
+//            hipHinge.setLimit(-1f, 1);
+            hipHinge.setLimit(-EPS, EPS);
 //            hipHinge.enableMotor(true, 1, 0.1f);
             physicsSpace.add(hipHinge);
 
-            Servo e = new Servo(hipHinge);
+//            Servo e = new Servo(hipHinge);
 //            e.zero = angle;
-            leg.s3 = e;
-            servos.add(e);
+//            leg.s3 = e;
+//            servos.add(e);
 
 
             legs.add(leg);
 
         }
 
-        node.addControl(new AbstractControl() {
-            @Override
-            protected void controlUpdate(float tpf) {
-                control(tpf);
-            }
+        if (!ghost) {
+            node.addControl(new AbstractControl() {
 
-            @Override
-            protected void controlRender(RenderManager rm, ViewPort vp) {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
+                @Override
+                protected void controlUpdate(float tpf) {
+                    control(tpf);
+                }
 
-            @Override
-            public Control cloneForSpatial(Spatial spatial) {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
-            }
-        });
+                @Override
+                protected void controlRender(RenderManager rm, ViewPort vp) {
+                    //To change body of implemented methods use File | Settings | File Templates.
+                }
 
+                @Override
+                public Control cloneForSpatial(Spatial spatial) {
+                    return null;  //To change body of implemented methods use File | Settings | File Templates.
+                }
+            });
+        }
 
     }
 
@@ -153,20 +163,20 @@ public class Animal {
 
         off += tpf;
 
-        System.out.println("Animal " + off);
+//        System.out.println("Animal " + off);
 
-        int i=0;
-
-        for (Leg leg : legs) {
-
-            boolean even = (i % 2 != 0);
-
-            leg.s1.setPos((float) Math.sin(off));
-            leg.s2.setPos((float) Math.sin(off) + 1);
-            leg.s3.setPos((float) Math.sin(off) * (even ? 1 : -1));
-
-            i++;
-        }
+//        int i = 0;
+//
+//        for (Leg leg : legs) {
+//
+//            boolean even = (i % 2 != 0);
+//
+//            leg.s1.setPos((float) Math.sin(off));
+//            leg.s2.setPos((float) Math.sin(off) + 1);
+//            leg.s3.setPos((float) Math.sin(off) * (even ? 1 : -1));
+//
+//            i++;
+//        }
 
 
         for (Servo servo : servos) {
@@ -209,7 +219,7 @@ public class Animal {
 
         RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(halfSize, halfSize, halfSize)), 0);
 
-        control.setMass(4);
+        control.setMass(0.4f);
 
         geom.addControl(control);
 
@@ -231,7 +241,7 @@ public class Animal {
 
 //        float zero;
 
-        float req;
+        Float req = null;
 
         Servo(HingeJoint joint) {
             this.hinge = joint;
@@ -239,17 +249,34 @@ public class Animal {
 
 
         void control(float tpf) {
-            float hingeAngle = hinge.getHingeAngle();
-            float diff = req - hingeAngle;
 
-            System.out.println("hinge " + hingeAngle + " " + diff);
+            if (req == null) {
+                hinge.enableMotor(false, 0, 0);
+            } else {
 
-            hinge.enableMotor(true, 2*diff, 10.f);
+                float hingeAngle = getAngle();
+                float diff = req - hingeAngle;
 
+                if (diff>EPS) {
+
+
+                    hinge.setLimit(req-EPS, req+EPS);
+
+//            System.out.println("hinge " + hingeAngle + " " + diff);
+
+                   //hinge.enableMotor(true, 12 * diff, 100.f);
+                } else {
+                    hinge.enableMotor(false, 0, 0);
+                }
+            }
         }
 
-        public void setPos(float pos) {
+        public void setPos(Float pos) {
             this.req = pos;
+        }
+
+        public float getAngle() {
+            return hinge.getHingeAngle();
         }
 
 
