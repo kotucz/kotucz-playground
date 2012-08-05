@@ -52,83 +52,7 @@ public class Animal {
 
         for (int i = 0; i < 4; i++) {
 
-            Leg leg = new Leg();
-
-            final Quaternion rot = new Quaternion();
-            final float angle = (float) ((0.25 + i * 0.5) * Math.PI);
-//            rot.fromAngleAxis(angle, MyGame.UP);
-            rot.fromAngleAxis(angle, Vector3f.UNIT_Z);
-
-            SimplePipe leg1 = new SimplePipe(
-                    origin.add(vector3fs[i]),
-                    origin.add(vector3fs[i]).add(new Vector3f(0, 0, 1)),
-                    mat.matPipes);
-            leg1.getPhysics().setPhysicsRotation(rot);
-            leg1.getPhysics().setMass(1);
-            node.attachChild(leg1.getSpatial());
-
-
-            SimplePipe leg2 = new SimplePipe(
-                    origin.add(vector3fs[i]).add(new Vector3f(0, 0, 1)),
-                    origin.add(vector3fs[i]).add(new Vector3f(0, 0, 2)),
-                    mat.matPipes);
-            leg2.getPhysics().setPhysicsRotation(rot);
-            leg2.getPhysics().setMass(1);
-            node.attachChild(leg2.getSpatial());
-
-            SimplePipe leg3 = new SimplePipe(
-                    origin.add(vector3fs[i]).add(new Vector3f(0, 0, 1.8f)),
-                    origin.add(vector3fs[i]).add(new Vector3f(0, 0, 2.2f)),
-                    mat.matPipes);
-//            leg3.getPhysics().setPhysicsRotation(rot);
-            leg3.getPhysics().setPhysicsRotation(new Quaternion());
-            leg3.getPhysics().setMass(1);
-            node.attachChild(leg3.getSpatial());
-
-
-            leg1.getPhysics().setSleepingThresholds(0, 0);
-
-            physicsSpace.add(leg1.getPhysics());
-            physicsSpace.add(leg2.getPhysics());
-            physicsSpace.add(leg3.getPhysics());
-
-            HingeJoint kneeHinge = new HingeJoint(leg1.getPhysics(), leg2.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, -0.5f), Vector3f.UNIT_Y, Vector3f.UNIT_Y);
-            kneeHinge.setCollisionBetweenLinkedBodys(false);
-            kneeHinge.setLimit(-2.21f, 0.2f);
-//            kneeHinge.enableMotor(true, -1, 0.1f);
-            physicsSpace.add(kneeHinge);
-
-
-            servos.add(leg.s1 = new Servo(kneeHinge));
-
-            Transform t = new Transform();
-            t.loadIdentity();
-            t.setRotation(rot);
-
-
-            HingeJoint hinge = new HingeJoint(leg2.getPhysics(), leg3.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, 0.f), Vector3f.UNIT_Y, t.transformVector(Vector3f.UNIT_Y, null));
-//            HingeJoint hinge = new HingeJoint(leg2.getPhysics(), leg3.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, 0.f), Vector3f.UNIT_Y, new Vector3f( (float)Math.cos(angle+0.5*Math.PI), (float)Math.sin(angle + 0.5 * Math.PI), 0));
-            hinge.setCollisionBetweenLinkedBodys(false);
-            hinge.setLimit(-0.1f, 2.1f);
-//            hinge.enableMotor(true, 1, 0.1f);
-            physicsSpace.add(hinge);
-
-            System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR " + i + " " + leg2.getPhysics().getPhysicsRotation() + "  - " + leg3.getPhysics().getPhysicsRotation());
-
-            servos.add(leg.s2 = new Servo(hinge));
-
-
-            HingeJoint hipHinge = new HingeJoint(leg3.getPhysics(), torso.getControl(RigidBodyControl.class), new Vector3f(0, 0, 0.0f), vector3fs[i], Vector3f.UNIT_Z, Vector3f.UNIT_Z);
-            hipHinge.setCollisionBetweenLinkedBodys(false);
-//            hipHinge.setLimit(-1f, 1);
-            hipHinge.setLimit(-EPS, EPS);
-//            hipHinge.enableMotor(true, 1, 0.1f);
-            physicsSpace.add(hipHinge);
-
-//            Servo e = new Servo(hipHinge);
-//            e.zero = angle;
-//            leg.s3 = e;
-//            servos.add(e);
+            Leg leg = createLeg(mat, physicsSpace, origin, vector3fs[i], i);
 
 
             legs.add(leg);
@@ -155,6 +79,87 @@ public class Animal {
             });
         }
 
+    }
+
+    private Leg createLeg(Modeler mat, PhysicsSpace physicsSpace, Vector3f origin, Vector3f vector3f, int i) {
+        Leg leg = new Leg();
+
+        final Quaternion rot = new Quaternion();
+        final float angle = (float) ((0.25 + i * 0.5) * Math.PI);
+//            rot.fromAngleAxis(angle, MyGame.UP);
+        rot.fromAngleAxis(angle, Vector3f.UNIT_Z);
+
+        SimplePipe leg1 = new SimplePipe(
+                origin,
+                origin.add(new Vector3f(0, 0, 1)),
+                mat.matPipes);
+        leg1.getPhysics().setPhysicsRotation(rot);
+        leg1.getPhysics().setMass(1);
+        node.attachChild(leg1.getSpatial());
+
+
+        SimplePipe leg2 = new SimplePipe(
+                origin.add(new Vector3f(0, 0, 1)),
+                origin.add(new Vector3f(0, 0, 2)),
+                mat.matPipes);
+        leg2.getPhysics().setPhysicsRotation(rot);
+        leg2.getPhysics().setMass(1);
+        node.attachChild(leg2.getSpatial());
+
+        SimplePipe leg3 = new SimplePipe(
+                origin.add(new Vector3f(0, 0, 1.8f)),
+                origin.add(new Vector3f(0, 0, 2.2f)),
+                mat.matPipes);
+//            leg3.getPhysics().setPhysicsRotation(rot);
+        leg3.getPhysics().setPhysicsRotation(new Quaternion());
+        leg3.getPhysics().setMass(1);
+        node.attachChild(leg3.getSpatial());
+
+
+        leg1.getPhysics().setSleepingThresholds(0, 0);
+
+        physicsSpace.add(leg1.getPhysics());
+        physicsSpace.add(leg2.getPhysics());
+        physicsSpace.add(leg3.getPhysics());
+
+        HingeJoint kneeHinge = new HingeJoint(leg1.getPhysics(), leg2.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, -0.5f), Vector3f.UNIT_Y, Vector3f.UNIT_Y);
+        kneeHinge.setCollisionBetweenLinkedBodys(false);
+        kneeHinge.setLimit(-2.21f, 0.2f);
+//            kneeHinge.enableMotor(true, -1, 0.1f);
+        physicsSpace.add(kneeHinge);
+
+
+        servos.add(leg.s1 = new Servo(kneeHinge));
+
+        Transform t = new Transform();
+        t.loadIdentity();
+        t.setRotation(rot);
+
+
+        HingeJoint hinge = new HingeJoint(leg2.getPhysics(), leg3.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, 0.f), Vector3f.UNIT_Y, t.transformVector(Vector3f.UNIT_Y, null));
+//            HingeJoint hinge = new HingeJoint(leg2.getPhysics(), leg3.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, 0.f), Vector3f.UNIT_Y, new Vector3f( (float)Math.cos(angle+0.5*Math.PI), (float)Math.sin(angle + 0.5 * Math.PI), 0));
+        hinge.setCollisionBetweenLinkedBodys(false);
+        hinge.setLimit(-0.1f, 2.1f);
+//            hinge.enableMotor(true, 1, 0.1f);
+        physicsSpace.add(hinge);
+
+        System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR " + i + " " + leg2.getPhysics().getPhysicsRotation() + "  - " + leg3.getPhysics().getPhysicsRotation());
+
+        servos.add(leg.s2 = new Servo(hinge));
+
+
+        HingeJoint hipHinge = new HingeJoint(leg3.getPhysics(), torso.getControl(RigidBodyControl.class), new Vector3f(0, 0, 0.0f), vector3f, Vector3f.UNIT_Z, Vector3f.UNIT_Z);
+        hipHinge.setCollisionBetweenLinkedBodys(false);
+//            hipHinge.setLimit(-1f, 1);
+        hipHinge.setLimit(-EPS, EPS);
+//            hipHinge.enableMotor(true, 1, 0.1f);
+        physicsSpace.add(hipHinge);
+
+//            Servo e = new Servo(hipHinge);
+//            e.zero = angle;
+//            leg.s3 = e;
+//            servos.add(e);
+        return leg;
     }
 
     float off = 0;

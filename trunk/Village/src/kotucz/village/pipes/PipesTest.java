@@ -31,8 +31,14 @@
  */
 package kotucz.village.pipes;
 
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.bullet.joints.HingeJoint;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.shape.Box;
 import kotucz.village.game.*;
 
 /**
@@ -48,12 +54,13 @@ public class PipesTest extends MyGame {
 
         {
 
-            ghostSpider = new Animal(modeler, getPhysicsSpace(), new Vector3f(8-4, 8, 0.5f), true);
+            ghostSpider = new Animal(modeler, getPhysicsSpace(), new Vector3f(8 - 4, 8, 0.5f), true);
             rootNode.attachChild(ghostSpider.getNode());
 
-            spider = new Animal(modeler, getPhysicsSpace(), new Vector3f(8+4, 8, 0.5f), false);
+            spider = new Animal(modeler, getPhysicsSpace(), new Vector3f(8 + 4, 8, 0.5f), false);
             rootNode.attachChild(spider.getNode());
 
+            createMotorTest();
 
 
 //            getPhysicsSpace().add(simplePipe.getPhysics());
@@ -64,6 +71,99 @@ public class PipesTest extends MyGame {
         }
     }
 
+
+    public void createMotorTest() {
+
+        final Vector3f origin = new Vector3f(2, 2, 3);
+
+        SimplePipe leg1 = new SimplePipe(
+                origin,
+                origin.add(new Vector3f(4, 0, 0)),
+                modeler.matPipes);
+        leg1.getPhysics().setPhysicsRotation(new Quaternion().fromAngleAxis((float) Math.PI / 2f, Vector3f.UNIT_Y));
+        leg1.getPhysics().setMass(1);
+        rootNode.attachChild(leg1.getSpatial());
+        getPhysicsSpace().add(leg1.getPhysics());
+
+        RigidBodyControl control1;
+
+        {
+            final float halfSize = 0.25f;
+
+//            MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
+//            final float halfSize = 1.25f;
+
+            Box box = new Box(new Vector3f(-halfSize, -halfSize, -halfSize), new Vector3f(halfSize, halfSize, halfSize));
+            Geometry geom = new Geometry("torso", box);
+            geom.setMaterial(modeler.matPipes);
+//        geom.setLocalTranslation(new Vector3f(0, 0, 0));
+
+//            Multitexture mtex2 = new Multitexture(256, 256);
+//            box.setTexture(MyBox.FACE_TOP, mtex2.createRealSubtexture(16*(1), 11*16, 16*(1+1f), 12*16));
+
+
+            geom.setLocalTranslation(origin.add(2, 0, 0));
+
+
+            geom.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+
+            RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(halfSize, halfSize, halfSize)), 0);
+
+            control.setMass(0f);
+
+            geom.addControl(control);
+
+
+            rootNode.attachChild(geom);
+            getPhysicsSpace().add(control);
+
+            control1 = control;
+
+        }
+
+        HingeJoint kneeHinge = new HingeJoint(control1, leg1.getPhysics(), new Vector3f(0, 0, 0.f), new Vector3f(0f, 0, 0f), Vector3f.UNIT_Y, Vector3f.UNIT_Y);
+        kneeHinge.setCollisionBetweenLinkedBodys(false);
+//        kneeHinge.setLimit(-2.21f, 0.2f);
+        kneeHinge.enableMotor(true, 6.14f, 100f);
+        getPhysicsSpace().add(kneeHinge);
+
+        {
+
+            final float halfSize = 0.25f;
+
+//            MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
+//            final float halfSize = 1.25f;
+
+            Box box = new Box(new Vector3f(-halfSize, -halfSize, -halfSize), new Vector3f(halfSize, halfSize, halfSize));
+            Geometry geom = new Geometry("torso", box);
+            geom.setMaterial(modeler.matPipes);
+//        geom.setLocalTranslation(new Vector3f(0, 0, 0));
+
+//            Multitexture mtex2 = new Multitexture(256, 256);
+//            box.setTexture(MyBox.FACE_TOP, mtex2.createRealSubtexture(16*(1), 11*16, 16*(1+1f), 12*16));
+
+
+            geom.setLocalTranslation(origin.add(4, 0, 3));
+
+
+            geom.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+
+            RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(halfSize, halfSize, halfSize)), 0);
+
+            control.setMass(5f);
+
+            geom.addControl(control);
+
+
+            rootNode.attachChild(geom);
+            getPhysicsSpace().add(control);
+
+        }
+
+
+    }
+
+
     @Override
     public void simpleUpdate(float tpf) {
         super.simpleUpdate(tpf);
@@ -71,12 +171,12 @@ public class PipesTest extends MyGame {
         RigidBodyControl control = ghostSpider.torso.getControl(RigidBodyControl.class);
         Vector3f physicsLocation = control.getPhysicsLocation();
         Vector3f joystick = getJoystick();
-        System.out.println("joystick "+joystick);
-        control .setPhysicsLocation(physicsLocation.add(joystick.mult(tpf)));
+        System.out.println("joystick " + joystick);
+        control.setPhysicsLocation(physicsLocation.add(joystick.mult(tpf)));
 
         for (int i = 0; i < spider.servos.size(); i++) {
             spider.servos.get(i).setPos(ghostSpider.servos.get(i).getAngle());
-            System.out.println("G "+ghostSpider.servos.get(i).getAngle() + " S "+spider.servos.get(i).getAngle());
+            System.out.println("G " + ghostSpider.servos.get(i).getAngle() + " S " + spider.servos.get(i).getAngle());
 
         }
 
@@ -87,7 +187,6 @@ public class PipesTest extends MyGame {
         MyGame f = new PipesTest();
         f.start();
     }
-
 
 
 }
