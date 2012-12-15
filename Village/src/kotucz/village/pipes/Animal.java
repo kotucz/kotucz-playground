@@ -265,11 +265,12 @@ public class Animal {
                 if (diff>EPS) {
 
 
-                    hinge.setLimit(req-EPS, req+EPS);
+//                    hinge.setLimit(req-EPS, req+EPS, 0.1f, 0.1f, 1f);
+
 
 //            System.out.println("hinge " + hingeAngle + " " + diff);
 
-                   //hinge.enableMotor(true, 12 * diff, 100.f);
+                     hinge.enableMotor(true, 0.5f * diff, 10000.f);
                 } else {
                     hinge.enableMotor(false, 0, 0);
                 }
