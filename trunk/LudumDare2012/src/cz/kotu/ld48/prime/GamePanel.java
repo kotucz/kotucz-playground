@@ -17,8 +17,6 @@ import java.util.EnumSet;
  */
 public class GamePanel extends JPanel {
 
-    private Image villain;
-    private GamePanel.Sound crash;
 
 
     enum Key {
@@ -52,7 +50,7 @@ public class GamePanel extends JPanel {
         addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                crash.play();
+                R.id.crash.play();
             }
 
             @Override
@@ -92,85 +90,21 @@ public class GamePanel extends JPanel {
         super.paint(g1);
 
         Graphics2D g = (Graphics2D) g1;
+        game.paint(g);
 
         final int width = getWidth();
         final int height = getHeight();
 
-//        System.out.println("" + width + " x " + height);
-
-        g.drawImage(villain, (int) (game.x % width), (int) (game.y % height), null);
-
         g.draw(new Rectangle2D.Double(2, 2, width - 4, height - 4));
-
-        g.draw(new Rectangle2D.Double(game.x % width, game.y % height, 20, 20));
-
 
         g.drawString((downKeys.contains(Key.UP) ? "UP" : "up"), 50, 50);
         g.drawString((downKeys.contains(Key.DOWN) ? "DOWN" : "down"), 50, 75);
         g.drawString((downKeys.contains(Key.ELSE) ? "ELSE" : "else"), 50, 100);
 
+        g.drawString("distance: "+(int)game.distance+" m", 25, 25);
 
     }
 
-    void loadImages() {
-
-        try {
-            villain = loadImage("/villain.png");
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-
-    }
-
-    private BufferedImage loadImage(String name) throws IOException {
-        return ImageIO.read(getClass().getResourceAsStream(name));
-    }
-
-    void loadSounds() {
-
-
-        try {
-            crash = loadSound("/sounds/crash.wav");
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-
-
-    }
-
-    private Sound loadSound(String name) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        AudioInputStream audioInputStream = null;
-        audioInputStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream(name));
-
-        Clip clip = AudioSystem.getClip();
-        clip.open(audioInputStream);
-
-        return new Sound(clip);
-
-    }
-
-
-    class Sound{
-        private Clip clip;
-
-        public Sound(Clip clip) {
-            this.clip = clip;
-        }
-
-        void play() {
-            // TODO volume mute
-//            if (volume != Volume.MUTE) {
-                if (clip.isRunning())
-                    clip.stop();   // Stop the player if it is still running
-                clip.setFramePosition(0); // rewind to the beginning
-                clip.start();     // Start playing
-//            }
-        }
-    }
 
 
 }

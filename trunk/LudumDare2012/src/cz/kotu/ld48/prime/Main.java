@@ -16,8 +16,8 @@ public class Main {
 
         new Thread(){
             public void run(){
-                comp.loadImages();
-                comp.loadSounds();
+                R.id.loadImages();
+                R.id.loadSounds();
                 comp.game.loop();
             }
         }.start();
