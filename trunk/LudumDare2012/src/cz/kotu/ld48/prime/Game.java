@@ -1,6 +1,7 @@
 package cz.kotu.ld48.prime;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +20,8 @@ public class Game {
 
     final Rectangle2D.Double view = new Rectangle2D.Double(0, 0, 640, 480);
 
-    final Entity villain = new Entity();
+    Entity villain;
+
 
     double distance = 0; // m
     double speed = 2; // mps
@@ -30,6 +32,13 @@ public class Game {
 
     public Game(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
+        reset();
+    }
+
+    void reset() {
+        villain = new Entity(R.id.villain, 0, 0, 2, 1);
+        villain.rect.width = 1.5;
+        villain.rect.height = 0.75;
     }
 
     // main game loop
@@ -63,18 +72,30 @@ public class Game {
 
 
     public void paint(Graphics2D g) {
-        g.translate(view.x, view.y);
+        AffineTransform original = g.getTransform();
+        g.scale(100, 100);
+        g.translate(-view.x, -view.y);
 
 //        System.out.println("" + width + " x " + height);
 
+        g.setStroke(new BasicStroke(0.01f));
+
         for (Entity ent : ents) {
-            g.drawImage(R.id.tree, (int) (ent.rect.x), (int) (ent.rect.y), null);
+            AffineTransform tf = new AffineTransform();
+            tf.translate(ent.rect.x, ent.rect.y);
+            tf.scale(0.01, 0.01);
+            g.drawImage(R.id.tree, tf, null);
+            g.draw(ent.rect);
         }
 
 
-        g.drawImage(R.id.villain, (int) (villain.rect.x), (int) (villain.rect.y), null);
-//        g.draw();
+        AffineTransform tf = new AffineTransform();
+        tf.translate(villain.rect.x, villain.rect.y);
+        tf.scale(0.01, 0.01);
+        g.drawImage(R.id.villain, tf, null);
+        g.draw(villain.rect);
 
+        g.setTransform(original);
 
     }
 
@@ -84,6 +105,8 @@ public class Game {
         distance += dt * speed;
 
         villain.rect.x += dt * speed;
+
+        view.x = distance - 0.5;
 
 //        System.out.println("d "+dt+" "+distance);
 
@@ -97,16 +120,20 @@ public class Game {
         }
 
 
-        if (nextdistance < distance) {
-            Entity e = new Entity();
-            e.rect.x = random.nextDouble() * 1000;
-            e.rect.y = random.nextDouble() * 1000;
+        double generatingDistance = distance + 10;
+        if (nextdistance < generatingDistance) {
+            Entity e = createTree(nextdistance, random.nextDouble() * 5);
 
-            nextdistance += 10;
+            nextdistance += random.nextDouble()*10;
 
             ents.add(e);
         }
 
+    }
+
+    private Entity createTree(double x, double y) {
+        Entity e = new Entity(R.id.tree, x, y, 1, 1);
+        return e;
     }
 
 
