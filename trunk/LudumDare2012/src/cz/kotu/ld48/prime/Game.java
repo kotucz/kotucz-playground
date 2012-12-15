@@ -12,6 +12,7 @@ import java.util.Random;
  */
 public class Game {
 
+    public static final int MAX_Y_VELOCITY = 2;
     final Random random = new Random();
 
     List<Entity> ents = new LinkedList<Entity>();
@@ -27,6 +28,7 @@ public class Game {
 
     double distance; // m
     double speed; // mps
+    double vy;
 
     double crashDistance;
 
@@ -113,6 +115,22 @@ public class Game {
     }
 
 
+    public void paintHUD(Graphics2D g) {
+        AffineTransform original = g.getTransform();
+
+        g.translate(0, 400);
+        g.draw(new Rectangle2D.Double(2, 2, 640 - 4, 80 - 4));
+
+        g.drawString("distance: " + (int) distance + " m", 25, 25);
+
+        if (crashed) {
+            g.drawString("total: " + crashDistance + " m", 125, 25);
+        }
+
+        g.setTransform(original);
+    }
+
+
     void delta(final double dt) {
 
         distance += dt * speed;
@@ -135,13 +153,22 @@ public class Game {
 //        System.out.println("d "+dt+" "+distance);
 
 
+
+
         if (gamePanel.downKeys.contains(GamePanel.Key.UP)) {
-            villain.rect.y -= dt;
+//            vy -= 10*dt;
+            vy = -MAX_Y_VELOCITY;
         } else if (gamePanel.downKeys.contains(GamePanel.Key.DOWN)) {
-            villain.rect.y += dt;
+//            vy += 10*dt;
+            vy = MAX_Y_VELOCITY;
         } else {
-//            y += dt;
+//            vy -= (vy*dt);
+            vy = 0;
         }
+//        vy = Math.max(-MAX_Y_VELOCITY, Math.min(vy, MAX_Y_VELOCITY));
+        villain.rect.y += dt*vy;
+        villain.rect.y = Math.max(1, Math.min(villain.rect.y, 3));
+
 
         for (Entity ent : colidables) {
             if (villain.rect.intersects(ent.rect)) {
@@ -182,5 +209,6 @@ public class Game {
         Entity e = new Entity(R.id.moving_obstacle, x, y, 2, 1);
         return e;
     }
+
 
 }
