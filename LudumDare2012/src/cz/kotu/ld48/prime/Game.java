@@ -15,6 +15,7 @@ public class Game {
     final Random random = new Random();
 
     List<Entity> ents = new LinkedList<Entity>();
+    List<Entity> colidables = new LinkedList<Entity>();
 
     final GamePanel gamePanel;
 
@@ -22,27 +23,35 @@ public class Game {
 
     Entity villain;
 
+    boolean crashed;
 
-    double distance = 0; // m
-    double speed = 2; // mps
+    double distance; // m
+    double speed; // mps
 
+    double crashDistance;
 
-    double nextdistance = 0;
-
+    double[] nextdistance;
 
     public Game(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
-        reset();
     }
 
     void reset() {
-        villain = new Entity(R.id.villain, 0, 0, 2, 1);
-        villain.rect.width = 1.5;
-        villain.rect.height = 0.75;
+        villain = new Entity(R.id.villain, 0, 2, 2, 1);
+        speed = 0;
+        distance = 0;
+        crashDistance = 0;
+        crashed = false;
+        ents.clear();
+        colidables.clear();
+        nextdistance = new double[5];
+        nextdistance[0] = 10;
     }
 
     // main game loop
     public void loop() {
+
+        reset();
 
         long lastStamp = 0;
 
@@ -84,7 +93,7 @@ public class Game {
             AffineTransform tf = new AffineTransform();
             tf.translate(ent.rect.x, ent.rect.y);
             tf.scale(0.01, 0.01);
-            g.drawImage(R.id.tree, tf, null);
+            g.drawImage(ent.image, tf, null);
             g.draw(ent.rect);
         }
 
@@ -92,7 +101,11 @@ public class Game {
         AffineTransform tf = new AffineTransform();
         tf.translate(villain.rect.x, villain.rect.y);
         tf.scale(0.01, 0.01);
-        g.drawImage(R.id.villain, tf, null);
+        if (crashed) {
+            g.drawImage(R.id.villain_crash, tf, null);
+        } else {
+            g.drawImage(R.id.villain, tf, null);
+        }
         g.draw(villain.rect);
 
         g.setTransform(original);
@@ -106,7 +119,18 @@ public class Game {
 
         villain.rect.x += dt * speed;
 
-        view.x = distance - 0.5;
+        if (crashed) {
+            speed -= (speed*dt);
+        } else {
+            if (speed<5) {
+                // accelerate fast
+                speed += dt*1;
+            }  else {
+                // accelerate slowly
+                speed += dt*0.01;
+            }
+            view.x = distance - 0.5;
+        }
 
 //        System.out.println("d "+dt+" "+distance);
 
@@ -119,15 +143,33 @@ public class Game {
 //            y += dt;
         }
 
+        for (Entity ent : colidables) {
+            if (villain.rect.intersects(ent.rect)) {
+                crashDistance = distance;
+                crashed = true;
+            }
+        }
 
-        double generatingDistance = distance + 10;
-        if (nextdistance < generatingDistance) {
-            Entity e = createTree(nextdistance, random.nextDouble() * 5);
 
-            nextdistance += random.nextDouble()*10;
+        final double GEN_DIST = distance + 10;
 
+
+        // OBSTACLES
+        if (nextdistance[0] < GEN_DIST) {
+            Entity e = createObstacle(nextdistance[0], random.nextDouble() * 5);
+            nextdistance[0] += random.nextDouble() * 10;
+            ents.add(e);
+            colidables.add(e);
+        }
+
+        if (nextdistance[1] < GEN_DIST) {
+            Entity e = createTree(nextdistance[1], random.nextDouble() * 1);
+            nextdistance[1] += random.nextDouble();
             ents.add(e);
         }
+
+
+        // TODO delete passed ents
 
     }
 
@@ -136,5 +178,9 @@ public class Game {
         return e;
     }
 
+    private Entity createObstacle(double x, double y) {
+        Entity e = new Entity(R.id.moving_obstacle, x, y, 2, 1);
+        return e;
+    }
 
 }

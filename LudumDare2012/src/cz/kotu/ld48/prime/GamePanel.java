@@ -1,15 +1,11 @@
 package cz.kotu.ld48.prime;
 
-import javax.imageio.ImageIO;
-import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.EnumSet;
 
 /**
@@ -67,6 +63,9 @@ public class GamePanel extends JPanel {
                     case KeyEvent.VK_SPACE:
                         R.id.crash.play();
                         break;
+                    case KeyEvent.VK_R:
+                        game.reset();
+                        break;
                 }
             }
         });
@@ -109,6 +108,10 @@ public class GamePanel extends JPanel {
         g.drawString((downKeys.contains(Key.ELSE) ? "ELSE" : "else"), 50, 100);
 
         g.drawString("distance: " + (int) game.distance + " m", 25, 25);
+
+        if (game.crashed) {
+            g.drawString("total: " + game.crashDistance + " m", 125, 25);
+        }
 
     }
 
