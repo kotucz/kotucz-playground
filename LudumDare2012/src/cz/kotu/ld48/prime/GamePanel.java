@@ -107,11 +107,7 @@ public class GamePanel extends JPanel {
         g.drawString((downKeys.contains(Key.DOWN) ? "DOWN" : "down"), 50, 75);
         g.drawString((downKeys.contains(Key.ELSE) ? "ELSE" : "else"), 50, 100);
 
-        g.drawString("distance: " + (int) game.distance + " m", 25, 25);
-
-        if (game.crashed) {
-            g.drawString("total: " + game.crashDistance + " m", 125, 25);
-        }
+        game.paintHUD(g);
 
     }
 
