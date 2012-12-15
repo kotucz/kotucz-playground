@@ -18,7 +18,6 @@ import java.util.EnumSet;
 public class GamePanel extends JPanel {
 
 
-
     enum Key {
         ELSE,
         UP,
@@ -50,7 +49,7 @@ public class GamePanel extends JPanel {
         addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                R.id.crash.play();
+
             }
 
             @Override
@@ -61,6 +60,14 @@ public class GamePanel extends JPanel {
             @Override
             public void keyReleased(KeyEvent e) {
                 downKeys.remove(toKey(e));
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_ESCAPE:
+                        System.exit(0);
+                        break;
+                    case KeyEvent.VK_SPACE:
+                        R.id.crash.play();
+                        break;
+                }
             }
         });
 
@@ -101,10 +108,9 @@ public class GamePanel extends JPanel {
         g.drawString((downKeys.contains(Key.DOWN) ? "DOWN" : "down"), 50, 75);
         g.drawString((downKeys.contains(Key.ELSE) ? "ELSE" : "else"), 50, 100);
 
-        g.drawString("distance: "+(int)game.distance+" m", 25, 25);
+        g.drawString("distance: " + (int) game.distance + " m", 25, 25);
 
     }
-
 
 
 }
