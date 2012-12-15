@@ -14,14 +14,22 @@ public class R {
     public final static R id = new R();
 
     Image villain;
+    Image villain_crash;
+
+    Image moving_obstacle;
+
+
     Image tree;
-    Sound crash;
 
 
     void loadImages() {
 
         try {
             villain = loadImage("/images/villain.png");
+            villain_crash = loadImage("/images/villain_crash.png");
+
+            moving_obstacle = loadImage("/images/moving_obstacle.png");
+
             tree = loadImage("/images/tree.png");
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -32,6 +40,10 @@ public class R {
     private BufferedImage loadImage(String name) throws IOException {
         return ImageIO.read(getClass().getResourceAsStream(name));
     }
+
+
+
+    Sound crash;
 
     void loadSounds() {
 
