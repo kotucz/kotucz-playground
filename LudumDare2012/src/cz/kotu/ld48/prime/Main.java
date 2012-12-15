@@ -16,6 +16,7 @@ public class Main {
 
         new Thread(){
             public void run(){
+                comp.loadImages();
                 comp.game.loop();
             }
         }.start();

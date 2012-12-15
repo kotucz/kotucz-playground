@@ -1,17 +1,21 @@
 package cz.kotu.ld48.prime;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 import java.util.EnumSet;
 
 /**
  * @author Kotuc
  */
 public class GamePanel extends JPanel {
+
+    private Image villain;
 
     enum Key {
         ELSE,
@@ -26,6 +30,8 @@ public class GamePanel extends JPanel {
 
     final Game game = new Game(this
     );
+
+
 
     public GamePanel() {
         super(true);
@@ -89,17 +95,33 @@ public class GamePanel extends JPanel {
 
 //        System.out.println("" + width + " x " + height);
 
+        g.drawImage(villain, (int)(game.x%width), (int)(game.y%height), null);
+
         g.draw(new Rectangle2D.Double(2, 2, width - 4, height - 4));
 
         g.draw(new Rectangle2D.Double(game.x%width, game.y%height, 20, 20));
+
+
 
         g.drawString((downKeys.contains(Key.UP)?"UP":"up"), 50 , 50);
         g.drawString((downKeys.contains(Key.DOWN)?"DOWN":"down"), 50 , 75);
         g.drawString((downKeys.contains(Key.ELSE)?"ELSE":"else"), 50 , 100);
 
+
+
+
     }
 
+    void loadImages() {
 
+        try {
+            villain = ImageIO.read(getClass().getResourceAsStream("/villain.png"));
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+    }
 
 
 
