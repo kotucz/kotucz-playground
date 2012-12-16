@@ -71,7 +71,7 @@ public class GamePanel extends JPanel {
                         break;
                     case KeyEvent.VK_SPACE:
                         if (game.state == Game.State.INTRO) {
-                            game.state = Game.State.PLAY;
+                            game.state = Game.State.START;
                         } else if (game.isCrashed()) {
                             game.reset();
                         }
@@ -107,7 +107,7 @@ public class GamePanel extends JPanel {
     @Override
     public void paint(Graphics g1) {
         super.paint(g1);
-        System.out.println("paint");
+//        System.out.println("paint");
 
         Graphics2D g = (Graphics2D) g1;
         game.paint(g);
@@ -115,13 +115,13 @@ public class GamePanel extends JPanel {
         final int width = getWidth();
         final int height = getHeight();
 
-        g.draw(new Rectangle2D.Double(2, 2, width - 4, height - 4));
+//        g.draw(new Rectangle2D.Double(2, 2, width - 4, height - 4));
+//
+//        g.drawString((downKeys.contains(Key.UP) ? "UP" : "up"), 50, 50);
+//        g.drawString((downKeys.contains(Key.DOWN) ? "DOWN" : "down"), 50, 75);
+//        g.drawString((downKeys.contains(Key.ELSE) ? "ELSE" : "else"), 50, 100);
 
-        g.drawString((downKeys.contains(Key.UP) ? "UP" : "up"), 50, 50);
-        g.drawString((downKeys.contains(Key.DOWN) ? "DOWN" : "down"), 50, 75);
-        g.drawString((downKeys.contains(Key.ELSE) ? "ELSE" : "else"), 50, 100);
 
-        game.paintHUD(g);
 
     }
 

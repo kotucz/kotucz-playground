@@ -18,8 +18,8 @@ public class Main {
 
         new Thread(){
             public void run(){
-                R.id.loadImages();
-                R.id.loadSounds();
+//                R.id.loadImages();
+//                R.id.loadSounds();
                 comp.game.loop();
             }
         }.start();
