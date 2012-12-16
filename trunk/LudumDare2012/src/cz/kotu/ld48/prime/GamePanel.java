@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferStrategy;
 import java.util.EnumSet;
 
 /**
@@ -13,6 +14,9 @@ import java.util.EnumSet;
  */
 public class GamePanel extends JPanel {
 
+
+//    private final BufferStrategy bufferStrategy;
+//    private JFrame jFrame;
 
     enum Key {
         ELSE,
@@ -29,8 +33,13 @@ public class GamePanel extends JPanel {
     );
 
 
-    public GamePanel() {
+    public GamePanel(JFrame jFrame) {
         super(true);
+//        this.jFrame = jFrame;
+//        jFrame.setIgnoreRepaint(true);
+//        jFrame.createBufferStrategy(2);
+//        bufferStrategy = jFrame.getBufferStrategy();
+
         setPreferredSize(new Dimension(640, 480));
         setSize(640, 480);
 
@@ -98,6 +107,7 @@ public class GamePanel extends JPanel {
     @Override
     public void paint(Graphics g1) {
         super.paint(g1);
+        System.out.println("paint");
 
         Graphics2D g = (Graphics2D) g1;
         game.paint(g);
@@ -115,5 +125,13 @@ public class GamePanel extends JPanel {
 
     }
 
+
+    public void redraw() {
+        repaint();
+//        Graphics g = bufferStrategy.getDrawGraphics();
+//        paint(g);
+//        g.dispose();
+//        bufferStrategy.show();
+    }
 
 }

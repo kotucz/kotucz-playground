@@ -1,8 +1,11 @@
 package cz.kotu.ld48.prime;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -11,6 +14,9 @@ import java.util.Random;
  * @author Kotuc
  */
 public class Game {
+
+    public static final int MIN_CAR_Y = 1;
+    public static final int MAX_CAR_Y = 4;
 
     enum State {
         INTRO,
@@ -24,7 +30,7 @@ public class Game {
     public static final int MAX_Y_VELOCITY = 2;
 
     double PIXELS_PER_METER = 80;
-    double INV_PIXELS_PER_METER = 1.0/80;
+    double INV_PIXELS_PER_METER = 1.0 / 80;
 
     final Random random = new Random();
 
@@ -35,7 +41,7 @@ public class Game {
 
     final Rectangle2D.Double view = new Rectangle2D.Double(0, 0, 640, 480);
 
-    Entity villain;
+    Entity villain = new Entity(R.id.villain, 0, 2, 2, 1);
 
 //    boolean crashed;
 
@@ -49,6 +55,7 @@ public class Game {
 
     public Game(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
+
     }
 
     void reset() {
@@ -70,32 +77,49 @@ public class Game {
 
         long lastStamp = 0;
 
-        while (true) {
+        try {
+
+            while (true) {
 
 
-            long stamp = System.currentTimeMillis();
-            double dt = (stamp - lastStamp) / 1000.0;
-            lastStamp = stamp;
+                long stamp = System.currentTimeMillis();
+                double dt = (stamp - lastStamp) / 1000.0;
+                lastStamp = stamp;
 
-            // Max step 0.1 s for lags
-            dt = Math.min(dt, 0.1);
+                // Max step 0.1 s for lags
+                dt = Math.min(dt, 0.1);
 
-            delta(dt);
+                delta(dt);
 
-            gamePanel.repaint();
+                gamePanel.redraw();
 
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
             }
 
+        } catch (Exception ex) {
+            logException(ex);
         }
+
 
     }
 
+    static void logException(Exception ex) {
+        try {
+            ex.printStackTrace(new PrintStream("err" + System.currentTimeMillis() + ".txt"));
+        } catch (FileNotFoundException e) {
 
-    public void paint(Graphics2D g) {
+        }
+//        JOptionPane.showMessageDialog(gamePanel, ex.toString());
+    }
+
+
+    public synchronized void paint(Graphics2D g) {
         AffineTransform original = g.getTransform();
         g.scale(PIXELS_PER_METER, PIXELS_PER_METER);
         g.translate(-view.x, -view.y);
@@ -107,7 +131,7 @@ public class Game {
         for (int i = -1; i < 20; i++) {
 
             AffineTransform tf = new AffineTransform();
-            tf.translate(Math.round(view.x)+ i, 0);
+            tf.translate(Math.round(view.x) + i, 0);
             tf.scale(INV_PIXELS_PER_METER, INV_PIXELS_PER_METER);
             g.drawImage(R.id.road_patch, tf, null);
 //            g.draw(ent.rect);
@@ -163,7 +187,9 @@ public class Game {
     }
 
 
-    void delta(final double dt) {
+    synchronized void delta(final double dt) {
+
+        System.out.println("delta " + dt);
 
         distance += dt * speed;
 
@@ -216,7 +242,7 @@ public class Game {
         if (state == State.PLAY || state == State.CRASH) {
 
             villain.rect.y += dt * vy;
-            villain.rect.y = Math.max(1, Math.min(villain.rect.y, 3));
+            villain.rect.y = Math.max(MIN_CAR_Y, Math.min(villain.rect.y, MAX_CAR_Y));
 
 
         }
@@ -229,7 +255,7 @@ public class Game {
 
         // OBSTACLES
         if (nextdistance[0] < GEN_DIST) {
-            Entity e = createObstacle(nextdistance[0], random.nextDouble() * 5);
+            Entity e = createCar(nextdistance[0], MIN_CAR_Y + random.nextInt(1 + MAX_CAR_Y - MIN_CAR_Y));
             nextdistance[0] += random.nextDouble() * 10;
             ents.add(e);
             colidables.add(e);
@@ -248,7 +274,7 @@ public class Game {
         return e;
     }
 
-    private Entity createObstacle(double x, double y) {
+    private Entity createCar(double x, double y) {
         Entity e = new Entity(R.id.moving_obstacle, x, y, 2, 1);
         return e;
     }
