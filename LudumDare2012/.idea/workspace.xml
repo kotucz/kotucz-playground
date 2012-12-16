@@ -6,11 +6,11 @@
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355654123416" ignored="false" />
     <file path="/Main.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355693988785" ignored="false" />
-    <file path="/GamePanel.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355684622592" ignored="false" />
-    <file path="/Game.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355694732121" ignored="false" />
+    <file path="/GamePanel.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355700537127" ignored="false" />
+    <file path="/Game.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355700579361" ignored="false" />
     <file path="/Entity.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355693336586" ignored="false" />
     <file path="/a.dummy" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355605200785" ignored="false" />
-    <file path="/R.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355693034505" ignored="false" />
+    <file path="/R.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355700503958" ignored="false" />
     <file path="/MyApplet.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355653213068" ignored="false" />
     <file path="/start.html.xhtml" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355653747495" ignored="false" />
     <file path="/MANIFEST.MF" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355656011375" ignored="false" />
@@ -28,7 +28,7 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -63,6 +63,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
@@ -78,7 +79,7 @@
       <file leaf-file-name="Main.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="66" selection-start="410" selection-end="410" vertical-scroll-proportion="-5.68">
+            <state line="16" column="66" selection-start="410" selection-end="410" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -87,12 +88,17 @@
       <file leaf-file-name="Game.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="272" column="28" selection-start="6915" selection-end="6915" vertical-scroll-proportion="0.7337278">
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1309#1317#0" expanded="true" />
-                <element signature="e#1365#1373#0" expanded="true" />
-              </folding>
+            <state line="231" column="34" selection-start="5668" selection-end="5668" vertical-scroll-proportion="0.5984252">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Object.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files (x86)/Java/jdk1.6.0_32/src.zip!/java/lang/Object.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="364" column="29" selection-start="17894" selection-end="17894" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -109,7 +115,7 @@
       <file leaf-file-name="start.html.xhtml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/start.html.xhtml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="30" selection-start="384" selection-end="384" vertical-scroll-proportion="-8.5">
+            <state line="13" column="30" selection-start="384" selection-end="384" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -127,16 +133,7 @@
       <file leaf-file-name="GamePanel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/GamePanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="82" column="79" selection-start="2266" selection-end="2266" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Sound.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/Sound.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="6" selection-start="92" selection-end="92" vertical-scroll-proportion="0.0">
+            <state line="70" column="42" selection-start="1754" selection-end="1754" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -145,7 +142,7 @@
       <file leaf-file-name="R.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/R.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="64" selection-start="678" selection-end="678" vertical-scroll-proportion="0.0">
+            <state line="46" column="56" selection-start="1555" selection-end="1555" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -184,10 +181,10 @@
         <option value="$PROJECT_DIR$/start.html.xhtml" />
         <option value="$PROJECT_DIR$/src/cz/kotu/ld48/prime/MyApplet.java" />
         <option value="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
-        <option value="$PROJECT_DIR$/src/cz/kotu/ld48/prime/GamePanel.java" />
-        <option value="$PROJECT_DIR$/src/cz/kotu/ld48/prime/R.java" />
         <option value="$PROJECT_DIR$/src/cz/kotu/ld48/prime/Entity.java" />
         <option value="$PROJECT_DIR$/src/cz/kotu/ld48/prime/Main.java" />
+        <option value="$PROJECT_DIR$/src/cz/kotu/ld48/prime/R.java" />
+        <option value="$PROJECT_DIR$/src/cz/kotu/ld48/prime/GamePanel.java" />
         <option value="$PROJECT_DIR$/src/cz/kotu/ld48/prime/Game.java" />
       </list>
     </option>
@@ -226,6 +223,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -293,7 +291,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -418,8 +415,8 @@
     </configuration>
     <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Application.RideAwayApp" />
-      <item index="1" class="java.lang.String" itemvalue="Application.Main" />
-      <item index="2" class="java.lang.String" itemvalue="Applet.Applet" />
+      <item index="1" class="java.lang.String" itemvalue="Applet.Applet" />
+      <item index="2" class="java.lang.String" itemvalue="Application.Main" />
     </list>
     <recent_temporary>
       <list size="1">
@@ -451,7 +448,7 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295711" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39841986" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39729118" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -460,14 +457,14 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1638207" sideWeight="0.60158014" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.60158014" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1638207" sideWeight="0.6027088" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295711" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.60158014" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -535,13 +532,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/Sound.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="6" selection-start="92" selection-end="92" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/R.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="38" column="58" selection-start="733" selection-end="733" vertical-scroll-proportion="0.0">
@@ -593,7 +583,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/start.html.xhtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="30" selection-start="384" selection-end="384" vertical-scroll-proportion="-8.5">
+        <state line="13" column="30" selection-start="384" selection-end="384" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -601,20 +591,6 @@
     <entry file="file://$PROJECT_DIR$/META-INF/MANIFEST.MF">
       <provider selected="true" editor-type-id="text-editor">
         <state line="3" column="122" selection-start="59" selection-end="59" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/GamePanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="79" selection-start="2266" selection-end="2266" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/R.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="64" selection-start="678" selection-end="678" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -635,19 +611,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="66" selection-start="410" selection-end="410" vertical-scroll-proportion="-5.68">
+        <state line="16" column="66" selection-start="410" selection-end="410" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files (x86)/Java/jdk1.6.0_32/src.zip!/java/lang/Object.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="364" column="29" selection-start="17894" selection-end="17894" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/R.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="46" column="56" selection-start="1555" selection-end="1555" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/GamePanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="42" selection-start="1754" selection-end="1754" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="272" column="28" selection-start="6915" selection-end="6915" vertical-scroll-proportion="0.7337278">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1309#1317#0" expanded="true" />
-            <element signature="e#1365#1373#0" expanded="true" />
-          </folding>
+        <state line="231" column="34" selection-start="5668" selection-end="5668" vertical-scroll-proportion="0.5984252">
+          <folding />
         </state>
       </provider>
     </entry>
