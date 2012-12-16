@@ -21,7 +21,7 @@ public class Game {
     public static final double MAX_CAR_Y = 4;
 
     public static final double CAR_W = 1;
-    public static final double CAR_H = 0.7;
+    public static final double CAR_H = 0.5;
 
     public static final int START_DUR_T = 2;
     public static final int GEN_AHEAD_M = 20;
@@ -36,7 +36,7 @@ public class Game {
 
     State state;
 
-    public static final int MAX_Y_VELOCITY = 2;
+    public static final int MAX_Y_VELOCITY = 5;
 
     final static double PIXELS_PER_METER = 50;
     // inv pixels per meter in the image
@@ -252,7 +252,7 @@ public class Game {
                 speed += dt * 1;
             } else {
                 // accelerate slowly
-                speed += dt * 0.01;
+                speed += dt * 0.1;
             }
 
 
@@ -271,20 +271,32 @@ public class Game {
             }
 //        vy = Math.max(-MAX_Y_VELOCITY, Math.min(vy, MAX_Y_VELOCITY));
 
-            for (Entity ent : colidables) {
-                if (villain.rect.intersects(ent.rect)) {
-                    if (ent.image == R.id.moving_obstacle) {
-                        crashDistance = distance;
-                        state = State.CRASH;
-                        R.sound.crash.play();
-                        break;
-                    } else if (ent.image == R.id.goat) {
-                        ent.image = R.id.blood;
-                        R.sound.bonus.play();
-                    }
-                }
+        }
+        for (Entity ent : colidables) {
+
+            if (ent.image == R.id.moving_obstacle) {
+                ent.rect.x += dt * (2 + 3 - ent.rect.y / 3);
+
             }
 
+            if (ent.image == R.id.goat) {
+                ent.rect.y += dt * (random.nextDouble() - 0.3);
+            }
+
+            if (villain.rect.intersects(ent.rect)) {
+                if (ent.image == R.id.moving_obstacle) {
+                    if (!isCrashed()) {
+                        crashDistance = distance;
+                    }
+                    state = State.CRASH;
+                    R.sound.crash.play();
+                    ent.image = R.id.villain_crash;
+                    break;
+                } else if (ent.image == R.id.goat) {
+                    ent.image = R.id.blood;
+                    R.sound.bonus.play();
+                }
+            }
         }
 
 
@@ -309,7 +321,7 @@ public class Game {
         // OBSTACLES
         if (nextdistance[0] < GEN_DIST) {
             Entity e = createCar(nextdistance[0], MIN_CAR_Y + random.nextDouble() * (MAX_CAR_Y - MIN_CAR_Y));
-            nextdistance[0] += 3 + random.nextDouble() * 5;
+            nextdistance[0] += 10 + random.nextDouble() * 10;
             ents.add(e);
             colidables.add(e);
         }
