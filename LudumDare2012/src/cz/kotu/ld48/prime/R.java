@@ -23,6 +23,7 @@ public class R {
         final Image villain_crash = loadImage("/images/villain_crash.png");
 
         final Image moving_obstacle = loadImage("/images/moving_obstacle.png");
+        final Image car_small = loadImage("/images/car_small.png");
 
         final Image wheel = loadImage("/images/wheel.png");
 

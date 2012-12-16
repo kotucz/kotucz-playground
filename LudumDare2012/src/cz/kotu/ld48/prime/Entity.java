@@ -51,6 +51,10 @@ public class Entity {
             drawWheel(g, rect.x, -35, 15);
             drawWheel(g, rect.x, 35, 15);
         }
+        if (image == R.id.car_small) {
+            drawWheel(g, rect.x, -20, 20);
+            drawWheel(g, rect.x, 20, 20);
+        }
         if (Game.DEBUG) {
             g.draw(rect);
         }

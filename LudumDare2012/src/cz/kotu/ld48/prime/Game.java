@@ -89,6 +89,12 @@ public class Game {
             R.id.road_patch_4,
     };
 
+    Image[] car_types = new Image[]{
+            R.id.moving_obstacle,
+            R.id.car_small,
+    };
+
+
     void reset() {
         state = State.INTRO;
         villain = new Entity(R.id.villain, 0, MIN_CAR_Y, CAR_W, CAR_H);
@@ -257,10 +263,14 @@ public class Game {
         g.setStroke(new BasicStroke(3));
         g.setFont(Font.decode("Arial bold 34"));
 
+        FontMetrics fontMetrics = g.getFontMetrics();
 
-        g.drawString("" + distMetres() + "", 25, 65);
-        g.drawString("" + (int) (speed*10) + "", 400, 65);
-        g.drawString("" + (int) goats + "", 575, 65);
+        String s0 = "" + distMetres();
+        g.drawString(s0, 150 - fontMetrics.stringWidth(s0), 65);
+        String s1 = "" + (int) (speed * 10);
+        g.drawString(s1, 450 - fontMetrics.stringWidth(s1), 65);
+        String s2 = "" + (int) goats + "";
+        g.drawString(s2, 583 - fontMetrics.stringWidth(s2)/2, 65);
         if (DEBUG) {
             g.drawString("state: " + state, 25, 50);
         }
@@ -276,7 +286,7 @@ public class Game {
     }
 
     private int distMetres() {
-        return (int) (10*distance/3.6);
+        return (int) (10 * distance / 3.6);
     }
 
 
@@ -332,7 +342,7 @@ public class Game {
         }
         for (Entity ent : colidables) {
 
-            if (ent.image == R.id.moving_obstacle) {
+            if (isCar(ent)) {
                 ent.rect.x += dt * (2 + 3 - ent.rect.y / 3);
 
             }
@@ -342,7 +352,7 @@ public class Game {
             }
 
             if (villain.rect.intersects(ent.rect)) {
-                if (ent.image == R.id.moving_obstacle) {
+                if (isCar(ent)) {
                     if (!isCrashed()) {
                         crashDistance = distance;
                     }
@@ -427,7 +437,7 @@ public class Game {
     }
 
     private Entity createCar(double x, double y) {
-        Entity e = new Entity(R.id.moving_obstacle, x, y, CAR_W, CAR_H);
+        Entity e = new Entity(car_types[random.nextInt(car_types.length)], x, y, CAR_W, CAR_H);
         return e;
     }
 
@@ -453,6 +463,15 @@ public class Game {
      */
     double asympt(double d) {
         return Math.atan(d) / (Math.PI / 2);
+    }
+
+    boolean isCar(Entity ent) {
+        for (Image car_type : car_types) {
+            if (car_type == ent.image) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
