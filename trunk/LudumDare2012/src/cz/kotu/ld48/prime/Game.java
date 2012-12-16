@@ -28,6 +28,9 @@ public class Game {
 
     public static final int START_DUR_T = 2;
     public static final int GEN_AHEAD_M = 20;
+
+
+
     public static final double CAR_WIEV_SHIFT = 2;
     public static final double WAIT_AFTER_CRASH = 3;
     public static final double GUY_START_Y = 1;
@@ -138,7 +141,11 @@ public class Game {
                 // Max step 0.1 s for lags
                 dt = Math.min(dt, 0.1);
 
-                delta(dt);
+                if (state == State.PAUSE) {
+                    delta(0);
+                } else {
+                    delta(dt);
+                }
 
                 gamePanel.redraw();
 
@@ -221,6 +228,10 @@ public class Game {
             g.drawImage(R.id.intro1, 0, 0, null);
         }
 
+        if (state == State.PAUSE) {
+            g.drawImage(R.id.pause, 0, 0, null);
+        }
+
         // draw score
         if (state == State.CRASH) {
             drawScore(g);
@@ -269,7 +280,7 @@ public class Game {
         g.drawString(s0, 150 - fontMetrics.stringWidth(s0), 65);
         String s1 = "" + (int) (speed * 10);
         g.drawString(s1, 450 - fontMetrics.stringWidth(s1), 65);
-        String s2 = "" + (int) goats + "";
+        String s2 = "" +  goats;
         g.drawString(s2, 583 - fontMetrics.stringWidth(s2)/2, 65);
         if (DEBUG) {
             g.drawString("state: " + state, 25, 50);
@@ -408,6 +419,8 @@ public class Game {
             nextdistance[1] += random.nextDouble();
             ents.add(e);
         }
+
+        // GOATS
 
         if (nextdistance[2] < GEN_DIST) {
             Entity e = createGoat(nextdistance[2], 1 + random.nextDouble() * 5);

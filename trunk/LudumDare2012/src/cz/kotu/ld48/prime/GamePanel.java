@@ -67,7 +67,14 @@ public class GamePanel extends JPanel {
                 downKeys.remove(toKey(e));
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_ESCAPE:
-                        System.exit(0);
+                    case KeyEvent.VK_P:
+                    case KeyEvent.VK_PAUSE:
+//                        System.exit(0);
+                        if (game.state == Game.State.PAUSE) {
+                            game.state = Game.State.PLAY;
+                        } else if (game.state == Game.State.PLAY) {
+                            game.state = Game.State.PAUSE;
+                        }
                         break;
 
                     case KeyEvent.VK_R:
@@ -84,6 +91,8 @@ public class GamePanel extends JPanel {
                                 game.reset();
                             }
 //                            game.state = Game.State.START;
+                        } else if (game.state == Game.State.PAUSE) {
+                            game.state = Game.State.PLAY;
                         }
                         break;
                 }

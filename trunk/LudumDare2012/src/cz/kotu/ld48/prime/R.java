@@ -44,6 +44,7 @@ public class R {
         final Image tree_sm = loadImage("/images/tree_snowman.png");
 
         final Image intro1 = loadImage("/images/intro1.png");
+        final Image pause = loadImage("/images/pause.png");
         final Image score = loadImage("/images/end_score.png");
 
         final Image guy = loadImage("/images/villain_guy.png");
