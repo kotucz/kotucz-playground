@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
 Main-Class: cz.kotu.ld48.prime.Main
+Class-Path: RideAway.jar
 

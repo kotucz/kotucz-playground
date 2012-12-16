@@ -13,6 +13,10 @@ public class R {
 
     public final static R id = new R();
 
+    private R() {
+        // singleton
+    }
+
     Image villain;
     Image villain_crash;
 
@@ -40,13 +44,13 @@ public class R {
 
             tree = loadImage("/images/tree.png");
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            Game.logException(e);
         }
 
     }
 
     private BufferedImage loadImage(String name) throws IOException {
-        return ImageIO.read(getClass().getResourceAsStream(name));
+        return ImageIO.read(getClass().getResource(name));
     }
 
 
@@ -58,12 +62,8 @@ public class R {
 
         try {
             crash = loadSound("/sounds/crash.wav");
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Exception e) {
+            Game.logException(e);
         }
 
 
@@ -71,7 +71,8 @@ public class R {
 
     private Sound loadSound(String name) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         AudioInputStream audioInputStream = null;
-        audioInputStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream(name));
+//        audioInputStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream(name));
+        audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource(name));
 
         Clip clip = AudioSystem.getClip();
         clip.open(audioInputStream);

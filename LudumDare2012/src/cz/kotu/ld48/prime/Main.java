@@ -7,11 +7,13 @@ public class Main {
     public static void main(String[] args) {
 
         JFrame jFrame = new JFrame("Get Away!!!");
-        final GamePanel comp = new GamePanel();
+        final GamePanel comp = new GamePanel(jFrame);
         jFrame.add(comp);
         jFrame.pack();
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setVisible(true);
+
+
 
 
         new Thread(){
