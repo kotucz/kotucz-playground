@@ -26,7 +26,7 @@ public class GamePanel extends JPanel {
 
     EnumSet<Key> downKeys = EnumSet.noneOf(Key.class);
 
-    public static final String ACTION_MAP_KEY_UP = "up";
+//    public static final String ACTION_MAP_KEY_UP = "up";
 
 
     final Game game = new Game(this
@@ -43,13 +43,13 @@ public class GamePanel extends JPanel {
         setPreferredSize(new Dimension(640, 480));
         setSize(640, 480);
 
-        getInputMap().put(KeyStroke.getKeyStroke('w'), ACTION_MAP_KEY_UP);
-        getActionMap().put(ACTION_MAP_KEY_UP, new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+//        getInputMap().put(KeyStroke.getKeyStroke('w'), ACTION_MAP_KEY_UP);
+//        getActionMap().put(ACTION_MAP_KEY_UP, new AbstractAction() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//
+//            }
+//        });
 
         addKeyListener(new KeyListener() {
             @Override

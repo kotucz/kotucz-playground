@@ -17,8 +17,9 @@ public class Game {
 
     public static final boolean DEBUG = true;
 
-    public static final double MIN_CAR_Y = 1;
-    public static final double MAX_CAR_Y = 4;
+    public static final double MIN_CAR_Y = 3.25;
+    private static final double MAX_CAR_Y = 6.25;
+    public static final int MAX_CAR_LINES = 4;
 
     public static final double CAR_W = 1;
     public static final double CAR_H = 0.5;
@@ -72,6 +73,14 @@ public class Game {
 
     }
 
+    Image[] road_types = new Image[]{
+            R.id.road_patch,
+            R.id.road_patch_1,
+            R.id.road_patch_2,
+            R.id.road_patch_3,
+            R.id.road_patch_4,
+    };
+
     void reset() {
         state = State.INTRO;
         villain = new Entity(R.id.villain, 0, 2, CAR_W, CAR_H);
@@ -81,14 +90,16 @@ public class Game {
         ents.clear();
         colidables.clear();
         nextdistance = new double[5];
-        nextdistance[0] = 10;
+        nextdistance[0] = -5;
         nextdistance[1] = 5;
+        nextdistance[2] = 50;
         startanimtime = 0;
 
         {
             Entity bank = new Entity(R.id.bank, 0, 0, 8, 6);
             ents.add(bank);
         }
+
 
     }
 
@@ -154,9 +165,12 @@ public class Game {
         for (int i = -1; i < 20; i++) {
 
             AffineTransform tf = new AffineTransform();
-            tf.translate(Math.round(view.x) + i, 0);
+            long d = Math.round(view.x) + i;
+            tf.translate(d, 0);
             tf.scale(INV_PIXELS_PER_METER, INV_PIXELS_PER_METER);
-            g.drawImage(R.id.road_patch, tf, null);
+
+            g.drawImage(road_types[getType(d)], tf, null);
+//            g.drawImage(R.id.road_patch, tf, null);
 //            g.draw(ent.rect);
         }
 
@@ -198,13 +212,18 @@ public class Game {
 
     }
 
+    private int getType(double d) {
+        return ((int)d/100)%road_types.length;
+//        return 0;
+    }
+
 
     public void paintHUD(Graphics2D g) {
         AffineTransform original = g.getTransform();
 
 
         g.translate(0, 400);
-        g.setColor(Color.gray);
+//        g.setColor(Color.gray);
 //        g.fill(new Rectangle2D.Double(1, 1, 640 - 2, 80 - 2));
         g.drawImage(R.id.hud, 0, 0, null);
 
@@ -320,21 +339,22 @@ public class Game {
 
         // OBSTACLES
         if (nextdistance[0] < GEN_DIST) {
-            Entity e = createCar(nextdistance[0], MIN_CAR_Y + random.nextDouble() * (MAX_CAR_Y - MIN_CAR_Y));
-            nextdistance[0] += 10 + random.nextDouble() * 10;
+            Entity e = createCar(nextdistance[0], MIN_CAR_Y + random.nextInt(MAX_CAR_LINES));
+            nextdistance[0] += 5 + random.nextDouble() * 10;
+//            if (e.rect.x < 0 ||)
             ents.add(e);
             colidables.add(e);
         }
 
         if (nextdistance[1] < GEN_DIST) {
-            Entity e = createTree(nextdistance[1], random.nextDouble() * 1);
+            Entity e = createTree(nextdistance[1], random.nextDouble() * 2);
             nextdistance[1] += random.nextDouble();
             ents.add(e);
         }
 
         if (nextdistance[2] < GEN_DIST) {
-            Entity e = createGoat(nextdistance[2], random.nextDouble() * 5);
-            nextdistance[2] += 20 + random.nextDouble() * 20;
+            Entity e = createGoat(nextdistance[2], 1 + random.nextDouble() * 5);
+            nextdistance[2] += 30 + random.nextDouble() * 30;
             ents.add(e);
             colidables.add(e);
         }
@@ -342,7 +362,20 @@ public class Game {
     }
 
     private Entity createTree(double x, double y) {
-        Entity e = new Entity(R.id.tree, x, y, 1, 1);
+        Image img =  R.id.tree;
+        switch (getType(x)) {
+            case 1:
+                img = R.id.tree_palm;
+                break;
+            case 4:
+                if (random.nextDouble()<0.1) {
+                   img = R.id.tree_sm;
+                } else {
+                   img = R.id.tree_snow;
+                }
+                break;
+        }
+        Entity e = new Entity(img, x, y, 1, 1);
         return e;
     }
 
@@ -352,7 +385,8 @@ public class Game {
     }
 
     private Entity createGoat(double x, double y) {
-        Entity e = new Entity(R.id.goat, x, y, 0.2, 0.2);
+        Entity e = new Entity(R.id.goat, x, y, 0.4, 0.8);
+        e.scale = 1/60.0;
         return e;
     }
 

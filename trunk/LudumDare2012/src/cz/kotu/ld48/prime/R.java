@@ -26,10 +26,17 @@ public class R {
 
         final Image hud = loadImage("/images/hud.png");
 
-        final Image road_patch = loadImage("/images/road_patch.png");
+        final Image road_patch = loadImage("/images/road_patch_0.png");
+        final Image road_patch_1 = loadImage("/images/road_patch_1.png");
+        final Image road_patch_2 = loadImage("/images/road_patch_2.png");
+        final Image road_patch_3 = loadImage("/images/road_patch_3.png");
+        final Image road_patch_4 = loadImage("/images/road_patch_4.png");
 
 
         final Image tree = loadImage("/images/tree.png");
+        final Image tree_palm = loadImage("/images/tree_palm.png");
+        final Image tree_snow = loadImage("/images/tree_snow.png");
+        final Image tree_sm = loadImage("/images/tree_snowman.png");
 
         final Image intro1 = loadImage("/images/intro1.png");
 
