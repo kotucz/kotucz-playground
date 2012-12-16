@@ -19,7 +19,6 @@ public class Entity {
         rect = new Rectangle2D.Double(x, y, w, h);
 
 
-
     }
 
     void draw(Graphics2D g) {
@@ -27,7 +26,9 @@ public class Entity {
         tf.translate(rect.x, rect.y);
         tf.scale(scale, scale);
         g.drawImage(image, tf, null);
-        g.draw(rect);
+        if (Game.DEBUG) {
+            g.draw(rect);
+        }
     }
 
     void drawCentered(Graphics2D g) {
@@ -39,9 +40,11 @@ public class Entity {
         tf.translate(rect.getCenterX(), rect.getCenterY());
         tf.scale(scale, scale);
         tf.rotate(rot);
-        tf.translate(-image.getWidth(null)/2, -image.getHeight(null)/2);
+        tf.translate(-image.getWidth(null) / 2, -image.getHeight(null) / 2);
         g.drawImage(image, tf, null);
-        g.draw(rect);
+        if (Game.DEBUG) {
+            g.draw(rect);
+        }
     }
 
 }

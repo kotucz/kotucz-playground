@@ -15,7 +15,7 @@ import java.util.Random;
  */
 public class Game {
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     public static final double MIN_CAR_Y = 3.25;
     private static final double MAX_CAR_Y = 6.25;
@@ -26,6 +26,8 @@ public class Game {
 
     public static final int START_DUR_T = 2;
     public static final int GEN_AHEAD_M = 20;
+    public static final double CAR_WIEV_SHIFT = 2;
+    public static final double WAIT_AFTER_CRASH = 3;
 
     enum State {
         INTRO,
@@ -65,8 +67,11 @@ public class Game {
 
     // time from 0 start animaiton
     double startanimtime;
+    double animtimeaftercrash;
 
     double[] nextdistance;
+
+    int goats;
 
     public Game(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -94,6 +99,8 @@ public class Game {
         nextdistance[1] = 5;
         nextdistance[2] = 50;
         startanimtime = 0;
+        animtimeaftercrash = 0;
+        goats = 0;
 
         {
             Entity bank = new Entity(R.id.bank, 0, 0, 8, 6);
@@ -210,10 +217,31 @@ public class Game {
             );
         }
 
+        // draw score
+        if (state == State.CRASH) {
+            drawScore(g);
+        }
+
+    }
+
+    private void drawScore(Graphics2D g) {
+        g.drawImage(R.id.score, 0, 0, null);
+
+        g.setColor(Color.red);
+        g.setStroke(new BasicStroke(3));
+        g.setFont(Font.decode("Arial bold 48"));
+
+        g.drawString("" + (int) distance + " m", 300, 250);
+        g.drawString("" + goats, 500, 345);
+
+        if (animtimeaftercrash > WAIT_AFTER_CRASH) {
+            g.setFont(Font.decode("Arial bold 24"));
+            g.drawString("press any key", 240, 470);
+        }
     }
 
     private int getType(double d) {
-        return ((int)d/100)%road_types.length;
+        return ((int) d / 100) % road_types.length;
 //        return 0;
     }
 
@@ -233,11 +261,13 @@ public class Game {
 
         g.drawString("distance: " + (int) distance + " m", 25, 25);
         g.drawString("speed: " + (int) speed + " m", 425, 25);
-        g.drawString("state: " + state, 25, 50);
-
-        if (isCrashed()) {
-            g.drawString("total: " + (int) crashDistance + " m", 225, 25);
+        if (DEBUG) {
+            g.drawString("state: " + state, 25, 50);
         }
+
+//        if (isCrashed()) {
+//            g.drawString("total: " + (int) crashDistance + " m", 225, 25);
+//        }
 
         g.setTransform(original);
     }
@@ -265,6 +295,7 @@ public class Game {
         if (isCrashed()) {
             speed -= (speed * dt);
             vy -= (vy * dt);
+            animtimeaftercrash += dt;
         } else if (state == State.PLAY) {
             if (speed < 5) {
                 // accelerate fast
@@ -314,13 +345,21 @@ public class Game {
                 } else if (ent.image == R.id.goat) {
                     ent.image = R.id.blood;
                     R.sound.bonus.play();
+                    goats++;
+                    ents.add(createGoatGhost(ent.rect.x, ent.rect.y));
                 }
+            }
+        }
+
+        for (Entity ent : ents) {
+            if (ent.image == R.id.goat_ghost) {
+                ent.rect.y -= dt;
             }
         }
 
 
         if (!isCrashed()) {
-            view.x = distance - 0.5;
+            view.x = distance - CAR_WIEV_SHIFT;
         }
 
         if (state == State.PLAY || state == State.CRASH) {
@@ -362,16 +401,16 @@ public class Game {
     }
 
     private Entity createTree(double x, double y) {
-        Image img =  R.id.tree;
+        Image img = R.id.tree;
         switch (getType(x)) {
             case 1:
                 img = R.id.tree_palm;
                 break;
             case 4:
-                if (random.nextDouble()<0.1) {
-                   img = R.id.tree_sm;
+                if (random.nextDouble() < 0.1) {
+                    img = R.id.tree_sm;
                 } else {
-                   img = R.id.tree_snow;
+                    img = R.id.tree_snow;
                 }
                 break;
         }
@@ -386,7 +425,13 @@ public class Game {
 
     private Entity createGoat(double x, double y) {
         Entity e = new Entity(R.id.goat, x, y, 0.4, 0.8);
-        e.scale = 1/60.0;
+        e.scale = 1 / 60.0;
+        return e;
+    }
+
+    private Entity createGoatGhost(double x, double y) {
+        Entity e = new Entity(R.id.goat_ghost, x, y, 0.4, 0.8);
+        e.scale = 1 / 60.0;
         return e;
     }
 
