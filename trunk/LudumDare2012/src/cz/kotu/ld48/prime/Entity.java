@@ -41,10 +41,30 @@ public class Entity {
         tf.scale(scale, scale);
         tf.rotate(rot);
         tf.translate(-image.getWidth(null) / 2, -image.getHeight(null) / 2);
+        AffineTransform tf1 = new AffineTransform(tf);
         g.drawImage(image, tf, null);
+        if (image == R.id.moving_obstacle) {
+            drawWheel(g, rect.x, -35, 25);
+            drawWheel(g, rect.x, 35, 25);
+        }
+        if (image == R.id.villain) {
+            drawWheel(g, rect.x, -35, 25);
+            drawWheel(g, rect.x, 35, 25);
+        }
         if (Game.DEBUG) {
             g.draw(rect);
         }
+    }
+
+    void drawWheel(Graphics2D g, double rot, int x, int y) {
+        AffineTransform tf = new AffineTransform();
+        tf.translate(rect.getCenterX(), rect.getCenterY());
+        tf.scale(scale, scale);
+        Image image = R.id.wheel;
+        tf.translate(x, y);
+        tf.rotate(rot);
+        tf.translate(-image.getWidth(null) / 2, -image.getHeight(null) / 2);
+        g.drawImage(image, tf, null);
     }
 
 }

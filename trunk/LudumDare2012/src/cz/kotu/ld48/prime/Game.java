@@ -28,6 +28,7 @@ public class Game {
     public static final int GEN_AHEAD_M = 20;
     public static final double CAR_WIEV_SHIFT = 2;
     public static final double WAIT_AFTER_CRASH = 3;
+    public static final double GUY_START_Y = 1;
 
     enum State {
         INTRO,
@@ -55,7 +56,7 @@ public class Game {
     final Rectangle2D.Double view = new Rectangle2D.Double(0, 0, 640, 480);
 
     Entity villain = new Entity(R.id.villain, 0, 2, CAR_W, CAR_H);
-    Entity guy = new Entity(R.id.guy, 0, 0, .5, 1);
+    Entity guy = new Entity(R.id.guy, 1, GUY_START_Y, .5, 1);
 
 //    boolean crashed;
 
@@ -88,14 +89,14 @@ public class Game {
 
     void reset() {
         state = State.INTRO;
-        villain = new Entity(R.id.villain, 0, 2, CAR_W, CAR_H);
+        villain = new Entity(R.id.villain, 0, MIN_CAR_Y, CAR_W, CAR_H);
         speed = 0;
         distance = 0;
         crashDistance = 0;
         ents.clear();
         colidables.clear();
         nextdistance = new double[5];
-        nextdistance[0] = -5;
+        nextdistance[0] = 5;
         nextdistance[1] = 5;
         nextdistance[2] = 50;
         startanimtime = 0;
@@ -191,10 +192,6 @@ public class Game {
         }
 
         if (State.START == state) {
-//            AffineTransform tf = new AffineTransform();
-//            tf.translate(guy.rect.x, guy.rect.y);
-//            tf.scale(INV_PIXELS_PER_METER, INV_PIXELS_PER_METER);
-//            g.drawImage(guy.image, tf, null);
             guy.draw(g);
         }
 
@@ -204,7 +201,7 @@ public class Game {
 //        tf.scale(INV_PIXELS_PER_METER, INV_PIXELS_PER_METER);
 //        tf.rotate(vy * 0.1, 1, 0.5);
         villain.image = isCrashed() ? R.id.villain_crash : R.id.villain;
-        villain.drawCentered(g, vy * 0.1);
+        villain.drawCentered(g, vy * 0.03);
 //        g.draw(villain.rect);
 
         g.setTransform(original);
@@ -255,12 +252,14 @@ public class Game {
 //        g.fill(new Rectangle2D.Double(1, 1, 640 - 2, 80 - 2));
         g.drawImage(R.id.hud, 0, 0, null);
 
-        g.setColor(Color.green);
+        g.setColor(new Color(0xe84d00));
         g.setStroke(new BasicStroke(3));
-        g.setFont(Font.decode("Courier New bold 24"));
+        g.setFont(Font.decode("Arial bold 34"));
 
-        g.drawString("distance: " + (int) distance + " m", 25, 25);
-        g.drawString("speed: " + (int) speed + " m", 425, 25);
+
+        g.drawString("" + (int) distance + "", 25, 65);
+        g.drawString("" + (int) speed + "", 400, 65);
+        g.drawString("" + (int) goats + "", 575, 65);
         if (DEBUG) {
             g.drawString("state: " + state, 25, 50);
         }
@@ -283,7 +282,8 @@ public class Game {
             }
 
             startanimtime += dt;
-            guy.rect.y = startanimtime;
+            guy.rect.y = GUY_START_Y +startanimtime;
+
 
         }
 
