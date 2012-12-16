@@ -48,8 +48,8 @@ public class Entity {
             drawWheel(g, rect.x, 35, 25);
         }
         if (image == R.id.villain) {
-            drawWheel(g, rect.x, -35, 25);
-            drawWheel(g, rect.x, 35, 25);
+            drawWheel(g, rect.x, -35, 15);
+            drawWheel(g, rect.x, 35, 15);
         }
         if (Game.DEBUG) {
             g.draw(rect);

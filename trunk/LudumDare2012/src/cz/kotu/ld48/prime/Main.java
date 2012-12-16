@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        JFrame jFrame = new JFrame("Get Away!!!");
+        JFrame jFrame = new JFrame("Ride away!");
         final GamePanel comp = new GamePanel(jFrame);
         jFrame.add(comp);
         jFrame.pack();
