@@ -12,7 +12,20 @@ import java.util.Random;
  */
 public class Game {
 
+    enum State {
+        INTRO,
+        PLAY,
+        PAUSE,
+        CRASH
+    }
+
+    State state;
+
     public static final int MAX_Y_VELOCITY = 2;
+
+    double PIXELS_PER_METER = 80;
+    double INV_PIXELS_PER_METER = 1.0/80;
+
     final Random random = new Random();
 
     List<Entity> ents = new LinkedList<Entity>();
@@ -24,7 +37,7 @@ public class Game {
 
     Entity villain;
 
-    boolean crashed;
+//    boolean crashed;
 
     double distance; // m
     double speed; // mps
@@ -39,11 +52,11 @@ public class Game {
     }
 
     void reset() {
+        state = State.INTRO;
         villain = new Entity(R.id.villain, 0, 2, 2, 1);
         speed = 0;
         distance = 0;
         crashDistance = 0;
-        crashed = false;
         ents.clear();
         colidables.clear();
         nextdistance = new double[5];
@@ -84,17 +97,26 @@ public class Game {
 
     public void paint(Graphics2D g) {
         AffineTransform original = g.getTransform();
-        g.scale(100, 100);
+        g.scale(PIXELS_PER_METER, PIXELS_PER_METER);
         g.translate(-view.x, -view.y);
 
 //        System.out.println("" + width + " x " + height);
 
         g.setStroke(new BasicStroke(0.01f));
 
+        for (int i = -1; i < 20; i++) {
+
+            AffineTransform tf = new AffineTransform();
+            tf.translate(Math.round(view.x)+ i, 0);
+            tf.scale(INV_PIXELS_PER_METER, INV_PIXELS_PER_METER);
+            g.drawImage(R.id.road_patch, tf, null);
+//            g.draw(ent.rect);
+        }
+
         for (Entity ent : ents) {
             AffineTransform tf = new AffineTransform();
             tf.translate(ent.rect.x, ent.rect.y);
-            tf.scale(0.01, 0.01);
+            tf.scale(INV_PIXELS_PER_METER, INV_PIXELS_PER_METER);
             g.drawImage(ent.image, tf, null);
             g.draw(ent.rect);
         }
@@ -102,8 +124,9 @@ public class Game {
 
         AffineTransform tf = new AffineTransform();
         tf.translate(villain.rect.x, villain.rect.y);
-        tf.scale(0.01, 0.01);
-        if (crashed) {
+        tf.scale(INV_PIXELS_PER_METER, INV_PIXELS_PER_METER);
+        tf.rotate(vy * 0.1, 1, 0.5);
+        if (isCrashed()) {
             g.drawImage(R.id.villain_crash, tf, null);
         } else {
             g.drawImage(R.id.villain, tf, null);
@@ -118,13 +141,22 @@ public class Game {
     public void paintHUD(Graphics2D g) {
         AffineTransform original = g.getTransform();
 
+
         g.translate(0, 400);
-        g.draw(new Rectangle2D.Double(2, 2, 640 - 4, 80 - 4));
+        g.setColor(Color.gray);
+//        g.fill(new Rectangle2D.Double(1, 1, 640 - 2, 80 - 2));
+        g.drawImage(R.id.hud, 0, 0, null);
+
+        g.setColor(Color.green);
+        g.setStroke(new BasicStroke(3));
+        g.setFont(Font.decode("Courier New bold 24"));
 
         g.drawString("distance: " + (int) distance + " m", 25, 25);
+        g.drawString("speed: " + (int) speed + " m", 425, 25);
+        g.drawString("state: " + state, 25, 50);
 
-        if (crashed) {
-            g.drawString("total: " + crashDistance + " m", 125, 25);
+        if (isCrashed()) {
+            g.drawString("total: " + (int) crashDistance + " m", 225, 25);
         }
 
         g.setTransform(original);
@@ -137,49 +169,63 @@ public class Game {
 
         villain.rect.x += dt * speed;
 
-        if (crashed) {
-            speed -= (speed*dt);
-        } else {
-            if (speed<5) {
+        if (isCrashed()) {
+            speed -= (speed * dt);
+            vy -= (vy * dt);
+        } else if (state == State.PLAY) {
+            if (speed < 5) {
                 // accelerate fast
-                speed += dt*1;
-            }  else {
+                speed += dt * 1;
+            } else {
                 // accelerate slowly
-                speed += dt*0.01;
+                speed += dt * 0.01;
             }
-            view.x = distance - 0.5;
-        }
+
 
 //        System.out.println("d "+dt+" "+distance);
 
 
-
-
-        if (gamePanel.downKeys.contains(GamePanel.Key.UP)) {
+            if (gamePanel.downKeys.contains(GamePanel.Key.UP)) {
 //            vy -= 10*dt;
-            vy = -MAX_Y_VELOCITY;
-        } else if (gamePanel.downKeys.contains(GamePanel.Key.DOWN)) {
+                vy = -MAX_Y_VELOCITY;
+            } else if (gamePanel.downKeys.contains(GamePanel.Key.DOWN)) {
 //            vy += 10*dt;
-            vy = MAX_Y_VELOCITY;
-        } else {
+                vy = MAX_Y_VELOCITY;
+            } else {
 //            vy -= (vy*dt);
-            vy = 0;
-        }
-//        vy = Math.max(-MAX_Y_VELOCITY, Math.min(vy, MAX_Y_VELOCITY));
-        villain.rect.y += dt*vy;
-        villain.rect.y = Math.max(1, Math.min(villain.rect.y, 3));
-
-
-        for (Entity ent : colidables) {
-            if (villain.rect.intersects(ent.rect)) {
-                crashDistance = distance;
-                crashed = true;
+                vy = 0;
             }
+//        vy = Math.max(-MAX_Y_VELOCITY, Math.min(vy, MAX_Y_VELOCITY));
+
+            for (Entity ent : colidables) {
+                if (villain.rect.intersects(ent.rect)) {
+                    crashDistance = distance;
+                    state = State.CRASH;
+                    R.id.crash.play();
+                    break;
+                }
+            }
+
         }
 
 
-        final double GEN_DIST = distance + 10;
+        if (!isCrashed()) {
+            view.x = distance - 0.5;
+        }
 
+        if (state == State.PLAY || state == State.CRASH) {
+
+            villain.rect.y += dt * vy;
+            villain.rect.y = Math.max(1, Math.min(villain.rect.y, 3));
+
+
+        }
+
+        genEnviromentUpTo(distance + 10);
+
+    }
+
+    private void genEnviromentUpTo(final double GEN_DIST) {
 
         // OBSTACLES
         if (nextdistance[0] < GEN_DIST) {
@@ -194,10 +240,7 @@ public class Game {
             nextdistance[1] += random.nextDouble();
             ents.add(e);
         }
-
-
         // TODO delete passed ents
-
     }
 
     private Entity createTree(double x, double y) {
@@ -208,6 +251,10 @@ public class Game {
     private Entity createObstacle(double x, double y) {
         Entity e = new Entity(R.id.moving_obstacle, x, y, 2, 1);
         return e;
+    }
+
+    boolean isCrashed() {
+        return state == State.CRASH;
     }
 
 

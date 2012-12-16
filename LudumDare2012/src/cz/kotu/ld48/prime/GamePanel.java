@@ -61,7 +61,11 @@ public class GamePanel extends JPanel {
                         System.exit(0);
                         break;
                     case KeyEvent.VK_SPACE:
-                        R.id.crash.play();
+                        if (game.state == Game.State.INTRO) {
+                            game.state = Game.State.PLAY;
+                        } else if (game.isCrashed()) {
+                            game.reset();
+                        }
                         break;
                     case KeyEvent.VK_R:
                         game.reset();
