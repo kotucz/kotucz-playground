@@ -74,6 +74,7 @@ public class GamePanel extends JPanel {
                             game.state = Game.State.START;
                         } else if (game.isCrashed()) {
                             game.reset();
+//                            game.state = Game.State.START;
                         }
                         break;
                     case KeyEvent.VK_R:
