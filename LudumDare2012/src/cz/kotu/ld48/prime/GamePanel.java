@@ -69,16 +69,22 @@ public class GamePanel extends JPanel {
                     case KeyEvent.VK_ESCAPE:
                         System.exit(0);
                         break;
+
+                    case KeyEvent.VK_R:
+                        game.reset();
+                        break;
                     case KeyEvent.VK_SPACE:
+                        // any key
+                    default:
                         if (game.state == Game.State.INTRO) {
                             game.state = Game.State.START;
                         } else if (game.isCrashed()) {
-                            game.reset();
+                            // wait for 5 seconds
+                            if (game.animtimeaftercrash > Game.WAIT_AFTER_CRASH) {
+                                game.reset();
+                            }
 //                            game.state = Game.State.START;
                         }
-                        break;
-                    case KeyEvent.VK_R:
-                        game.reset();
                         break;
                 }
             }
@@ -121,7 +127,6 @@ public class GamePanel extends JPanel {
 //        g.drawString((downKeys.contains(Key.UP) ? "UP" : "up"), 50, 50);
 //        g.drawString((downKeys.contains(Key.DOWN) ? "DOWN" : "down"), 50, 75);
 //        g.drawString((downKeys.contains(Key.ELSE) ? "ELSE" : "else"), 50, 100);
-
 
 
     }

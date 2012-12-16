@@ -26,6 +26,7 @@ public class R {
 
         final Image hud = loadImage("/images/hud.png");
 
+
         final Image road_patch = loadImage("/images/road_patch_0.png");
         final Image road_patch_1 = loadImage("/images/road_patch_1.png");
         final Image road_patch_2 = loadImage("/images/road_patch_2.png");
@@ -39,6 +40,7 @@ public class R {
         final Image tree_sm = loadImage("/images/tree_snowman.png");
 
         final Image intro1 = loadImage("/images/intro1.png");
+        final Image score = loadImage("/images/end_score.png");
 
         final Image guy = loadImage("/images/villain_guy.png");
 
@@ -46,6 +48,7 @@ public class R {
 
         final Image goat = loadImage("/images/bonus_goat.png");
         final Image blood = loadImage("/images/bonus_blood.png");
+        final Image goat_ghost = loadImage("/images/bonus_goat_plus_1.png");
 
 
         private BufferedImage loadImage(String name) {
