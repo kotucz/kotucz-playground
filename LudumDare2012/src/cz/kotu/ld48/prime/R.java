@@ -24,6 +24,9 @@ public class R {
 
         final Image moving_obstacle = loadImage("/images/moving_obstacle.png");
 
+        final Image wheel = loadImage("/images/wheel.png");
+
+
         final Image hud = loadImage("/images/hud.png");
 
 
