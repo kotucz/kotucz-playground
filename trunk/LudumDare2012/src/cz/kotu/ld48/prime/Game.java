@@ -24,6 +24,7 @@ public class Game {
     public static final double CAR_H = 0.7;
 
     public static final int START_DUR_T = 2;
+    public static final int GEN_AHEAD_M = 20;
 
     enum State {
         INTRO,
@@ -81,7 +82,14 @@ public class Game {
         colidables.clear();
         nextdistance = new double[5];
         nextdistance[0] = 10;
+        nextdistance[1] = 5;
         startanimtime = 0;
+
+        {
+            Entity bank = new Entity(R.id.bank, 0, 0, 8, 6);
+            ents.add(bank);
+        }
+
     }
 
     // main game loop
@@ -174,8 +182,8 @@ public class Game {
 //        tf.translate(villain.rect.x, villain.rect.y);
 //        tf.scale(INV_PIXELS_PER_METER, INV_PIXELS_PER_METER);
 //        tf.rotate(vy * 0.1, 1, 0.5);
-        villain.image = isCrashed()?R.id.villain_crash:R.id.villain;
-        villain.drawCentered(g, vy*0.1);
+        villain.image = isCrashed() ? R.id.villain_crash : R.id.villain;
+        villain.drawCentered(g, vy * 0.1);
 //        g.draw(villain.rect);
 
         g.setTransform(original);
@@ -214,7 +222,6 @@ public class Game {
 
         g.setTransform(original);
     }
-
 
 
     synchronized void delta(final double dt) {
@@ -266,10 +273,15 @@ public class Game {
 
             for (Entity ent : colidables) {
                 if (villain.rect.intersects(ent.rect)) {
-                    crashDistance = distance;
-                    state = State.CRASH;
-                    R.sound.crash.play();
-                    break;
+                    if (ent.image == R.id.moving_obstacle) {
+                        crashDistance = distance;
+                        state = State.CRASH;
+                        R.sound.crash.play();
+                        break;
+                    } else if (ent.image == R.id.goat) {
+                        ent.image = R.id.blood;
+                        R.sound.bonus.play();
+                    }
                 }
             }
 
@@ -288,7 +300,7 @@ public class Game {
 
         }
 
-        genEnviromentUpTo(distance + 10);
+        genEnviromentUpTo(distance + GEN_AHEAD_M);
 
     }
 
@@ -296,8 +308,8 @@ public class Game {
 
         // OBSTACLES
         if (nextdistance[0] < GEN_DIST) {
-            Entity e = createCar(nextdistance[0], MIN_CAR_Y + random.nextDouble()*(MAX_CAR_Y - MIN_CAR_Y));
-            nextdistance[0] += random.nextDouble() * 10;
+            Entity e = createCar(nextdistance[0], MIN_CAR_Y + random.nextDouble() * (MAX_CAR_Y - MIN_CAR_Y));
+            nextdistance[0] += 3 + random.nextDouble() * 5;
             ents.add(e);
             colidables.add(e);
         }
@@ -306,6 +318,13 @@ public class Game {
             Entity e = createTree(nextdistance[1], random.nextDouble() * 1);
             nextdistance[1] += random.nextDouble();
             ents.add(e);
+        }
+
+        if (nextdistance[2] < GEN_DIST) {
+            Entity e = createGoat(nextdistance[2], random.nextDouble() * 5);
+            nextdistance[2] += 20 + random.nextDouble() * 20;
+            ents.add(e);
+            colidables.add(e);
         }
         // TODO delete passed ents
     }
@@ -317,6 +336,11 @@ public class Game {
 
     private Entity createCar(double x, double y) {
         Entity e = new Entity(R.id.moving_obstacle, x, y, CAR_W, CAR_H);
+        return e;
+    }
+
+    private Entity createGoat(double x, double y) {
+        Entity e = new Entity(R.id.goat, x, y, 0.2, 0.2);
         return e;
     }
 
