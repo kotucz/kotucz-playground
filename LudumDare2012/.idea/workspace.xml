@@ -7,10 +7,10 @@
     <file path="/fragment.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355654123416" ignored="false" />
     <file path="/Main.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355655034517" ignored="false" />
     <file path="/GamePanel.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355660705181" ignored="false" />
-    <file path="/Game.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355667054945" ignored="false" />
+    <file path="/Game.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355680980342" ignored="false" />
     <file path="/Entity.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355663001863" ignored="false" />
     <file path="/a.dummy" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355605200785" ignored="false" />
-    <file path="/R.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355665455550" ignored="false" />
+    <file path="/R.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355680333027" ignored="false" />
     <file path="/MyApplet.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355653213068" ignored="false" />
     <file path="/start.html.xhtml" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355653747495" ignored="false" />
     <file path="/MANIFEST.MF" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355656011375" ignored="false" />
@@ -84,14 +84,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Game.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Game.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="27" selection-start="1675" selection-end="1675" vertical-scroll-proportion="0.0">
+            <state line="375" column="50" selection-start="9825" selection-end="9825" vertical-scroll-proportion="0.027613413">
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1040#1048#0" expanded="true" />
-                <element signature="e#1096#1104#0" expanded="true" />
+                <element signature="e#1094#1102#0" expanded="true" />
+                <element signature="e#1150#1158#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -124,10 +124,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GamePanel.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="GamePanel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/GamePanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="77" column="60" selection-start="2075" selection-end="2075" vertical-scroll-proportion="2.34714">
+            <state line="45" column="0" selection-start="951" selection-end="1215" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -145,7 +145,7 @@
       <file leaf-file-name="R.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/R.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="72" column="16" selection-start="2084" selection-end="2084" vertical-scroll-proportion="0.0">
+            <state line="29" column="65" selection-start="809" selection-end="809" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -186,9 +186,9 @@
         <option value="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
         <option value="$PROJECT_DIR$/src/cz/kotu/ld48/prime/Main.java" />
         <option value="$PROJECT_DIR$/src/cz/kotu/ld48/prime/Entity.java" />
+        <option value="$PROJECT_DIR$/src/cz/kotu/ld48/prime/GamePanel.java" />
         <option value="$PROJECT_DIR$/src/cz/kotu/ld48/prime/R.java" />
         <option value="$PROJECT_DIR$/src/cz/kotu/ld48/prime/Game.java" />
-        <option value="$PROJECT_DIR$/src/cz/kotu/ld48/prime/GamePanel.java" />
       </list>
     </option>
   </component>
@@ -619,6 +619,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/GamePanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="0" selection-start="951" selection-end="1215" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/Entity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="40" column="21" selection-start="949" selection-end="949" vertical-scroll-proportion="0.0">
@@ -628,26 +635,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/R.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="72" column="16" selection-start="2084" selection-end="2084" vertical-scroll-proportion="0.0">
+        <state line="29" column="65" selection-start="809" selection-end="809" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="27" selection-start="1675" selection-end="1675" vertical-scroll-proportion="0.0">
+        <state line="375" column="50" selection-start="9825" selection-end="9825" vertical-scroll-proportion="0.027613413">
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1040#1048#0" expanded="true" />
-            <element signature="e#1096#1104#0" expanded="true" />
+            <element signature="e#1094#1102#0" expanded="true" />
+            <element signature="e#1150#1158#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/GamePanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="60" selection-start="2075" selection-end="2075" vertical-scroll-proportion="2.34714">
-          <folding />
         </state>
       </provider>
     </entry>
