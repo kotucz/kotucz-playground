@@ -18,6 +18,10 @@ public class R {
 
     Image moving_obstacle;
 
+    Image hud;
+
+    Image road_patch;
+
 
     Image tree;
 
@@ -29,6 +33,10 @@ public class R {
             villain_crash = loadImage("/images/villain_crash.png");
 
             moving_obstacle = loadImage("/images/moving_obstacle.png");
+
+            hud = loadImage("/images/hud.png");
+
+            road_patch = loadImage("/images/road_patch.png");
 
             tree = loadImage("/images/tree.png");
         } catch (IOException e) {
