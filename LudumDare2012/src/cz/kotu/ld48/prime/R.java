@@ -11,75 +11,62 @@ import java.io.IOException;
  */
 public class R {
 
-    public final static R id = new R();
+    public final static Images id = new Images();
+    public final static Sounds sound = new Sounds();
 
     private R() {
         // singleton
     }
 
-    Image villain;
-    Image villain_crash;
+    static class Images {
+        final Image villain = loadImage("/images/villain.png");
+        final Image villain_crash = loadImage("/images/villain_crash.png");
 
-    Image moving_obstacle;
+        final Image moving_obstacle = loadImage("/images/moving_obstacle.png");
 
-    Image hud;
+        final Image hud = loadImage("/images/hud.png");
 
-    Image road_patch;
-
-
-    Image tree;
+        final Image road_patch = loadImage("/images/road_patch.png");
 
 
-    void loadImages() {
+        final Image tree = loadImage("/images/tree.png");
 
-        try {
-            villain = loadImage("/images/villain.png");
-            villain_crash = loadImage("/images/villain_crash.png");
+        final Image intro1 = loadImage("/images/intro1.png");
 
-            moving_obstacle = loadImage("/images/moving_obstacle.png");
+        final Image guy = loadImage("/images/villain_guy.png");
 
-            hud = loadImage("/images/hud.png");
 
-            road_patch = loadImage("/images/road_patch.png");
-
-            tree = loadImage("/images/tree.png");
-        } catch (IOException e) {
-            Game.logException(e);
+        private BufferedImage loadImage(String name) {
+            try {
+                return ImageIO.read(getClass().getResource(name));
+            } catch (IOException e) {
+                Game.logException(e);
+                throw new RuntimeException(e);
+            }
         }
-
     }
 
-    private BufferedImage loadImage(String name) throws IOException {
-        return ImageIO.read(getClass().getResource(name));
-    }
+    static class Sounds {
 
+        final Sound crash = loadSound("/sounds/crash.wav");
 
-
-    Sound crash;
-
-    void loadSounds() {
-
-
-        try {
-            crash = loadSound("/sounds/crash.wav");
-        } catch (Exception e) {
-            Game.logException(e);
-        }
-
-
-    }
-
-    private Sound loadSound(String name) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        AudioInputStream audioInputStream = null;
+        private Sound loadSound(String name) {
+            try {
+                AudioInputStream audioInputStream = null;
 //        audioInputStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream(name));
-        audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource(name));
+                audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource(name));
 
-        Clip clip = AudioSystem.getClip();
-        clip.open(audioInputStream);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
 
-        return new Sound(clip);
+                return new Sound(clip);
+            } catch (Exception e) {
+                Game.logException(e);
+                throw new RuntimeException(e);
+            }
+
+        }
 
     }
-
 
 }

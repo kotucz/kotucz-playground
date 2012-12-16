@@ -15,11 +15,14 @@ import java.util.Random;
  */
 public class Game {
 
+    public static final boolean DEBUG = true;
+
     public static final int MIN_CAR_Y = 1;
     public static final int MAX_CAR_Y = 4;
 
     enum State {
         INTRO,
+        START,
         PLAY,
         PAUSE,
         CRASH
@@ -42,6 +45,7 @@ public class Game {
     final Rectangle2D.Double view = new Rectangle2D.Double(0, 0, 640, 480);
 
     Entity villain = new Entity(R.id.villain, 0, 2, 2, 1);
+    Entity guy = new Entity(R.id.guy, 0, 0, .5, 1);
 
 //    boolean crashed;
 
@@ -50,6 +54,9 @@ public class Game {
     double vy;
 
     double crashDistance;
+
+    // time from 0 start animaiton
+    double startanimtime;
 
     double[] nextdistance;
 
@@ -68,6 +75,7 @@ public class Game {
         colidables.clear();
         nextdistance = new double[5];
         nextdistance[0] = 10;
+        startanimtime = 0;
     }
 
     // main game loop
@@ -113,13 +121,16 @@ public class Game {
         try {
             ex.printStackTrace(new PrintStream("err" + System.currentTimeMillis() + ".txt"));
         } catch (FileNotFoundException e) {
-
+            // nothing to do here
         }
 //        JOptionPane.showMessageDialog(gamePanel, ex.toString());
     }
 
 
     public synchronized void paint(Graphics2D g) {
+
+
+
         AffineTransform original = g.getTransform();
         g.scale(PIXELS_PER_METER, PIXELS_PER_METER);
         g.translate(-view.x, -view.y);
@@ -145,6 +156,14 @@ public class Game {
             g.draw(ent.rect);
         }
 
+        if (State.START == state) {
+            AffineTransform tf = new AffineTransform();
+            tf.translate(guy.rect.x, guy.rect.y);
+            tf.scale(INV_PIXELS_PER_METER, INV_PIXELS_PER_METER);
+            g.drawImage(guy.image, tf, null);
+            g.draw(guy.rect);
+        }
+
 
         AffineTransform tf = new AffineTransform();
         tf.translate(villain.rect.x, villain.rect.y);
@@ -158,6 +177,14 @@ public class Game {
         g.draw(villain.rect);
 
         g.setTransform(original);
+
+
+        paintHUD(g);
+
+        if (state == State.INTRO) {
+            g.drawImage(R.id.intro1, 0, 0, null
+            );
+        }
 
     }
 
@@ -187,9 +214,21 @@ public class Game {
     }
 
 
+
     synchronized void delta(final double dt) {
 
-        System.out.println("delta " + dt);
+//        System.out.println("delta " + dt);
+        if (state == State.START) {
+
+            if (startanimtime > 5) {
+                state = State.PLAY;
+            }
+
+            startanimtime += dt;
+            guy.rect.y = startanimtime/2;
+
+        }
+
 
         distance += dt * speed;
 
@@ -227,7 +266,7 @@ public class Game {
                 if (villain.rect.intersects(ent.rect)) {
                     crashDistance = distance;
                     state = State.CRASH;
-                    R.id.crash.play();
+                    R.sound.crash.play();
                     break;
                 }
             }
