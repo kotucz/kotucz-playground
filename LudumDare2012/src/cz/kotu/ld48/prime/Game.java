@@ -1,8 +1,10 @@
 package cz.kotu.ld48.prime;
 
+import javax.sound.sampled.Line;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -210,8 +212,7 @@ public class Game {
         paintHUD(g);
 
         if (state == State.INTRO) {
-            g.drawImage(R.id.intro1, 0, 0, null
-            );
+            g.drawImage(R.id.intro1, 0, 0, null);
         }
 
         // draw score
@@ -228,7 +229,7 @@ public class Game {
         g.setStroke(new BasicStroke(3));
         g.setFont(Font.decode("Arial bold 48"));
 
-        g.drawString("" + (int) distance + " m", 300, 250);
+        g.drawString("" + distMetres(), 300, 250);
         g.drawString("" + goats, 500, 345);
 
         if (animtimeaftercrash > WAIT_AFTER_CRASH) {
@@ -257,18 +258,25 @@ public class Game {
         g.setFont(Font.decode("Arial bold 34"));
 
 
-        g.drawString("" + (int) distance + "", 25, 65);
-        g.drawString("" + (int) speed + "", 400, 65);
+        g.drawString("" + distMetres() + "", 25, 65);
+        g.drawString("" + (int) (speed*10) + "", 400, 65);
         g.drawString("" + (int) goats + "", 575, 65);
         if (DEBUG) {
             g.drawString("state: " + state, 25, 50);
         }
+
+        double sprd = asympt(speed / 5) * Math.PI;
+        g.draw(new Line2D.Double(275, 70, 275 - 65 * Math.cos(sprd), 70 - Math.sin(sprd) * 45));
 
 //        if (isCrashed()) {
 //            g.drawString("total: " + (int) crashDistance + " m", 225, 25);
 //        }
 
         g.setTransform(original);
+    }
+
+    private int distMetres() {
+        return (int) (10*distance/3.6);
     }
 
 
@@ -282,7 +290,7 @@ public class Game {
             }
 
             startanimtime += dt;
-            guy.rect.y = GUY_START_Y +startanimtime;
+            guy.rect.y = GUY_START_Y + startanimtime;
 
 
         }
@@ -437,6 +445,14 @@ public class Game {
 
     boolean isCrashed() {
         return state == State.CRASH;
+    }
+
+    /**
+     * @param d
+     * @return 0..1
+     */
+    double asympt(double d) {
+        return Math.atan(d) / (Math.PI / 2);
     }
 
 
