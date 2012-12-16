@@ -9,6 +9,7 @@ public class Main {
         JFrame jFrame = new JFrame("Ride away!");
         final GamePanel comp = new GamePanel(jFrame);
         jFrame.add(comp);
+        jFrame.setResizable(Game.DEBUG);
         jFrame.pack();
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setVisible(true);
