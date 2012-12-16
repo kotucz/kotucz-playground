@@ -35,6 +35,11 @@ public class R {
 
         final Image guy = loadImage("/images/villain_guy.png");
 
+        final Image bank = loadImage("/images/start_bank.png");
+
+        final Image goat = loadImage("/images/bonus_goat.png");
+        final Image blood = loadImage("/images/bonus_blood.png");
+
 
         private BufferedImage loadImage(String name) {
             try {
@@ -48,7 +53,11 @@ public class R {
 
     static class Sounds {
 
+
         final Sound crash = loadSound("/sounds/crash.wav");
+
+        final Sound bonus = loadSound("/sounds/bonus.wav");
+
 
         private Sound loadSound(String name) {
             try {
