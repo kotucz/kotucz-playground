@@ -30,10 +30,13 @@ public class Game {
     public static final int GEN_AHEAD_M = 20;
 
 
-
     public static final double CAR_WIEV_SHIFT = 2;
     public static final double WAIT_AFTER_CRASH = 3;
     public static final double GUY_START_Y = 1;
+
+    public boolean isScoreAnimFinished() {
+        return goats <= scoregoats && (animtimeaftercrash > WAIT_AFTER_CRASH);
+    }
 
     enum State {
         INTRO,
@@ -75,9 +78,13 @@ public class Game {
     double startanimtime;
     double animtimeaftercrash;
 
+
+    double animtimeaftercrashscoreadded;
+
     double[] nextdistance;
 
     int goats;
+    int scoregoats;
 
     public Game(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -113,6 +120,10 @@ public class Game {
         startanimtime = 0;
         animtimeaftercrash = 0;
         goats = 0;
+//        goats = 50;
+        scoreTotal = 0;
+        animtimeaftercrashscoreadded = 2;
+        scoregoats = 0;
 
         {
             Entity bank = new Entity(R.id.bank, 0, 0, 8, 6);
@@ -239,6 +250,8 @@ public class Game {
 
     }
 
+    int scoreTotal;
+
     private void drawScore(Graphics2D g) {
         g.drawImage(R.id.score, 0, 0, null);
 
@@ -246,12 +259,21 @@ public class Game {
         g.setStroke(new BasicStroke(3));
         g.setFont(Font.decode("Arial bold 48"));
 
-        g.drawString("" + distMetres(), 300, 250);
-        g.drawString("" + goats, 500, 345);
+        FontMetrics fontMetrics = g.getFontMetrics();
 
-        if (animtimeaftercrash > WAIT_AFTER_CRASH) {
+        String s1 = "" + distMetres();
+        g.drawString(s1, 545 - fontMetrics.stringWidth(s1), 250);
+        String s2 = "" + scoregoats;
+        g.drawString(s2, 545 - fontMetrics.stringWidth(s2), 295);
+
+        g.setColor(Color.green);
+        String s3 = "" + distMetres() * (scoregoats + 1);
+        g.drawString(s3, 545 - fontMetrics.stringWidth(s3), 345);
+
+        g.setColor(Color.red);
+        if (isScoreAnimFinished()) {
             g.setFont(Font.decode("Arial bold 24"));
-            g.drawString("press any key", 240, 470);
+            g.drawString("press any key", 240, 450);
         }
     }
 
@@ -280,8 +302,8 @@ public class Game {
         g.drawString(s0, 150 - fontMetrics.stringWidth(s0), 65);
         String s1 = "" + (int) (speed * 10);
         g.drawString(s1, 450 - fontMetrics.stringWidth(s1), 65);
-        String s2 = "" +  goats;
-        g.drawString(s2, 583 - fontMetrics.stringWidth(s2)/2, 65);
+        String s2 = "" + goats;
+        g.drawString(s2, 583 - fontMetrics.stringWidth(s2) / 2, 65);
         if (DEBUG) {
             g.drawString("state: " + state, 25, 50);
         }
@@ -325,6 +347,15 @@ public class Game {
             speed -= (speed * dt);
             vy -= (vy * dt);
             animtimeaftercrash += dt;
+
+            if (animtimeaftercrashscoreadded < animtimeaftercrash) {
+                if (scoregoats < goats) {
+                    scoregoats++;
+                    R.sound.bonus.play();
+                }
+                animtimeaftercrashscoreadded += 3.0/(3+scoregoats);
+            }
+
         } else if (state == State.PLAY) {
             if (speed < 5) {
                 // accelerate fast

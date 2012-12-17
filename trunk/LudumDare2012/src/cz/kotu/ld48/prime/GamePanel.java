@@ -87,7 +87,8 @@ public class GamePanel extends JPanel {
                             game.state = Game.State.START;
                         } else if (game.isCrashed()) {
                             // wait for 5 seconds
-                            if (game.animtimeaftercrash > Game.WAIT_AFTER_CRASH) {
+//                            if (game.animtimeaftercrash > Game.WAIT_AFTER_CRASH) {
+                            if (game.isScoreAnimFinished()) {
                                 game.reset();
                             }
 //                            game.state = Game.State.START;
