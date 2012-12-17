@@ -6,8 +6,8 @@
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355654123416" ignored="false" />
     <file path="/Main.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355693988785" ignored="false" />
-    <file path="/GamePanel.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355700537127" ignored="false" />
-    <file path="/Game.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355700579361" ignored="false" />
+    <file path="/GamePanel.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355704263474" ignored="false" />
+    <file path="/Game.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355705497202" ignored="false" />
     <file path="/Entity.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355693336586" ignored="false" />
     <file path="/a.dummy" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355605200785" ignored="false" />
     <file path="/R.java" changelist="a71f7514-c47a-4d8a-9ba8-aded7e038ba1" time="1355700503958" ignored="false" />
@@ -88,7 +88,7 @@
       <file leaf-file-name="Game.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="231" column="34" selection-start="5668" selection-end="5668" vertical-scroll-proportion="0.5984252">
+            <state line="122" column="8" selection-start="2906" selection-end="2906" vertical-scroll-proportion="0.3996063">
               <folding />
             </state>
           </provider>
@@ -133,7 +133,7 @@
       <file leaf-file-name="GamePanel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/GamePanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="70" column="42" selection-start="1754" selection-end="1754" vertical-scroll-proportion="0.0">
+            <state line="90" column="49" selection-start="2680" selection-end="2680" vertical-scroll-proportion="-13.24">
               <folding />
             </state>
           </provider>
@@ -632,14 +632,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/GamePanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="42" selection-start="1754" selection-end="1754" vertical-scroll-proportion="0.0">
+        <state line="90" column="49" selection-start="2680" selection-end="2680" vertical-scroll-proportion="-13.24">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cz/kotu/ld48/prime/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="231" column="34" selection-start="5668" selection-end="5668" vertical-scroll-proportion="0.5984252">
+        <state line="122" column="8" selection-start="2906" selection-end="2906" vertical-scroll-proportion="0.3996063">
           <folding />
         </state>
       </provider>
