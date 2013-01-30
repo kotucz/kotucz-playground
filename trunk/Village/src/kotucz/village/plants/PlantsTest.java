@@ -33,14 +33,17 @@ package kotucz.village.plants;
 
 import com.jme3.math.Vector3f;
 import kotucz.village.game.MyGame;
+import sun.reflect.generics.tree.Tree;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author kotucz
  */
 public class PlantsTest extends MyGame {
 
-    private Plant tree;
-    private Plant tree2;
+    private List<Plant> trees = new ArrayList<Plant>();
 
     protected void initEntities() {
 
@@ -53,11 +56,15 @@ public class PlantsTest extends MyGame {
 //            rootNode.attachChild(spider.getNode());
 
 
-            tree = new Plant(modeler.matPipes, getPhysicsSpace(), new Vector3f(5, 5, 0));
+            Plant tree = new Plant(modeler.matPipes, getPhysicsSpace(), new Vector3f(5, 5, 0));
             rootNode.attachChild(tree.getNode());
+            trees.add(tree);
 
-//            tree2 = new Plant(modeler.matPipes, getPhysicsSpace(), new Vector3f(10, 5, 0));
+            {
+//            Plant tree2 = new Plant(modeler.matPipes, getPhysicsSpace(), new Vector3f(10, 5, 0));
 //            rootNode.attachChild(tree2.getNode());
+//            trees.add(tree2);
+            }
 
 //            createMotorTest();
 
@@ -87,7 +94,11 @@ public class PlantsTest extends MyGame {
 //
 //        }
 
-        tree.control(tpf);
+        for (Plant tree : trees) {
+
+            tree.control(tpf);
+        }
+
 
 //        tree2.control(tpf);
 
