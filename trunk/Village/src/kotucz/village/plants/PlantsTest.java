@@ -31,14 +31,7 @@
  */
 package kotucz.village.plants;
 
-import com.jme3.bullet.collision.shapes.BoxCollisionShape;
-import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.bullet.joints.HingeJoint;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.queue.RenderQueue;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Box;
 import kotucz.village.game.MyGame;
 
 /**
@@ -46,9 +39,8 @@ import kotucz.village.game.MyGame;
  */
 public class PlantsTest extends MyGame {
 
-
-    private Plant ghostSpider;
-    private Plant spider;
+    private Plant tree;
+    private Plant tree2;
 
     protected void initEntities() {
 
@@ -61,8 +53,11 @@ public class PlantsTest extends MyGame {
 //            rootNode.attachChild(spider.getNode());
 
 
-            Tree tree = new Tree(modeler.matPipes, getPhysicsSpace());
+            tree = new Plant(modeler.matPipes, getPhysicsSpace(), new Vector3f(5, 5, 0));
             rootNode.attachChild(tree.getNode());
+
+//            tree2 = new Plant(modeler.matPipes, getPhysicsSpace(), new Vector3f(10, 5, 0));
+//            rootNode.attachChild(tree2.getNode());
 
 //            createMotorTest();
 
@@ -73,98 +68,6 @@ public class PlantsTest extends MyGame {
 //            rootNode.attachChild(simplePipe2.getSpatial());
 
         }
-    }
-
-
-    public void createMotorTest() {
-
-        final Vector3f origin = new Vector3f(2, 2, 3);
-
-        Stem leg1 = new Stem(
-                origin,
-                origin.add(new Vector3f(4, 0, 0)),
-                modeler.matPipes);
-        leg1.getPhysics().setPhysicsRotation(new Quaternion().fromAngleAxis((float) Math.PI / 2f, Vector3f.UNIT_Y));
-        leg1.getPhysics().setMass(1);
-        rootNode.attachChild(leg1.getSpatial());
-        getPhysicsSpace().add(leg1.getPhysics());
-
-        RigidBodyControl control1;
-
-        {
-            final float halfSize = 0.25f;
-
-//            MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
-//            final float halfSize = 1.25f;
-
-            Box box = new Box(new Vector3f(-halfSize, -halfSize, -halfSize), new Vector3f(halfSize, halfSize, halfSize));
-            Geometry geom = new Geometry("torso", box);
-            geom.setMaterial(modeler.matPipes);
-//        geom.setLocalTranslation(new Vector3f(0, 0, 0));
-
-//            Multitexture mtex2 = new Multitexture(256, 256);
-//            box.setTexture(MyBox.FACE_TOP, mtex2.createRealSubtexture(16*(1), 11*16, 16*(1+1f), 12*16));
-
-
-            geom.setLocalTranslation(origin.add(2, 0, 0));
-
-
-            geom.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-
-            RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(halfSize, halfSize, halfSize)), 0);
-
-            control.setMass(0f);
-
-            geom.addControl(control);
-
-
-            rootNode.attachChild(geom);
-            getPhysicsSpace().add(control);
-
-            control1 = control;
-
-        }
-
-        HingeJoint kneeHinge = new HingeJoint(control1, leg1.getPhysics(), new Vector3f(0, 0, 0.f), new Vector3f(0f, 0, 0f), Vector3f.UNIT_Y, Vector3f.UNIT_Y);
-        kneeHinge.setCollisionBetweenLinkedBodys(false);
-//        kneeHinge.setLimit(-2.21f, 0.2f);
-        kneeHinge.enableMotor(true, 6.14f, 100f);
-        getPhysicsSpace().add(kneeHinge);
-
-        {
-
-            final float halfSize = 0.25f;
-
-//            MyBox box = new MyBox(Vector3f.ZERO, new Vector3f(1, 1, 1));
-//            final float halfSize = 1.25f;
-
-            Box box = new Box(new Vector3f(-halfSize, -halfSize, -halfSize), new Vector3f(halfSize, halfSize, halfSize));
-            Geometry geom = new Geometry("torso", box);
-            geom.setMaterial(modeler.matPipes);
-//        geom.setLocalTranslation(new Vector3f(0, 0, 0));
-
-//            Multitexture mtex2 = new Multitexture(256, 256);
-//            box.setTexture(MyBox.FACE_TOP, mtex2.createRealSubtexture(16*(1), 11*16, 16*(1+1f), 12*16));
-
-
-            geom.setLocalTranslation(origin.add(4, 0, 3));
-
-
-            geom.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-
-            RigidBodyControl control = new RigidBodyControl(new BoxCollisionShape(new Vector3f(halfSize, halfSize, halfSize)), 0);
-
-            control.setMass(5f);
-
-            geom.addControl(control);
-
-
-            rootNode.attachChild(geom);
-            getPhysicsSpace().add(control);
-
-        }
-
-
     }
 
 
@@ -183,6 +86,10 @@ public class PlantsTest extends MyGame {
 //            System.out.println("G " + ghostSpider.servos.get(i).getAngle() + " S " + spider.servos.get(i).getAngle());
 //
 //        }
+
+        tree.control(tpf);
+
+//        tree2.control(tpf);
 
 
     }
