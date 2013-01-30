@@ -206,7 +206,8 @@ public class Stem {
         Vector3f endVector = new Vector3f(geometry.getLocalTranslation()).add(dirTrans);
 //        Vector3f mult = localRotation.mult(localVector);
         Quaternion rot = new Quaternion();
-        rot.fromAngleNormalAxis(0.5f,new Vector3f(0, 1, 1) );
+//        rot.fromAngleNormalAxis(0.5f,new Vector3f(0, 1, 1) );
+        rot.fromAngles(localVector.x, localVector.y, localVector.z);
         Transform transform = new Transform(endVector, localRotation.mult(rot));
         return new Stem(transform, length, this.mat);
     }

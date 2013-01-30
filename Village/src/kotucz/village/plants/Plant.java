@@ -100,8 +100,8 @@ public class Plant {
     }
 
 
-    float off = 0;
-    int next = 3;
+    float off = -3;
+    int next = 1;
 
     void control(float tpf) {
 
@@ -134,11 +134,12 @@ public class Plant {
     }
 
     private void grow() {
-        Stem lastStem = stems.get(stems.size() - 1);
+//        Stem lastStem = stems.get(stems.size() - 1);
+        Stem lastStem = stems.get(next);
 
-        Stem stem1 = growBranch(lastStem, new Vector3f(0.01f, 0.0f, 1));
+        Stem stem1 = growBranch(lastStem, new Vector3f(0.2f, 0.2f, 1));
 //        joint(lastStem, stem1);
-//        growBranch(lastStem, new Vector3f(-0.1f, -0.1f, 1));
+        growBranch(lastStem, new Vector3f(-0.2f, -0.2f, -1));
     }
 
     private Stem growBranch(Stem lastStem, Vector3f localVector) {
