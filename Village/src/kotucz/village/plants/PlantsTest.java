@@ -40,7 +40,6 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import kotucz.village.game.MyGame;
-import kotucz.village.pipes.SimplePipe;
 
 /**
  * @author kotucz
@@ -70,7 +69,7 @@ public class PlantsTest extends MyGame {
 
 //            getPhysicsSpace().add(simplePipe.getPhysics());
 
-//            SimplePipe simplePipe2 = new SimplePipe(new Vector3f(4, 2, 5f), new Vector3f(6, 4, 2), modeler.matPipes);
+//            Stem simplePipe2 = new Stem(new Vector3f(4, 2, 5f), new Vector3f(6, 4, 2), modeler.matPipes);
 //            rootNode.attachChild(simplePipe2.getSpatial());
 
         }
@@ -81,7 +80,7 @@ public class PlantsTest extends MyGame {
 
         final Vector3f origin = new Vector3f(2, 2, 3);
 
-        SimplePipe leg1 = new SimplePipe(
+        Stem leg1 = new Stem(
                 origin,
                 origin.add(new Vector3f(4, 0, 0)),
                 modeler.matPipes);
