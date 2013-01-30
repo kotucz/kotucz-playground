@@ -34,10 +34,15 @@ public class SimplePipe {
 
     private final RigidBodyControl control;
     private Vector3f velocity = new Vector3f();
+    private final Geometry geometry;
+    private Vector3f endVector;
+    private Material mat;
 
 
     //    public Vehicle(Player owner, Type type, RoadPoint roadPoint, , AbstractGridPathNetwork network) {
     public SimplePipe(Vector3f posVector, Vector3f endVector, Material mat) {
+        this.endVector = endVector;
+        this.mat = mat;
 
 
         final float radius = 0.125f;
@@ -61,9 +66,12 @@ public class SimplePipe {
 
 
             Cylinder cylinder = new Cylinder(4, 8, radius, length);
-            Geometry geometry = new Geometry("kapota", cylinder);
+            geometry = new Geometry("kapota", cylinder);
             geometry.setUserData(Entities.ID_KEY, id);
             geometry.setMaterial(mat);
+
+
+            // set center of mass in the middle of the point
             geometry.setLocalTranslation(posVector.add(dir.mult(.5f)));
 
 
@@ -102,6 +110,12 @@ public class SimplePipe {
     }
 
 
+    public SimplePipe extend(Vector3f localVector) {
+        Quaternion localRotation = geometry.getLocalRotation();
+        Vector3f mult = localRotation.mult(localVector);
+        return new SimplePipe(this.endVector, this.endVector.add(mult), this.mat);
+    }
+
 
     public RigidBodyControl getPhysics() {
         return control;
@@ -120,7 +134,6 @@ public class SimplePipe {
     public Spatial getSpatial() {
         return spatial;
     }
-
 
 
 
