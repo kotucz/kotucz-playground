@@ -25,6 +25,10 @@ public class Plant {
     private final PhysicsSpace physicsSpace;
 
 
+    float off = -1;
+    int next = 1;
+
+
     public Plant(Material mat, PhysicsSpace physicsSpace, Vector3f vector3f) {
         this.mat = mat;
         this.physicsSpace = physicsSpace;
@@ -52,15 +56,15 @@ public class Plant {
         stems.add(leg2);
         physicsSpace.add(leg2.getPhysics());
 
+        joint(leg1, leg2);
 
 
 
 
 
-
-        Stem legx = new Stem(transform, 2, mat);
-        legx.getPhysics().setMass(1);
-        node.attachChild(legx.getSpatial());
+//        Stem legx = new Stem(transform, 2, mat);
+//        legx.getPhysics().setMass(1);
+//        node.attachChild(legx.getSpatial());
 //        stems.add(legx);
 
 
@@ -78,14 +82,14 @@ public class Plant {
 
         {
 
-            leg1.getPhysics().setSleepingThresholds(0, 0);
-
-
-            HingeJoint hinge = new HingeJoint(leg1.getPhysics(), leg2.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, -0.5f), Vector3f.UNIT_Y, Vector3f.UNIT_Y);
-            hinge.setCollisionBetweenLinkedBodys(false);
-//            hinge.enableMotor(true, 1, 0.1f);
-            hinge.setLimit(-0.1f, 0.1f);
-            physicsSpace.add(hinge);
+//            leg1.getPhysics().setSleepingThresholds(0, 0);
+//
+//
+//            HingeJoint hinge = new HingeJoint(leg1.getPhysics(), leg2.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, -0.5f), Vector3f.UNIT_Y, Vector3f.UNIT_Y);
+//            hinge.setCollisionBetweenLinkedBodys(false);
+////            hinge.enableMotor(true, 1, 0.1f);
+//            hinge.setLimit(-0.1f, 0.1f);
+//            physicsSpace.add(hinge);
 
         }
 
@@ -105,8 +109,6 @@ public class Plant {
     }
 
 
-    float off = 0;
-    int next = 1;
 
     void control(float tpf) {
 
