@@ -15,7 +15,7 @@ import kotucz.village.common.Entities;
 /**
  * @author Kotuc
  */
-public class Stem {
+public class Stem implements BeingStem {
 
 
     public static final String ID_KEY = "CubeUserDataIdKey";
@@ -229,6 +229,17 @@ public class Stem {
 
     public Spatial getSpatial() {
         return spatial;
+    }
+
+    
+    int genomePosition;
+    
+    public void setGenomePosition(int position) {
+        genomePosition = position;
+    }
+
+    public int getGenomePosition() {
+        return genomePosition;
     }
 
 

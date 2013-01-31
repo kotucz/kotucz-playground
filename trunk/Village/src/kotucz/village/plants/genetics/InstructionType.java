@@ -9,7 +9,9 @@ package kotucz.village.plants.genetics;
  * @author Petr
  */
 public enum InstructionType {
-    NOTHING(0), GROW(1);
+    NOTHING(0), GROW(1),
+    
+    FORK(11);
     
     final int num;
     
@@ -26,5 +28,8 @@ public enum InstructionType {
         return InstructionType.NOTHING;
     }
     
+    public int getNumber() {
+        return num;
+    }
     
 }
