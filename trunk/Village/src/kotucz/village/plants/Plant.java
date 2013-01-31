@@ -24,21 +24,20 @@ public class Plant {
     private final Material mat;
     private final PhysicsSpace physicsSpace;
 
+    static final boolean JOINTS_ENABLED = false;
+
 
     float off = -1;
     int next = 1;
 
 
-    public Plant(Material mat, PhysicsSpace physicsSpace, Vector3f vector3f) {
+    public Plant(Material mat, PhysicsSpace physicsSpace, Vector3f origin) {
         this.mat = mat;
         this.physicsSpace = physicsSpace;
 
-        final Vector3f origin = vector3f;
-
-
         Transform transform = new Transform();
-        transform.setTranslation(vector3f);
-        transform.setRotation(new Quaternion().fromAngleAxis((float)Math.PI*0.5f, new Vector3f(0, 1, 0)));
+        transform.setTranslation(origin);
+        transform.setRotation(new Quaternion().fromAngleAxis((float) Math.PI * 0.5f, new Vector3f(0, 1, 0)));
 
 //        Stem leg1 = new Stem(origin.add(new Vector3f(0, 0, 0)), origin.add(new Vector3f(0, 0, 1)), mat);
         Stem leg1 = new Stem(transform, 1, mat);
@@ -51,15 +50,18 @@ public class Plant {
 
 //        Stem leg2 = new Stem(origin.add(new Vector3f(0, 0, 1)), origin.add(new Vector3f(0, 0, 2)), mat);
         Stem leg2 = leg1.extend(new Vector3f());
-        leg2.getPhysics().setMass(1);
+        if (JOINTS_ENABLED) {
+            leg2.getPhysics().setMass(1); // dynamic
+        } else {
+            leg2.getPhysics().setMass(0); // static
+        }
         node.attachChild(leg2.getSpatial());
         stems.add(leg2);
         physicsSpace.add(leg2.getPhysics());
 
-        joint(leg1, leg2);
-
-
-
+        if (JOINTS_ENABLED) {
+            jointC(leg1, leg2);
+        }
 
 
 //        Stem legx = new Stem(transform, 2, mat);
@@ -109,12 +111,9 @@ public class Plant {
     }
 
 
-
     void control(float tpf) {
 
         off += tpf;
-
-
 
 
 //        System.out.println("Plant " + off);
@@ -145,14 +144,20 @@ public class Plant {
         Stem lastStem = stems.get(next);
 
         Stem stem1 = growBranch(lastStem, new Vector3f(0.00001f, 0.0f, 0));
-        joint(lastStem, stem1);
+        if (JOINTS_ENABLED) {
+            jointC(lastStem, stem1);
+        }
 //        Stem stem1 = growBranch(lastStem, new Vector3f(0.2f, 0.2f, 1));
 //        growBranch(lastStem, new Vector3f(-0.2f, -0.2f, -1));
     }
 
     private Stem growBranch(Stem lastStem, Vector3f localVector) {
         Stem newStem = lastStem.extend(localVector);
-        newStem.getPhysics().setMass(1);
+        if (JOINTS_ENABLED) {
+            newStem.getPhysics().setMass(1);
+        } else {
+            newStem.getPhysics().setMass(0); // static
+        }
         node.attachChild(newStem.getSpatial());
         stems.add(newStem);
         physicsSpace.add(newStem.getPhysics());
@@ -160,7 +165,24 @@ public class Plant {
     }
 
 
-    void joint(Stem leg1, Stem leg2) {
+    void jointC(Stem leg1, Stem leg2) {
+        {
+
+            leg1.getPhysics().setSleepingThresholds(0, 0);
+
+//            HingeJoint joint = new HingeJoint(leg1.getPhysics(), leg2.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, -0.5f), Vector3f.UNIT_Y, Vector3f.UNIT_Y);
+            ConeJoint joint = new ConeJoint(leg1.getPhysics(), leg2.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, -0.5f));
+            joint.setCollisionBetweenLinkedBodys(false);
+//            joint.enableMotor(true, 1, 0.1f);
+//            joint.setLimit(-0.01f, 0.01f);
+            joint.setLimit(10.1f, 10.1f, 10.1f);
+//            ((ConeTwistConstraint)joint.getObjectId()).setLimit(0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.9f);
+            physicsSpace.add(joint);
+
+        }
+    }
+
+    void jointH(Stem leg1, Stem leg2) {
         {
 
             leg1.getPhysics().setSleepingThresholds(0, 0);
@@ -176,6 +198,5 @@ public class Plant {
 
         }
     }
-
 
 }
