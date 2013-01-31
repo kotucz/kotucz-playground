@@ -11,25 +11,28 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import kotucz.village.plants.genetics.Genome;
 
 /**
  * @author Kotuc
  */
-public class Plant {
+public class Plant implements BeingPlant {
 
     final Node node = new Node();
-
     final List<Stem> stems = new ArrayList<Stem>();
     private final Material mat;
     private final PhysicsSpace physicsSpace;
-
+    private final List<Stem> growingTips = new LinkedList<Stem>();
+    private Stem activeStem;
+    private Genome genome = Genome.testGenome1();
+    
     static final boolean JOINTS_ENABLED = false;
 
 
     float off = -1;
     int next = 1;
-
 
     public Plant(Material mat, PhysicsSpace physicsSpace, Vector3f origin) {
         this.mat = mat;
@@ -62,6 +65,13 @@ public class Plant {
         if (JOINTS_ENABLED) {
             jointC(leg1, leg2);
         }
+        
+        
+        growingTips.add(leg2);
+        leg2.setGenomePosition(0);
+
+
+
 
 
 //        Stem legx = new Stem(transform, 2, mat);
@@ -83,7 +93,6 @@ public class Plant {
 //        node.attachChild(leg5.getSpatial());
 
         {
-
 //            leg1.getPhysics().setSleepingThresholds(0, 0);
 //
 //
@@ -92,7 +101,6 @@ public class Plant {
 ////            hinge.enableMotor(true, 1, 0.1f);
 //            hinge.setLimit(-0.1f, 0.1f);
 //            physicsSpace.add(hinge);
-
         }
 
         {
@@ -109,7 +117,6 @@ public class Plant {
     public Node getNode() {
         return node;
     }
-
 
     void control(float tpf) {
 
@@ -141,14 +148,27 @@ public class Plant {
 
     private void grow() {
 //        Stem lastStem = stems.get(stems.size() - 1);
-        Stem lastStem = stems.get(next);
+//        Stem lastStem = stems.get(next);
 
-        Stem stem1 = growBranch(lastStem, new Vector3f(0.00001f, 0.0f, 0));
-        if (JOINTS_ENABLED) {
-            jointC(lastStem, stem1);
-        }
+//        Stem stem1 = growBranch(lastStem, new Vector3f(0.00001f, 0.0f, 0));
+//        if (JOINTS_ENABLED) {
+//            jointC(lastStem, stem1);
+//        }
 //        Stem stem1 = growBranch(lastStem, new Vector3f(0.2f, 0.2f, 1));
 //        growBranch(lastStem, new Vector3f(-0.2f, -0.2f, -1));
+
+        
+        
+        if (!growingTips.isEmpty()) {
+            System.out.println("growing");
+            activeStem = growingTips.get(0);
+            genome.performInstruction(activeStem.getGenomePosition(), this);
+            
+            growingTips.remove(activeStem);
+        } else {
+            System.out.println("Plant is fully grown!");
+        }
+
     }
 
     private Stem growBranch(Stem lastStem, Vector3f localVector) {
@@ -163,7 +183,6 @@ public class Plant {
         physicsSpace.add(newStem.getPhysics());
         return newStem;
     }
-
 
     void jointC(Stem leg1, Stem leg2) {
         {
@@ -199,4 +218,14 @@ public class Plant {
         }
     }
 
+    public void grow(StemType stemType, float pan, float tilt, int positionOfInstruction) {
+        System.out.println("growing new stem");
+        
+        Stem newStem = growBranch(activeStem, Vector3f.ZERO);
+        jointC(activeStem, newStem);
+
+        newStem.setGenomePosition(positionOfInstruction);
+        growingTips.add(newStem);
+
+    }
 }
