@@ -218,10 +218,10 @@ public class Plant implements BeingPlant {
         }
     }
 
-    public void grow(StemType stemType, float pan, float tilt, int positionOfInstruction) {
+    public void grow(StemType stemType, float pan, float tilt, float twist, int positionOfInstruction) {
         System.out.println("growing new stem");
         
-        Stem newStem = growBranch(activeStem, Vector3f.ZERO);
+        Stem newStem = growBranch(activeStem, new Vector3f(pan, tilt, twist));
         jointC(activeStem, newStem);
 
         newStem.setGenomePosition(positionOfInstruction);
