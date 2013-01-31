@@ -56,7 +56,7 @@ public class PlantsTest extends MyGame {
 //            rootNode.attachChild(spider.getNode());
 
 
-            Plant tree = new Plant(modeler.matPipes, getPhysicsSpace(), new Vector3f(5, 5, 0));
+            Plant tree = new Plant(modeler.matPipes, getPhysicsSpace(), new Vector3f(6, 6, 2));
             rootNode.attachChild(tree.getNode());
             trees.add(tree);
 
