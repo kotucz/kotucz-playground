@@ -1,9 +1,9 @@
 package kotucz.village.plants;
 
-import com.bulletphysics.dynamics.constraintsolver.ConeTwistConstraint;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.joints.ConeJoint;
 import com.jme3.bullet.joints.HingeJoint;
+import com.jme3.bullet.joints.SixDofJoint;
 import com.jme3.material.Material;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Transform;
@@ -20,6 +20,7 @@ import kotucz.village.plants.genetics.Genome;
  */
 public class Plant implements BeingPlant {
 
+    public static final float MASS = 1f;
     final Node node = new Node();
     final List<Stem> stems = new ArrayList<Stem>();
     private final Material mat;
@@ -28,7 +29,7 @@ public class Plant implements BeingPlant {
     private Stem activeStem;
     private Genome genome = Genome.testGenome1();
     
-    static final boolean JOINTS_ENABLED = false;
+    static final boolean JOINTS_ENABLED = true;
 
 
     float off = -1;
@@ -40,7 +41,7 @@ public class Plant implements BeingPlant {
 
         Transform transform = new Transform();
         transform.setTranslation(origin);
-        transform.setRotation(new Quaternion().fromAngleAxis((float) Math.PI * 0.5f, new Vector3f(0, 1, 0)));
+//        transform.setRotation(new Quaternion().fromAngleAxis((float) Math.PI * 0.5f, new Vector3f(0, 1, 0)));
 
 //        Stem leg1 = new Stem(origin.add(new Vector3f(0, 0, 0)), origin.add(new Vector3f(0, 0, 1)), mat);
         Stem leg1 = new Stem(transform, 1, mat);
@@ -54,7 +55,7 @@ public class Plant implements BeingPlant {
 //        Stem leg2 = new Stem(origin.add(new Vector3f(0, 0, 1)), origin.add(new Vector3f(0, 0, 2)), mat);
         Stem leg2 = leg1.extend(new Vector3f());
         if (JOINTS_ENABLED) {
-            leg2.getPhysics().setMass(1); // dynamic
+            leg2.getPhysics().setMass(MASS); // dynamic
         } else {
             leg2.getPhysics().setMass(0); // static
         }
@@ -63,7 +64,7 @@ public class Plant implements BeingPlant {
         physicsSpace.add(leg2.getPhysics());
 
         if (JOINTS_ENABLED) {
-            jointC(leg1, leg2);
+            joint(leg1, leg2, new Vector3f());
         }
         
         
@@ -174,14 +175,48 @@ public class Plant implements BeingPlant {
     private Stem growBranch(Stem lastStem, Vector3f localVector) {
         Stem newStem = lastStem.extend(localVector);
         if (JOINTS_ENABLED) {
-            newStem.getPhysics().setMass(1);
+            newStem.getPhysics().setMass(MASS);
         } else {
             newStem.getPhysics().setMass(0); // static
         }
         node.attachChild(newStem.getSpatial());
         stems.add(newStem);
         physicsSpace.add(newStem.getPhysics());
+
+        if (JOINTS_ENABLED) {
+            joint(lastStem, newStem, localVector);
+        }
+
         return newStem;
+    }
+
+    void joint(Stem leg1, Stem leg2, Vector3f localVector) {
+         joint6dof(leg1, leg2, localVector);
+//         jointC(leg1, leg2);
+    }
+
+    void joint6dof(Stem leg1, Stem leg2, Vector3f localVector) {
+        {
+
+            leg1.getPhysics().setSleepingThresholds(0, 0);
+
+//            HingeJoint joint = new HingeJoint(leg1.getPhysics(), leg2.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, -0.5f), Vector3f.UNIT_Y, Vector3f.UNIT_Y);
+            SixDofJoint joint = new SixDofJoint(leg1.getPhysics(), leg2.getPhysics(), new Vector3f(0, 0, 0.5f), new Vector3f(0f, 0, -0.5f), true);
+            joint.setCollisionBetweenLinkedBodys(false);
+//            joint.setAngularLowerLimit(new Vector3f(1f, -0.1f, 0.1f));
+//            joint.setAngularUpperLimit(new Vector3f(1f, 0.1f, 0.1f));
+            joint.setAngularLowerLimit(localVector);
+            joint.setAngularUpperLimit(localVector);
+
+//            joint.setLinearLowerLimit(new Vector3f(-0.10f, -0.1f, 0.1f));
+//            joint.setLinearUpperLimit(new Vector3f(0.1f, 0.1f, 0.1f));
+//            joint.enableMotor(true, 1, 0.1f);
+//            joint.setLimit(-0.01f, 0.01f);
+//            joint.setLimit(10.1f, 10.1f, 10.1f);
+//            ((ConeTwistConstraint)joint.getObjectId()).setLimit(0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.9f);
+            physicsSpace.add(joint);
+
+        }
     }
 
     void jointC(Stem leg1, Stem leg2) {
