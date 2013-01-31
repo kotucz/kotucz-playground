@@ -10,6 +10,7 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Cylinder;
+import java.util.Arrays;
 import kotucz.village.common.Entities;
 
 /**
@@ -233,6 +234,7 @@ public class Stem implements BeingStem {
 
     
     int genomePosition;
+    int[] register = new int[5];
     
     public void setGenomePosition(int position) {
         genomePosition = position;
@@ -240,6 +242,26 @@ public class Stem implements BeingStem {
 
     public int getGenomePosition() {
         return genomePosition;
+    }
+
+    public void addToRegister(int registerNumber, int value) {
+        register[registerNumber] += value;
+    }
+
+    public void subFromRegister(int registerNumber, int value) {
+        addToRegister(registerNumber, -value);
+    }
+
+    public int getRegisterValue(int registerNumber) {
+        return register[registerNumber];
+    }
+    
+    public int[] getRegister() {
+        return Arrays.copyOf(register, register.length);
+    }
+    
+    public void setRegister(int[] register) {
+        this.register = register;
     }
 
 

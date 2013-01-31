@@ -22,4 +22,25 @@ public interface BeingStem {
      */
     public int getGenomePosition();
     
+    /**
+     * Adds to the local register.
+     * @param registerNumber
+     * @param value 
+     */
+    public void addToRegister(int registerNumber, int value); 
+    
+    /**
+     * Subtracts from the local register.
+     * @param registerNumber
+     * @param value 
+     */
+    public void subFromRegister(int registerNumber, int value);
+    
+    /**
+     * Gets the value form local register.
+     * @param registerNumber
+     * @return 
+     */
+    public int getRegisterValue(int registerNumber);
+    
 }
