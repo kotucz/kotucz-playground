@@ -120,7 +120,7 @@ public class Plant implements BeingPlant {
 
     void control(float tpf) {
 
-        off += tpf;
+        off += tpf * 3.0;
 
 
 //        System.out.println("Plant " + off);
@@ -162,7 +162,7 @@ public class Plant implements BeingPlant {
         if (!growingTips.isEmpty()) {
             System.out.println("growing");
             activeStem = growingTips.get(0);
-            genome.performInstruction(activeStem.getGenomePosition(), this);
+            genome.performInstruction(activeStem.getGenomePosition(), this, activeStem);
             
             growingTips.remove(activeStem);
         } else {
@@ -223,9 +223,11 @@ public class Plant implements BeingPlant {
         
         Stem newStem = growBranch(activeStem, new Vector3f(pan, tilt, twist));
         jointC(activeStem, newStem);
-
-        newStem.setGenomePosition(positionOfInstruction);
         growingTips.add(newStem);
+        
+        
+        newStem.setGenomePosition(positionOfInstruction);
+        newStem.setRegister(activeStem.getRegister());
 
     }
 }

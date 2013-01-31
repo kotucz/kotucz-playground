@@ -11,7 +11,10 @@ package kotucz.village.plants.genetics;
 public enum InstructionType {
     NOTHING(0), GROW(1),
     
-    FORK(11);
+    FORK(11), //forks program, 
+    ADD(12), //adds value to the register
+    SUB(13), //subtracts value from the register 
+    JUMP_IF_POSITIVE(14); //reads given register and jumps by x if its value is positive, continues else.
     
     final int num;
     
