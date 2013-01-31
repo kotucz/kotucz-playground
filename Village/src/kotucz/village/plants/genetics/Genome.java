@@ -63,15 +63,19 @@ public class Genome {
     private void grow(int position, BeingPlant plant) {
         int numberOfStems = parseInstruction(position);
         StemType stemType = StemType.getStemType(parseInstruction(position + 1));
-        int panAddition = parseInstruction(position + 2);
-        int tilt = parseInstruction(position + 3);
         
-        int pan = 0;
+        double tilt = Math.toRadians(parseInstruction(position + 2));
+        double panAddition = Math.toRadians(parseInstruction(position + 3));
+        double twist = Math.toRadians(parseInstruction(position + 4));
+        
+        double pan = -panAddition * (numberOfStems + 1.0) / 2.0;
+        
+        System.out.println("pan: " + pan);
         
         for (int i = 0; i < numberOfStems; i++) {
             pan += panAddition;
             
-            plant.grow(stemType, pan, tilt, position + 4);  
+            plant.grow(stemType, (float)pan, (float)tilt, (float)twist, position + 5);  
         }
     }
     
@@ -89,13 +93,23 @@ public class Genome {
         Genome genome = new Genome();
         
         genome.genes[0] = InstructionType.GROW.getNumber();
-        genome.genes[1] = 1;
+        genome.genes[1] = 2;
         genome.genes[2] = 1;
-        genome.genes[3] = 1;
-        genome.genes[4] = 1;
-        genome.genes[5] = InstructionType.FORK.getNumber();
-        genome.genes[6] = -7;
-        genome.genes[7] = 0;
+        genome.genes[3] = 0;
+        genome.genes[4] = 50;
+        genome.genes[5] = 50;
+        genome.genes[6] = InstructionType.GROW.getNumber();
+        genome.genes[7] = 2;
+        genome.genes[8] = 1;
+        genome.genes[9] = 0;
+        genome.genes[10] = 50;
+        genome.genes[11] = 50;
+        genome.genes[12] = InstructionType.GROW.getNumber();
+        genome.genes[13] = 2;
+        genome.genes[14] = 1;
+        genome.genes[15] = 0;
+        genome.genes[16] = 50;
+        genome.genes[17] = 50;
         
        // genome.genes[1] = 1;
         
