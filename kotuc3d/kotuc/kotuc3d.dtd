@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='us-ascii'?>
+
+<!--
+    DTD for kotuc 3d system.
+-->
+
+<!ELEMENT unitlist (unit+)>
+<!ATTLIST unitlist 
+            name    CDATA    #IMPLIED
+            parts   CDATA    #REQUIRED
+>
+<!ELEMENT unit (v*, p*)>
+<!ATTLIST unit 
+            name	CDATA	#IMPLIED
+            verts	CDATA	#REQUIRED
+            pols	CDATA	#REQUIRED
+>
+
+<!ELEMENT v EMPTY>
+<!ATTLIST v 
+            id	CDATA	#IMPLIED	
+            x	CDATA	#REQUIRED
+            y	CDATA	#REQUIRED
+            z	CDATA	#REQUIRED
+>
+
+<!ELEMENT p EMPTY>
+<!ATTLIST p 
+            color	CDATA	#IMPLIED
+            v1		CDATA	#REQUIRED
+            v2		CDATA	#REQUIRED
+            v3		CDATA	#REQUIRED
+>
+
+

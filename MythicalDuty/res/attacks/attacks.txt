@@ -1,0 +1,16 @@
+attack 1
+name Fireball
+type flush
+flyimage firearrowback 1
+bangimage firebang 3
+
+attack 2
+name Heal
+type heal
+image healshower 2
+
+attack 3
+name Spit
+type flush
+flyimage spit 1
+bangimage spitbang 3

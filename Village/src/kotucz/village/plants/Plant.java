@@ -1,5 +1,7 @@
 package kotucz.village.plants;
 
+import com.bulletphysics.dynamics.constraintsolver.Generic6DofConstraint;
+import com.bulletphysics.dynamics.constraintsolver.RotationalLimitMotor;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.joints.ConeJoint;
 import com.jme3.bullet.joints.HingeJoint;
@@ -207,6 +209,13 @@ public class Plant implements BeingPlant {
 //            joint.setAngularUpperLimit(new Vector3f(1f, 0.1f, 0.1f));
             joint.setAngularLowerLimit(localVector);
             joint.setAngularUpperLimit(localVector);
+            for (int i = 0; i < 3; i++) {
+                RotationalLimitMotor rotationalLimitMotor = ((Generic6DofConstraint) joint.getObjectId()).getRotationalLimitMotor(i);
+                System.out.println("motlr "+rotationalLimitMotor);
+                rotationalLimitMotor.limitSoftness = 1;
+                rotationalLimitMotor.maxMotorForce = 100;
+                rotationalLimitMotor.maxLimitForce = 10000;
+            }
 
 //            joint.setLinearLowerLimit(new Vector3f(-0.10f, -0.1f, 0.1f));
 //            joint.setLinearUpperLimit(new Vector3f(0.1f, 0.1f, 0.1f));

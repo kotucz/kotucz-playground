@@ -1,0 +1,11 @@
+figure 1
+name Gianna
+side good
+image heroback 2
+attack 1
+attack 2
+figure 2
+name Nightmare
+side evil
+image nightmarefront 2
+attack 1

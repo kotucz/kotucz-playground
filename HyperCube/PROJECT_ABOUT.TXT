@@ -1,0 +1,2 @@
+Game with simulating timeloops
+Parallel entities may be influenced, by the player even if they were himself before
