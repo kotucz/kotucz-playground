@@ -1,0 +1,27 @@
+package spygame;
+
+import com.nokia.mid.ui.*;
+import javax.microedition.lcdui.*;
+
+public class NokiaCanvas extends FullCanvas implements CanvasPainter {
+
+  Painter painter;
+
+  public NokiaCanvas() {
+//    try {
+//      painter = (Painter)(Class.forName("Painter")).newInstance();
+//      painter.setCanvas(this);
+//    } catch (Exception e) { }
+  }
+
+  public void paint(Graphics g) {
+    painter.paint(g);
+  }
+
+  public void setPainter(Painter painter) {
+    this.painter = painter;
+    painter.setCanvas(this);
+  }
+  
+  
+}

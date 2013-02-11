@@ -1,0 +1,1 @@
+                                                                                                Simple program. Finds closest point to a path created by conected line segments.

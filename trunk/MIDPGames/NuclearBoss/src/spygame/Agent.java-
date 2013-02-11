@@ -1,0 +1,284 @@
+package spygame;
+
+import java.io.*;
+import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.game.*;
+import javax.microedition.midlet.*;
+
+import javax.microedition.media.*;
+import javax.microedition.media.control.ToneControl;
+import spygame.*;
+
+public class Agent extends Entity {
+	
+        static String name = "Omar";
+        
+        static int score;
+	
+        static int lives; 
+	
+	/**
+	 * Agent
+	 *
+	 *
+	 */
+    public Agent() {
+            System.out.println("creating Agent");
+		
+/*		if (level.agent!=null) {
+			System.out.println("there is already one agent");
+//			return;
+		}
+*/		
+//          shotsFired = 0;
+//          shotsHitted = 0;
+                
+            reloadingPeriod = 3;
+
+            spriteImage = Game.createImage("agent");
+
+            sprite = new Sprite(spriteImage, 24, 48);	
+
+//           sprite.setFrameSequence(WALKING_SEQUENCE);
+	
+    }
+
+    static int enemiesKilled = 0;
+    static int shotsFired = 0;
+    static int shotsHitted = 0;
+        
+    boolean onLeftWall = false;
+    boolean onRightWall = false;
+    boolean onLadder = false;
+
+    
+    void keys(int keyState) {
+       boolean UP = (keyState&GameCanvas.UP_PRESSED)!=0, 
+                DOWN = (keyState&GameCanvas.DOWN_PRESSED)!=0,
+                LEFT = (keyState&GameCanvas.LEFT_PRESSED)!=0,
+                RIGHT = (keyState&GameCanvas.RIGHT_PRESSED)!=0,
+                FIRE = (keyState&GameCanvas.FIRE_PRESSED)!=0;
+        
+        onLadder = level.is(getX(), getY(), Level.LADDER);
+//        System.out.println("ladder "+onLadder+" "+level.get(getX(), getY()));        
+        if (UP) {
+		up();
+        } else if (DOWN) {
+		down();
+        } else if (onLadder) {
+            vy = 0;
+        }
+        
+        if (LEFT&&RIGHT) {
+            if (onLeftWall) {
+                vy=-6;
+                vx=8;
+                dir = 1;
+            } else if (onRightWall) {
+                vy=-6;
+                vx=-8;
+                dir = -1;
+            } else if (dir == 1) goRight(); else goLeft();
+        } else if (LEFT) {
+            goLeft();
+        } else if (RIGHT) {
+            goRight();
+        } else if (FIRE) {
+            fire();
+        }
+/*
+        
+        if (DOWN) {
+          if (onFloor) crouching = true;  
+        } 
+        if (UP) {
+            if (onFloor) jump();
+            if (onLeftWall||onRightWall||onLadder) {
+                this.vy=-4;
+            }
+        } 
+        if (RIGHT&&LEFT) {
+            
+        }
+        if (RIGHT) {
+            vx = 4;
+            onLeftWall = false;
+            dir = 1;
+            going = true;
+        } 
+        if (LEFT) {
+            vx = -4;
+            onRightWall = false;
+            dir = -1;
+            going = true;
+        }
+
+        if (FIRE) fire();
+  */      
+    }
+        
+        
+        
+        public void goLeft () {
+		setDirection(-1);
+                if (onLeftWall) vy=-4;
+                onRightWall = false;
+                going = true;
+                this.vx=-4;
+	}
+
+	public void goRight () {
+		setDirection(1);
+                if (onRightWall) vy=-4;
+                onLeftWall = false;
+		going = true;
+                this.vx=4;
+        }
+
+	public void doWork () {
+		super.doWork();
+                    
+ //               System.out.println("x:"+getX()+" y:"+getY());
+//		
+		int w = SpyCanvas.width, h = SpyCanvas.height-32;
+		int x = this.x-w/2+this.vx*5, y = this.y-h/2+this.vy*3;
+		int maxx = level.cell*level.width-w, maxy = level.cell*level.height-h;
+		
+		x = (x<0)?0:x;
+		x = (x>maxx)?maxx:x;
+		y = (y<0)?0:y;
+		y = (y>maxy)?maxy:y;
+		
+		
+		level.layers.setViewWindow(x, y, w, h);
+	}
+
+        
+        public void doMove() {
+		// should never happend because it causes infinite loop 
+                if (!validPos()) {
+                    System.err.println(this + ": invalid pos");
+                    return;
+                }
+		
+		this.x += vx;
+		if (validPos()) {
+                    if (vx!=0) {
+ //                       sprite.nextFrame();
+                        onRightWall = false;
+                        onLeftWall = false;
+                    }
+                   vx=0; 
+		} else {
+                    going = false;
+                    while (!validPos()) {
+			if (vx>0) this.x--; else this.x++;
+                    };
+                    // TODO only at corner
+                    if (level.is(getX()+dir, getuY(), Level.CATCHABLE)) {
+                        if (this.dir==1) onRightWall = true;
+                        if (this.dir==-1) onLeftWall = true;
+                        if (vy>0) vy=0;
+                    }
+                        
+                        
+                    this.vx = dir*4;
+		}
+		
+		this.y += vy;
+		if (validPos()) {
+                    if (!onFloor) vy++;
+                    onFloor = false;
+		} else {
+                    while (!validPos()) {
+			if (vy>0) this.y--; else this.y++;
+                    };
+                    if (vy>0) onFloor = true;
+                    vy = 1;
+                }
+
+
+	} 
+
+        public void up () {
+            if (onLadder||onLeftWall||onRightWall) this.vy=-4;
+            if (onLadder) x=level.cell*getX();
+            jump();
+        }
+        
+        public void down () {
+		if (onFloor) crouching = true;
+                if (onLadder) x=level.cell*getX();
+                onLadder = false;
+                onRightWall = false;
+                onLeftWall = false;
+                vx = 0;
+        }
+        
+	protected void kill () {
+		super.kill();
+		
+		this.lives--;
+		
+		Game.saveGame();
+		
+		if (lives<1) {
+			Alert a = new Alert("Game Over", "you were killed\nTIP: avoid bullets and shot enemies", Game.createImage("kia1"), AlertType.WARNING); 
+			Game.pauseGame();
+                        Game.showHighScoresScreen();	
+		} else {
+/*			Alert a = new Alert(name + " byl zabit v akci",
+				 "máš poslední "+lives+" možnost"+((lives>1)?'i':' '),
+				 Game.createImage("kia1"), AlertType.WARNING); 
+			a.setTimeout(Alert.FOREVER);
+			Game.display.setCurrent(a);
+*/			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException ex) {
+			}
+			Game.continueGame();	
+		} 
+				
+		
+		
+		
+	}
+	
+        int fgoing;
+        
+        void updateSprite() {
+            super.updateSprite();
+            if (crouching) {
+                sprite.setFrame(4);
+                return;
+            }
+            if (going) {
+                sprite.setFrame(fgoing++/2%4);
+                return;
+            }
+            sprite.setFrame(0);
+        }
+        
+	public void paintInfoBar(Graphics g, int w, int h) {
+//		Game.showMessage(""+255*hitpoints/10);
+		g.setColor(0xFFFF0000);
+		g.setFont(Font.getFont(Font.FACE_MONOSPACE, Font.STYLE_BOLD, Font.SIZE_MEDIUM));
+		g.setColor(0xFF5588CC);
+		g.drawString(""+score, w, 0, Graphics.TOP|Graphics.RIGHT);
+
+       		g.setColor(0xFFCC3322);
+		for (int i = 0; i<lives; i++) {
+			g.fillArc(i*12+2, h-14, 10, 10, 0, 360);
+		}
+		g.setColor((255*hitpoints/10)<<8);
+		g.fillRect(w-16, h-16, 16, h);
+		g.setFont(Font.getFont(Font.FACE_MONOSPACE, Font.STYLE_BOLD, Font.SIZE_MEDIUM));
+		g.setColor(0xFFFF8888);
+		g.drawString(""+hitpoints, w, h-16, Graphics.TOP|Graphics.RIGHT);
+
+    }
+
+    static void bonus(int b) {
+	score+=b;
+    }
+}

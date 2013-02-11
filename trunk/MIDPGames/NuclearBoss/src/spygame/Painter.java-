@@ -1,0 +1,88 @@
+package spygame;
+
+import javax.microedition.lcdui.*;
+import java.util.*;
+
+public abstract class Painter implements Runnable {
+
+  private Thread thread;
+    
+  public void showNotify() {
+      thread = new Thread(this);
+      thread.start();
+  }
+  
+  public void hideNotify() {
+      thread = null;
+  }
+  
+  Canvas canvas;
+  
+  public void setCanvas(Canvas canvas) {
+      this.canvas = canvas;
+  }
+
+  public abstract void paint(Graphics g) ;
+
+// frames per second
+  public int FPS = 25;
+  
+// graphics to paint
+  protected Graphics g;
+  
+  public void run() {
+
+    	g = ((CanvasPainter)canvas).getGraphics(); // Of the buffered screen image
+        Thread mythread = Thread.currentThread();
+
+	// Loop handling events
+	while (mythread == thread) {
+	    try { // Start of exception handler
+
+                long run_start = System.currentTimeMillis();
+                // Check user input and update positions if necessary
+                
+                loop();
+                
+                paint(g);
+                
+		if (mythread == thread) {
+		    flushGraphics();
+		}
+        
+            long run_end = System.currentTimeMillis();          
+            int run_slow = (int)(1000/FPS - (run_end - run_start));
+            if (run_slow < 0) run_slow = 0;
+            try { 
+                Thread.sleep(run_slow); 
+            } catch (InterruptedException e) {} 
+	    
+            
+            } catch (Exception e) {
+        	e.printStackTrace();
+        }
+      }
+  }
+
+  public int getKeyStates() {
+      return ((CanvasPainter)canvas).getKeyStates();
+  }
+  
+  public void flushGraphics() {
+
+  }
+  
+  public void loop() {
+      int keyState = getKeyStates();
+  }
+  
+  public void keyPressed (int key) {
+  }
+  
+  public void keyReleased (int key) {
+  }
+  
+  public void keyRepeated (int key) {
+  }
+  
+}

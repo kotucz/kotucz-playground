@@ -1,0 +1,8 @@
+MIDlet-1: Revolt, Revolt.png, Revolt
+MIDlet-Jar-Size: 18544
+MIDlet-Jar-URL: Revolt.jar
+MIDlet-Name: Revolt
+MIDlet-Vendor: Ladislav Týč
+MIDlet-Version: 1.0
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.0

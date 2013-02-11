@@ -1,0 +1,4 @@
+-libraryjars C:\WTK23\lib\mmapi.jar;C:\WTK23\lib\midpapi20.jar;C:\WTK23\lib\wma11.jar;C:\WTK23\lib\cldcapi10.jar
+-injars C:\WTK23\apps\Sudoku\bin\Sudoku.jar
+-outjar C:\DOCUME~1\PC\LOCALS~1\Temp\Sudoku.jar
+-keep public class * extends javax.microedition.midlet.MIDlet 
