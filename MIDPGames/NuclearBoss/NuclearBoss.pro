@@ -1,0 +1,4 @@
+-libraryjars C:\WTK23\lib\jsr082.jar;C:\WTK23\lib\midpapi20.jar;C:\WTK23\lib\wma11.jar;C:\WTK23\lib\cldcapi10.jar
+-injars C:\WTK23\apps\NuclearBoss\bin\NuclearBoss.jar
+-outjar C:\DOCUME~1\PC\LOCALS~1\Temp\NuclearBoss.jar
+-keep public class * extends javax.microedition.midlet.MIDlet 

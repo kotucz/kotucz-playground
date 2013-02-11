@@ -1,0 +1,39 @@
+package spygame;
+
+import javax.microedition.lcdui.*;
+
+public class MIDP1Canvas extends Canvas implements CanvasPainter {
+
+  Painter painter;
+
+  public  MIDP1Canvas() {
+//    try {
+//      painter = (Painter)(Class.forName("Painter")).newInstance();
+//   } catch (Exception e) { }
+//     setFullScreenMode(true);
+  }
+
+  public void paint(Graphics g) {
+    painter.paint(g);
+  }
+  
+  public void setPainter(Painter painter) {
+    this.painter = painter;
+    painter.setCanvas(this);
+  }
+  
+  public void flushGraphics() {
+      // TODO flush
+  }
+  
+  public Graphics getGraphics() {
+      return getGraphics();
+  }
+  
+  public int getKeyStates() {
+      // TODO key states
+      return 0;
+  }
+  
+  
+}

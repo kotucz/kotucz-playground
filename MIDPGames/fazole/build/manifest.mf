@@ -1,0 +1,6 @@
+MIDlet-1: fazülki,icon.png,Beans
+MIDlet-Vendor: Vendor
+MIDlet-Version: 1.0
+MIDlet-Name: fazole
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-1.0

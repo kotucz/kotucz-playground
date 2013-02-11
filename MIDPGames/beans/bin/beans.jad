@@ -1,0 +1,8 @@
+MIDlet-1: beans, beans.png, Beans
+MIDlet-Jar-Size: 6531
+MIDlet-Jar-URL: beans.jar
+MIDlet-Name: beans
+MIDlet-Vendor: Unknown
+MIDlet-Version: 1.0
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-1.0

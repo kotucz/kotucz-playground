@@ -1,0 +1,91 @@
+# If this log is to be used for incremental obfuscation / patch generation, 
+# add any '.class', '.method', '.field' and '.attribute' restrictions here:
+
+
+#-DO-NOT-EDIT-BELOW-THIS-LINE------------------DO-NOT-EDIT-BELOW-THIS-LINE--
+#
+# RetroGuard Bytecode Obfuscator, v2.0.4, a product of Retrologic Systems - www.retrologic.com
+#
+# Logfile created on Sun Nov 20 20:23:31 CET 2005
+#
+# Jar file to be obfuscated:           Sudoku.jar
+# Target Jar file for obfuscated code: AfterObf.jar
+# RetroGuard Script file used:         script.rgs
+#
+#
+# Memory in use after class data structure built: 288216 bytes
+# Total memory available                        : 2031616 bytes
+#
+#
+# Obfuscated name overloading frequency:
+#  'a'   	used 9 times	(21%)
+#  'if'   	used 7 times	(17%)
+#  'for'   	used 5 times	(12%)
+#  'do'   	used 5 times	(12%)
+#  'new'   	used 4 times	(9%)
+#  'int'   	used 4 times	(9%)
+#  'byte'   	used 2 times	(4%)
+#  'case'   	used 2 times	(4%)
+#  'try'   	used 2 times	(4%)
+#  'char'   	used 1 times	(2%)
+#  Other names (each used in <1% of mappings) used a total of 0 times (6%)
+#
+#
+# Names reserved from obfuscation:
+#
+.class DeepSolver
+#
+#
+# Obfuscated name mappings (some of these may be unchanged due to polymorphism constraints):
+#
+.class_map Sudoku a
+.field_map Sudoku/curY a
+.field_map Sudoku/curX if
+.field_map Sudoku/plane do
+.field_map Sudoku/sets for
+.field_map Sudoku/display int
+.field_map Sudoku/hintEnabled new
+.field_map Sudoku/PLANE3 try
+.field_map Sudoku/PLANE1 byte
+.field_map Sudoku/solver case
+.method_map Sudoku/paint (Ljavax/microedition/lcdui/Graphics;)V paint
+.method_map Sudoku/allowed (III)Z a
+.method_map Sudoku/set (Ljava/lang/String;)V a
+.method_map Sudoku/newPlane ()V a
+.method_map Sudoku/getMask (II)I a
+.method_map Sudoku/setCommandListener (Ljavax/microedition/lcdui/CommandListener;)V setCommandListener
+.method_map Sudoku/allowedCount (II)I if
+.method_map Sudoku/isDead ()Z if
+.method_map Sudoku/load (I)V a
+.method_map Sudoku/set (III)V if
+.method_map Sudoku/getSquareMask (II)I do
+.method_map Sudoku/load (Ljava/lang/String;)V if
+.method_map Sudoku/getHorizontalMask (I)I if
+.method_map Sudoku/get (II)I for
+.method_map Sudoku/init ()V do
+.method_map Sudoku/readNumber ()B for
+.method_map Sudoku/allowed (II)Z int
+.method_map Sudoku/extend (II)Ljava/util/Stack; new
+.method_map Sudoku/solved ()Z int
+.method_map Sudoku/keyPressed (I)V keyPressed
+.method_map Sudoku/destroy ()V new
+.method_map Sudoku/getVerticalMask (I)I do
+.method_map Sudoku/pointerPressed (II)V pointerPressed
+.method_map Sudoku/keyRepeated (I)V keyRepeated
+.method_map Sudoku/save (I)V for
+.field_map DeepSolver/solveCommand a
+.field_map DeepSolver/loadCommand if
+.field_map DeepSolver/newCommand do
+.field_map DeepSolver/saveCommand for
+.field_map DeepSolver/display int
+.field_map DeepSolver/backCommand new
+.field_map DeepSolver/helpText try
+.field_map DeepSolver/helpCommand byte
+.field_map DeepSolver/stack case
+.field_map DeepSolver/helpScreen char
+.method_map DeepSolver/commandAction (Ljavax/microedition/lcdui/Command;Ljavax/microedition/lcdui/Displayable;)V commandAction
+.method_map DeepSolver/showHelp ()V a
+.method_map DeepSolver/pauseApp ()V pauseApp
+.method_map DeepSolver/run ()V run
+.method_map DeepSolver/destroyApp (Z)V destroyApp
+.method_map DeepSolver/startApp ()V startApp

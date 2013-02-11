@@ -1,0 +1,4 @@
+-libraryjars C:\WTK22\lib\jsr082.jar;C:\WTK22\lib\jsr184.jar;C:\WTK22\lib\mmapi.jar;C:\WTK22\lib\midpapi20.jar;C:\WTK22\lib\wma11.jar;C:\WTK22\lib\cldcapi11.jar
+-injars C:\WTK22\apps\revolt\bin\revolt.jar
+-outjar C:\DOCUME~1\LADISL~1\LOCALS~1\Temp\revolt.jar
+-keep public class * extends javax.microedition.midlet.MIDlet 

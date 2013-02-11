@@ -1,0 +1,12 @@
+jazyk: cesky
+nova hra
+rekordy
+nastaveni
+ovladani
+*
+konec
+pokracovat
+vice hracu
+zpet
+*
+*
