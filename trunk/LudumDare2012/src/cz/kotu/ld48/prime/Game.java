@@ -325,7 +325,7 @@ public class Game {
 
     synchronized void delta(final double dt) {
 
-//        System.out.println("delta " + dt);
+        System.out.println("delta " + dt);
         if (state == State.START) {
 
             if (startanimtime > START_DUR_T) {

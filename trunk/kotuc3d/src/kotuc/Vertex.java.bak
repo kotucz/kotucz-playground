@@ -1,0 +1,49 @@
+package kotuc;
+
+public class Vertex {
+	public static int focusDistance = 320;
+	
+	public static int camX=-50;
+	public static int camY=50;
+	public static int camZ=-500;	
+	
+	public double x = 0;
+	public double y = 0;
+	public double z = 0;	
+	
+	public Vertex (int x, int y, int z) {
+		super();
+		
+		this.x=x;
+		this.y=y;
+		this.z=z;
+	};
+	/**
+	 * Method getX2D
+	 *
+	 *
+	 * @return
+	 *
+	 */
+	public int getX2d() {
+		
+		if (this.z-camZ>0) return (int)(160+focusDistance*(this.x-camX)/(this.z-camZ)); 
+		return (int)(this.x);
+	}
+
+	/**
+	 * Method getY2D
+	 *
+	 *
+	 * @return
+	 *
+	 */
+	public int getY2d() {
+		if (this.z-camZ>0) return (int)(120+focusDistance*(this.y-camY)/(this.z-camZ));
+		return (int)(this.y);
+	}
+	
+	public Vertex rotX(double angle) {
+				
+	}	
+}

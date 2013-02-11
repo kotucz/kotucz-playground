@@ -1,0 +1,15 @@
+New game
+Save
+Load
+Help
+Exit
+pause
+back
+Settings
+Language
+Mythical Duty
+empty
+Yes
+No
+Loading...
+Please wait

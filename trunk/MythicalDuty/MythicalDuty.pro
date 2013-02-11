@@ -1,0 +1,4 @@
+-libraryjars C:\WTK23\lib\midpapi10.jar;C:\WTK23\lib\cldcapi10.jar
+-injars C:\WTK23\apps\MythicalDuty\bin\MythicalDuty.jar
+-outjar C:\DOCUME~1\PC\LOCALS~1\Temp\MythicalDuty.jar
+-keep public class * extends javax.microedition.midlet.MIDlet 
