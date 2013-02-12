@@ -7,15 +7,17 @@ import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import javax.media.opengl.GL2;
-import org.jbox2d.collision.CircleShape;
-import org.jbox2d.collision.PolygonShape;
-import org.jbox2d.collision.Shape;
-import org.jbox2d.collision.ShapeType;
+
+import org.jbox2d.collision.shapes.CircleShape;
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.collision.shapes.Shape;
+import org.jbox2d.collision.shapes.ShapeType;
 import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Settings;
+import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.common.XForm;
 import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.Fixture;
 
 /**
  *
@@ -52,19 +54,20 @@ public class Entity {
 
     void draw(GL2 gl) {
 
-        XForm xf = body.getXForm();
-        for (Shape s = body.getShapeList(); s != null; s = s.getNext()) {
+        Transform xf = body.getTransform();
+        for (Fixture s = body.getFixtureList(); s != null; s = s.getNext()) {
             if (s.isSensor()) {
                 continue;
             }
 //            Color3f color
-            if (body.isStatic()) {
-                drawShape(gl, s, xf, new Color3f(0.5f, 0.9f, 0.5f));
-            } else if (body.isSleeping()) {
-                drawShape(gl, s, xf, new Color3f(0.5f, 0.5f, 0.9f));
-            } else {
+            // TODO colors
+//            if (body.isStatic()) {
+//                drawShape(gl, s, xf, new Color3f(0.5f, 0.9f, 0.5f));
+//            } else if (body.isSleeping()) {
+//                drawShape(gl, s, xf, new Color3f(0.5f, 0.5f, 0.9f));
+//            } else {
                 drawShape(gl, s, xf, new Color3f(0.9f, 0.9f, 0.9f));
-            }
+//            }
 
 
         }
@@ -72,14 +75,15 @@ public class Entity {
     }
 
     /** For internal use */
-    public void drawShape(GL2 gl, Shape shape, XForm xf, Color3f color) {
+    public void drawShape(GL2 gl, Fixture shape, Transform xf, Color3f color) {
 //        Color3f coreColor = new Color3f(255f * 0.9f, 255f * 0.6f, 255f * 0.6f);
 
-        if (shape.getType() == ShapeType.CIRCLE_SHAPE) {
-            CircleShape circle = (CircleShape) shape;
+        if (shape.getType() == ShapeType.CIRCLE) {
+            CircleShape circle = (CircleShape) shape.getShape();
 
-            Vec2 center = XForm.mul(xf, circle.getLocalPosition());
-            float radius = circle.getRadius();
+//            / TODO Vec2 center = Transform.mul(xf, shape.getLocalPosition());
+            Vec2 center = Transform.mul(xf, shape.getBody().getLocalCenter());
+            float radius = circle.m_radius;
             Vec2 axis = xf.R.col1;
 
             drawCircle(gl, center, radius, color);
@@ -90,8 +94,8 @@ public class Entity {
 //    				m_debugDraw.drawCircle(center, radius - Settings.toiSlop, coreColor);
 //    			}
 
-        } else if (shape.getType() == ShapeType.POLYGON_SHAPE) {
-            PolygonShape poly = (PolygonShape) shape;
+        } else if (shape.getType() == ShapeType.POLYGON) {
+            PolygonShape poly = (PolygonShape) shape.getShape();
             int vertexCount = poly.getVertexCount();
             Vec2[] localVertices = poly.getVertices();
 
@@ -99,7 +103,7 @@ public class Entity {
             Vec2[] vertices = new Vec2[vertexCount];
 
             for (int i = 0; i < vertexCount; ++i) {
-                vertices[i] = XForm.mul(xf, localVertices[i]);
+                vertices[i] = Transform.mul(xf, localVertices[i]);
             }
 
 
@@ -153,8 +157,8 @@ public class Entity {
     }
 
     void paint(Graphics g) {
-        XForm xf = body.getXForm();
-        for (Shape s = body.getShapeList(); s != null; s = s.getNext()) {
+        Transform xf = body.getTransform();
+        for (Fixture s = body.getFixtureList(); s != null; s = s.getNext()) {
             paintShape(g, s, xf);
         }
     }
@@ -169,13 +173,14 @@ public class Entity {
         return new Point((int) (vec.x * scale) + xoff, (int) (-vec.y * scale) + yoff);
     }
 
-    private void paintShape(Graphics g, Shape shape, XForm xf) {
+    private void paintShape(Graphics g, Fixture shape, Transform xf) {
         Graphics2D g2 = (Graphics2D) g;
         g.setColor(color);
-        if (shape.getType() == ShapeType.CIRCLE_SHAPE) {
-            CircleShape circles = (CircleShape) shape;
+        if (shape.getType() == ShapeType.CIRCLE) {
+            CircleShape circles = (CircleShape) shape.getShape();
 
-            Vec2 cent = XForm.mul(xf, circles.getLocalPosition());
+//          TODO  Vec2 cent = Transform.mul(xf, circles.getLocalPosition());
+            Vec2 cent = Transform.mul(xf, shape.getBody().getLocalCenter());
 
             {
 //                Point a = toPoint(cent.add(xf.R.col1.mul(circles.getRadius())));
@@ -190,7 +195,7 @@ public class Entity {
 //                g.drawLine(c.x, c.y, a.x, a.y);
             }
             {
-                double r = circles.getRadius();
+                double r = circles.m_radius;
                 Ellipse2D.Double circle = new Ellipse2D.Double(cent.x - r, cent.y - r, 2 * r, 2 * r);
 
                 g2.fill(circle);
@@ -204,8 +209,8 @@ public class Entity {
 //    				m_debugDraw.drawCircle(center, radius - Settings.toiSlop, coreColor);
 //    			}
 
-        } else if (shape.getType() == ShapeType.POLYGON_SHAPE) {
-            PolygonShape poly = (PolygonShape) shape;
+        } else if (shape.getType() == ShapeType.POLYGON) {
+            PolygonShape poly = (PolygonShape) shape.getShape();
             int vertexCount = poly.getVertexCount();
             Vec2[] localVertices = poly.getVertices();
             {
@@ -229,11 +234,11 @@ public class Entity {
 
                 GeneralPath polygon = new GeneralPath();
 
-                Vec2 mul0 = XForm.mul(xf, localVertices[0]);
+                Vec2 mul0 = Transform.mul(xf, localVertices[0]);
                 polygon.moveTo(mul0.x, mul0.y);
 
                 for (int i = 1; i < vertexCount; ++i) {
-                    Vec2 mul = XForm.mul(xf, localVertices[i]);
+                    Vec2 mul = Transform.mul(xf, localVertices[i]);
                     polygon.lineTo(mul.x, mul.y);
                 }
 

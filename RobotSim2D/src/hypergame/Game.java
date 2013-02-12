@@ -1,14 +1,17 @@
 package hypergame;
 
 import com.jogamp.opengl.util.Animator;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.Stroke;
+import org.jbox2d.collision.AABB;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.World;
+
+import javax.media.opengl.GL2;
+import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLProfile;
+import javax.media.opengl.awt.GLCanvas;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
@@ -16,15 +19,6 @@ import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
 import java.util.List;
-import javax.media.opengl.GL2;
-import javax.media.opengl.GLCapabilities;
-import javax.media.opengl.GLProfile;
-import javax.media.opengl.awt.GLCanvas;
-import org.jbox2d.collision.AABB;
-import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.World;
 
 /**
  *
@@ -41,7 +35,10 @@ public class Game {
         AABB aabb = new AABB(new Vec2(-10, -10), new Vec2(10, 10));
 //        Vec2 grav = new Vec2(0, -10);
         Vec2 grav = new Vec2(0, 0);
-        this.physWorld = new World(aabb, grav, true);
+//        this.physWorld = new World(aabb, grav, true);
+//        this.physWorld = new World(grav, false);
+        this.physWorld = new World(grav, true);
+//        physWorld.
 
         Table table = new Table(this);
 //        table.create();
@@ -131,7 +128,9 @@ public class Game {
         for (Entity entity : entities) {
             entity.update(0.01f);
         }
-        physWorld.step(0.01f, 10);
+        entities.get(67).body.m_force.addLocal(0.0f, 1f);
+        physWorld.step(0.01f, 10, 10);
+//        entities.get(67).body.m_xf.position.addLocal(0.0f, 0.01f);
     }
 
     void shake(float vx, float vy) {

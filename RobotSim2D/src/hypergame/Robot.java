@@ -1,22 +1,18 @@
 package hypergame;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
-import java.awt.geom.Line2D;
-import org.jbox2d.collision.Distance;
-import org.jbox2d.collision.PolygonDef;
-import org.jbox2d.collision.Shape;
+import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
-import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.Joint;
 import robot.input.KeyboardDriving;
 import robot.output.DiffWheels;
 import robot.output.Motor;
+
+import java.awt.*;
+import java.awt.geom.Line2D;
 
 /**
  *
@@ -85,26 +81,34 @@ public class Robot extends Entity implements DiffWheels {
         body.setBullet(true);
 
         {
-            PolygonDef sd = new PolygonDef();
-            sd.setAsBox(0.15f, 0.10f);
+            PolygonShape ps = new PolygonShape();
+            ps.setAsBox(0.15f, 0.10f);
 
 //        sd.radius = 0.1f;
+            FixtureDef sd = new FixtureDef();
+            sd.shape = ps;
             sd.density = 100f; // like watter
             sd.friction = 0.5f;
 
-            body.createShape(sd);
+            body.createFixture(sd);
         }
 
         { // gripper sensor
-            PolygonDef sd = new PolygonDef();
-            sd.setAsBox(0.05f, 0.05f, new Vec2(0, 0.2f), (float) Math.toRadians(45));
-            sd.isSensor = true;
+            PolygonShape pd = new PolygonShape();
+            pd.setAsBox(0.05f, 0.05f, new Vec2(0, 0.2f), (float) Math.toRadians(45));
+            FixtureDef fd = new FixtureDef();
+            fd.shape = pd;
+            fd.isSensor = true;
 //        sd.radius = 0.1f;
-            sd.density = 0f;
-            gripper.sensor = body.createShape(sd);
+            fd.density = 0f;
+            gripper.sensor = body.createFixture(fd);
+//            gripper.sensor = body.createFixture(fd);
         }
 
-        body.setMassFromShapes();
+// TODO mass
+//     body.setMassFromShapes();
+//        body.resetMassData();
+//        body.m_mass = 10;
 
     }
 
@@ -120,7 +124,7 @@ public class Robot extends Entity implements DiffWheels {
 
     public class Gripper {
 
-        private Shape sensor;
+        private Fixture sensor;
         private Entity hold = null;
         private Joint createJoint = null;
         private boolean gripped = false;
@@ -132,7 +136,8 @@ public class Robot extends Entity implements DiffWheels {
                         if (entity instanceof Pawn) {
                             Vec2 x1 = new Vec2();
                             Vec2 x2 = new Vec2();
-                            float distance = Distance.distance(x1, x2, sensor, body.getXForm(), entity.body.m_shapeList, entity.body.getXForm());
+                            /* TODO block
+                            float distance = Distance.distance(x1, x2, sensor, body.getTransform(), entity.body.m_shapeList, entity.body.getTransform());
 
                             if (distance < 0.1) {
 //                                color = Color.RED;
@@ -148,6 +153,7 @@ public class Robot extends Entity implements DiffWheels {
                                 hold = entity;
                                 break;
                             }
+                            */
 //                            } else {
                             //                              color = Color.PINK;
                             //                        }
