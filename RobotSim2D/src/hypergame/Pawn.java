@@ -27,11 +27,10 @@ public class Pawn extends Entity {
                 color = scoringArea.color;
             }
         }
-        body.m_force.set(1, 1);
     }
 
     private void applyFriction(float timestep) {
-        Vec2 linearVelocity = body.getLinearVelocity();
+        Vec2 linearVelocity = new Vec2(body.getLinearVelocity());
         float v = linearVelocity.normalize();
         float force = maxFrictionForceMVTF(body.getMass(), v, timestep, body.getFixtureList().getFriction());
         body.applyForce(linearVelocity.mul(force), body.getPosition());
