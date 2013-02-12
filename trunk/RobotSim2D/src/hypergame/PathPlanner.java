@@ -8,8 +8,8 @@ import java.awt.Stroke;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import org.jbox2d.common.Mat22;
+import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.common.XForm;
 
 /**
  *
@@ -110,7 +110,7 @@ public class PathPlanner {
     class PoseState {
 
         final double wheeldiam = 0.24f;
-        XForm xform = new XForm();
+        Transform xform = new Transform();
         double lwheelvel = 0;
         double rwheelvel = 0;
         double laccel = 2;
@@ -120,12 +120,12 @@ public class PathPlanner {
             xform.setIdentity();
         }
 
-        void setTo(XForm xform) {
+        void setTo(Transform xform) {
             this.xform.set(xform);
         }
 
         void setTo(Robot robot) {
-            this.xform.set(robot.body.getXForm());
+            this.xform.set(robot.body.getTransform());
             this.lwheelvel = robot.lwheel.angvelocity;
             this.rwheelvel = robot.rwheel.angvelocity;
             this.laccel = robot.lwheel.spd;
@@ -192,11 +192,12 @@ public class PathPlanner {
          * Moves relative forward
          */
         void moveRelFw(Vec2 fw) {
-            xform.position = xform.position.add(fw);
+            xform.position.set(xform.position.add(fw));
         }
 
         void rotateCCW(float angle) {
-            Mat22 R = new Mat22(angle);
+//            Mat22 R = new Mat22(angle);
+            Mat22 R = Mat22.createRotationalTransform(angle);
             xform.R.set(xform.R.mul(R));
         }
 

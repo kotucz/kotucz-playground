@@ -1,9 +1,11 @@
 package hypergame;
 
-import org.jbox2d.collision.CircleDef;
-import org.jbox2d.collision.PolygonDef;
+
+import org.jbox2d.collision.shapes.CircleShape;
+import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.FixtureDef;
 
 /**
  *
@@ -61,13 +63,17 @@ public class Table {
     }
 
     private Entity createMantinel(float x, float y, float halfw, float halfh) {
-        PolygonDef sd = new PolygonDef();
-        sd.setAsBox(halfw, halfh);
+        PolygonShape ps = new PolygonShape();
+        ps.setAsBox(halfw, halfh);
+
+
 
         BodyDef bd = new BodyDef();
         bd.position.set(x, y);
         Body body = game.createBody(bd);
-        body.createShape(sd);
+        FixtureDef def = new FixtureDef();
+        def.shape = ps;
+        body.createFixture(def);
 
         return new Entity(body);
 
@@ -76,8 +82,10 @@ public class Table {
     private Pawn createPawn(float x, float y) {
 //        PolygonDef sd = new PolygonDef();
 //        sd.setAsBox(, halfh);
-        CircleDef sd = new CircleDef();
-        sd.radius = 0.1f;
+        CircleShape cd = new CircleShape();
+        cd.m_radius = 0.1f;
+        FixtureDef sd = new FixtureDef();
+        sd.shape = cd;
         sd.density = 10f;
         sd.restitution = 0.1f;
         sd.friction = 0.1f;
@@ -88,8 +96,11 @@ public class Table {
 //        bd.angularDamping = 0.5f;
 
         Body body = game.createBody(bd);
-        body.createShape(sd);
-        body.setMassFromShapes();
+        body.createFixture(sd);
+        // TODO mass
+//        body.setMassFromShapes();
+//        body.resetMassData();
+//        body.m_mass = 10;
 
         body.setBullet(true);
 

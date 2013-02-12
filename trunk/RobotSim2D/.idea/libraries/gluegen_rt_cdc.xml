@@ -1,0 +1,75 @@
+<component name="libraryTable">
+  <library name="gluegen-rt-cdc">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/gluegen-rt-cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/gluegen-rt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.all-noawt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.all.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.all.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.awt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.core.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.egl.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.egl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.gl2es12.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.gl2es12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.gldesktop.dbg.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.gldesktop.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.gles1.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.gles1.dbg.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.gles1.dbg.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.gles1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.gles2.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.gles2.dbg.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.gles2.dbg.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.gles2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.glu.gldesktop.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.glu.mipmap.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.glu.mipmap.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.glu.tess.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.glu.tess.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.os.osx.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.os.osx.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.os.win.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.os.win.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.os.x11.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.os.x11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.sdk.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.test.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.util.awt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.util.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.util.fixedfuncemu.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.util.fixedfuncemu.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.util.gldesktop.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/jogl.util.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/nativewindow.all-noawt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/nativewindow.all.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/nativewindow.all.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/nativewindow.awt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/nativewindow.core.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/nativewindow.core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/nativewindow.os.x11.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/nativewindow.os.x11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.all-noawt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.all.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.all.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.awt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.broadcomegl.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.broadcomegl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.core.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.intelgdl.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.intelgdl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.ogl.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.ogl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.os.osx.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.os.osx.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.os.win.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.os.win.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.os.x11.cdc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jogl-2.0-pre-20100924-windows-i586/lib/newt.os.x11.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
