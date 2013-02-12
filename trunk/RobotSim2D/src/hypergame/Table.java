@@ -5,6 +5,7 @@ import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
 /**
@@ -91,6 +92,7 @@ public class Table {
         sd.friction = 0.1f;
 
         BodyDef bd = new BodyDef();
+        bd.type = BodyType.DYNAMIC;
         bd.position.set(x, y);
 //        bd.linearDamping = 0.5f;
 //        bd.angularDamping = 0.5f;

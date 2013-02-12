@@ -2,10 +2,7 @@ package hypergame;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.Fixture;
-import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.joints.Joint;
 import robot.input.KeyboardDriving;
 import robot.output.DiffWheels;
@@ -79,6 +76,7 @@ public class Robot extends Entity implements DiffWheels {
 
         body = world.createBody(bd);
         body.setBullet(true);
+        body.setType(BodyType.DYNAMIC);
 
         {
             PolygonShape ps = new PolygonShape();
