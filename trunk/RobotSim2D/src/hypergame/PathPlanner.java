@@ -18,11 +18,13 @@ import org.jbox2d.common.Vec2;
 public class PathPlanner {
 
     Robot robot;
+    private float speed;
+    private float rot;
 
     public PathPlanner(Robot robot) {
         this.robot = robot;
     }
-    Vec2 tgt = new Vec2(1, 2);
+    Vec2 tgt = new Vec2(0, 1);
     Vec2 pos = new Vec2();
     Vec2 dir = new Vec2();
 
@@ -37,8 +39,8 @@ public class PathPlanner {
 //        float dist = tdir.normalize();
 //        robot.setSpeedsLR(dist, dist);
 
-        float speed = Vec2.dot(dir, tdir);
-        float rot = Vec2.dot(rightdir, tdir);
+        speed = Vec2.dot(dir, tdir)*0.1f;
+        rot = Vec2.dot(rightdir, tdir)*0.1f;
 
         robot.setSpeedsLR(speed + rot, speed - rot);
 
@@ -52,12 +54,15 @@ public class PathPlanner {
         g2.setStroke(new BasicStroke(0.01f));
 
         g.setColor(Color.GREEN);
+        g2.draw(new Line2D.Float(pos.x, pos.y, tgt.x, tgt.y));
 
+        g.setColor(Color.PINK);
         Vec2 dire = pos.add(dir);
-
         g2.draw(new Line2D.Float(pos.x, pos.y, dire.x, dire.y));
 
-        g2.draw(new Line2D.Float(pos.x, pos.y, tgt.x, tgt.y));
+//        g.setFont(g.getFont().deriveFont(0.1f));
+        System.out.println("dot " + speed + " rot " + rot);
+
 
         g2.setStroke(stroke);
 

@@ -2,31 +2,87 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="7999f793-f742-4f25-a888-1a60bc9a6a40" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/RobotSim2D.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/Entity.java" afterPath="$PROJECT_DIR$/src/hypergame/Entity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/Game.java" afterPath="$PROJECT_DIR$/src/hypergame/Game.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/HyperGameAboutBox.java" afterPath="$PROJECT_DIR$/src/hypergame/HyperGameAboutBox.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/HyperGameApp.java" afterPath="$PROJECT_DIR$/src/hypergame/HyperGameApp.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/HyperGameView.java" afterPath="$PROJECT_DIR$/src/hypergame/HyperGameView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PROJECT DESCRIPTION.TXT" afterPath="$PROJECT_DIR$/PROJECT DESCRIPTION.TXT" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\Entity.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\Game.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\HyperGameAboutBox.form" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\HyperGameAboutBox.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\HyperGameApp.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\HyperGameView.form" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\HyperGameView.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\JOGLDebugDraw.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\JoglGameWindow.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\Pawn.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\Renderer.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\Robot.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\ScoringArea.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\Table.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\Team.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\ViewPanel.form" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\ViewPanel.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\HyperGameAboutBox.properties" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\HyperGameApp.properties" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\HyperGameView.properties" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\robot\input\ControllerTools.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\robot\input\KeyboardDriving.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\robot\output\DiffWheels.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\robot\output\Motor.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\HyperGameAboutBox.form" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\HyperGameAboutBox.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\HyperGameApp.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\HyperGameView.form" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\HyperGameView.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\JOGLDebugDraw.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\JoglGameWindow.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\ViewPanel.form" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\META-INF" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\about.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon0.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon1.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon10.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon11.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon12.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon13.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon14.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon2.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon3.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon4.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon5.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon6.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon7.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon8.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\busy-icon9.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\busyicons\idle-icon.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\robot\input" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\META-INF\services\org.jdesktop.application.Application" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\META-INF\services\org.jdesktop.application.Application" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\robot\output" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\robot" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\META-INF\services" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\META-INF\services" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22\hypergame\resources\splash.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src-2010-11-22" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/PathPlanner.java" afterPath="$PROJECT_DIR$/src/hypergame/PathPlanner.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/Pawn.java" afterPath="$PROJECT_DIR$/src/hypergame/Pawn.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/Robot.java" afterPath="$PROJECT_DIR$/src/hypergame/Robot.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/Table.java" afterPath="$PROJECT_DIR$/src/hypergame/Table.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nbproject/project.properties" afterPath="$PROJECT_DIR$/nbproject/project.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RobotSim2D.iml" afterPath="$PROJECT_DIR$/RobotSim2D.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="RobotSim2D.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/PathPlanner.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360702315909" ignored="false" />
+    <file path="/PathPlanner.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360782089470" ignored="false" />
     <file path="/Entity.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360701633966" ignored="false" />
     <file path="/Dummy.txt" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360698522086" ignored="false" />
-    <file path="/fragment.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360701673319" ignored="false" />
+    <file path="/fragment.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360783002468" ignored="false" />
     <file path="/Robot.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360704944527" ignored="false" />
     <file path="/HyperGameApp.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360700363012" ignored="false" />
     <file path="/HyperGameView.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360700388647" ignored="false" />
     <file path="/Table.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360705004741" ignored="false" />
     <file path="/Pawn.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360705719814" ignored="false" />
     <file path="/Game.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360703097376" ignored="false" />
+    <file path="$PROJECT_DIR$/src/hypergame/Wheel.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360783037160" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +97,6 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -76,6 +131,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -88,40 +144,16 @@
       <file leaf-file-name="Game.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/hypergame/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="11" selection-start="1220" selection-end="1221" vertical-scroll-proportion="-11.84">
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#790#798#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="World.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/dynamics/World.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="543" column="21" selection-start="14863" selection-end="14863" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="n#!!doc" expanded="false" />
-                <element signature="imports" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DiffWheels.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/robot/output/DiffWheels.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="0" selection-start="51" selection-end="51" vertical-scroll-proportion="0.0">
+            <state line="44" column="11" selection-start="1220" selection-end="1221" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Pawn.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Pawn.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/hypergame/Pawn.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="30" selection-start="667" selection-end="667" vertical-scroll-proportion="0.42885375">
+            <state line="11" column="6" selection-start="171" selection-end="171" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -131,17 +163,24 @@
         <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/common/Vec2.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="98" column="26" selection-start="3416" selection-end="3416" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#0#8247#0" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Robot.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Robot.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/hypergame/Robot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="78" column="37" selection-start="1933" selection-end="1933" vertical-scroll-proportion="0.0">
+            <state line="181" column="0" selection-start="5290" selection-end="5290" vertical-scroll-proportion="1.0670612">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PathPlanner.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hypergame/PathPlanner.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="44" column="19" selection-start="1001" selection-end="1001" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -149,13 +188,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Entity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hypergame/Entity.java">
+      <file leaf-file-name="Object.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files (x86)/Java/jdk1.6.0_32/src.zip!/java/lang/Object.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="7" selection-start="1236" selection-end="1236" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="364" column="29" selection-start="17894" selection-end="17894" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -173,9 +210,7 @@
         <entry file="file://$PROJECT_DIR$/src/hypergame/Table.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="94" column="35" selection-start="2946" selection-end="2946" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -184,9 +219,7 @@
         <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/dynamics/BodyDef.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="129" column="34" selection-start="4113" selection-end="4113" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="n#!!doc" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -205,11 +238,13 @@
         <option value="$PROJECT_DIR$/src/hypergame/HyperGameView.java" />
         <option value="$PROJECT_DIR$/src/hypergame/HyperGameAboutBox.java" />
         <option value="$PROJECT_DIR$/src/hypergame/Entity.java" />
-        <option value="$PROJECT_DIR$/src/hypergame/PathPlanner.java" />
         <option value="$PROJECT_DIR$/src/hypergame/Game.java" />
-        <option value="$PROJECT_DIR$/src/hypergame/Robot.java" />
         <option value="$PROJECT_DIR$/src/hypergame/Table.java" />
         <option value="$PROJECT_DIR$/src/hypergame/Pawn.java" />
+        <option value="$PROJECT_DIR$/src/hypergame/JOGLDebugDraw.java" />
+        <option value="$PROJECT_DIR$/src/hypergame/PathPlanner.java" />
+        <option value="$PROJECT_DIR$/src/hypergame/Wheel.java" />
+        <option value="$PROJECT_DIR$/src/hypergame/Robot.java" />
       </list>
     </option>
   </component>
@@ -226,8 +261,8 @@
     <OptionsSetting value="true" id="Update" />
     <OptionsSetting value="true" id="Status" />
     <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="0" id="Add" />
-    <ConfirmationsSetting value="0" id="Remove" />
+    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="2" id="Remove" />
   </component>
   <component name="ProjectReloadState">
     <option name="STATE" value="0" />
@@ -246,7 +281,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -262,50 +296,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="RobotSim2D" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RobotSim2D" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RobotSim2D" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="robot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="output" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RobotSim2D" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RobotSim2D" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="robot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="input" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -343,6 +333,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -397,19 +388,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -435,6 +413,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -533,6 +524,10 @@
           <option name="myVcsRoot" value="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D" />
           <option name="myCopyRoot" value="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D" />
         </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\.idea" />
+          <option name="myCopyRoot" value="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\.idea" />
+        </SvnCopyRootSimple>
       </list>
     </option>
     <option name="myMoreRealMappingRoots">
@@ -576,26 +571,26 @@
     <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295711" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32844242" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39954853" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33069977" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39841986" sideWeight="0.9991135" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33069977" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295711" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.60045147" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.60158014" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295711" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -658,34 +653,9 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/collision/shapes/CircleShape.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="238" column="26" selection-start="7273" selection-end="7273" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/common/Transform.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="13" selection-start="2754" selection-end="2754" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/dynamics/Fixture.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="279" column="0" selection-start="7372" selection-end="7372" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/PathPlanner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="198" column="21" selection-start="5686" selection-end="5686" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
+        <state line="279" column="0" selection-start="7372" selection-end="7372" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/hypergame/ViewPanel.java">
@@ -712,65 +682,42 @@
     <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/dynamics/World.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="543" column="21" selection-start="14863" selection-end="14863" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="imports" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/hypergame/Entity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="41" column="7" selection-start="1236" selection-end="1236" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/dynamics/BodyDef.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="129" column="34" selection-start="4113" selection-end="4113" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/Robot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="78" column="37" selection-start="1933" selection-end="1933" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/hypergame/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="11" selection-start="1220" selection-end="1221" vertical-scroll-proportion="-11.84">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#790#798#0" expanded="true" />
-          </folding>
+        <state line="44" column="11" selection-start="1220" selection-end="1221" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/hypergame/Table.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="94" column="35" selection-start="2946" selection-end="2946" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/common/Vec2.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="98" column="26" selection-start="3416" selection-end="3416" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#8247#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -783,7 +730,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/hypergame/Pawn.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="30" selection-start="667" selection-end="667" vertical-scroll-proportion="0.42885375">
+        <state line="11" column="6" selection-start="171" selection-end="171" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files (x86)/Java/jdk1.6.0_32/src.zip!/java/lang/Object.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="364" column="29" selection-start="17894" selection-end="17894" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hypergame/PathPlanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="19" selection-start="1001" selection-end="1001" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hypergame/Robot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="181" column="0" selection-start="5290" selection-end="5290" vertical-scroll-proportion="1.0670612">
           <folding />
         </state>
       </provider>
@@ -845,6 +815,7 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>

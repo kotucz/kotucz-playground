@@ -209,7 +209,6 @@ public class Robot extends Entity implements DiffWheels {
             Vec2 forwardv = getAbsDir(); // world forward vector size 1
             Vec2 sidev = new Vec2(-forwardv.y, forwardv.x); // world side vector size 1
 
-            Vec2 pos = getAbsPos(); // pos of event
 
             Vec2 wheelSpeed = forwardv.mul(-angvelocity);
 
@@ -245,6 +244,7 @@ public class Robot extends Entity implements DiffWheels {
 //                }
 //            }
 
+            Vec2 pos = getAbsPos(); // pos of event
             body.applyForce(responseForce, pos);
         }
 
