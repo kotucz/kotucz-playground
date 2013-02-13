@@ -6,10 +6,8 @@ import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.joints.Joint;
 import robot.input.KeyboardDriving;
 import robot.output.DiffWheels;
-import robot.output.Motor;
 
 import java.awt.*;
-import java.awt.geom.Line2D;
 
 /**
  *
@@ -17,8 +15,12 @@ import java.awt.geom.Line2D;
  */
 public class Robot extends Entity implements DiffWheels {
 
-    Wheel lwheel = new Wheel(new Vec2(-0.12f, 0), new Vec2(0, 1));
-    Wheel rwheel = new Wheel(new Vec2(0.12f, 0), new Vec2(0, 1));
+    public static final boolean DRIVE_BY_KEYBOARD = true;
+    public static final boolean DRIVE_AUTONOMOUSLY = true;
+
+
+    Wheel lwheel = new Wheel(this, new Vec2(-0.12f, 0), new Vec2(0, 1));
+    Wheel rwheel = new Wheel(this, new Vec2(0.12f, 0), new Vec2(0, 1));
     public Gripper gripper = new Gripper();
     KeyboardDriving keyboard = new KeyboardDriving(this);
     PathPlanner pathPlanner = new PathPlanner(this);
@@ -34,11 +36,15 @@ public class Robot extends Entity implements DiffWheels {
     @Override
     void update(float timestep) {
 
-        keyboard.act();
+        if (DRIVE_BY_KEYBOARD) {
+            keyboard.act();
+        }
 
 //        setSpeedsLR(5, 0.5);
 
-        pathPlanner.act();
+        if (DRIVE_AUTONOMOUSLY) {
+            pathPlanner.act();
+        }
 
         // clear forces
         body.m_force.setZero();
@@ -58,7 +64,7 @@ public class Robot extends Entity implements DiffWheels {
     }
 
     @Override
-    void paint(Graphics g) {
+    void paint(Graphics2D g) {
         super.paint(g);
         lwheel.paintWheel(g);
         rwheel.paintWheel(g);
@@ -179,147 +185,4 @@ public class Robot extends Entity implements DiffWheels {
         }
     }
 
-    class Wheel implements Motor {
-
-        final Vec2 relPos;
-        // normalized vector
-        final Vec2 relForward;
-        float spd = 0;
-        float angvelocity = 0;
-        float torque = 0;
-        float inertia = 1;
-        float wheelFriction;
-        // mass on this wheel
-        float m = 5;
-        float fg = m * g;
-
-        public Wheel(Vec2 relPos, Vec2 relForward) {
-            this.relPos = relPos;
-            this.relForward = relForward;
-        }
-
-        /**
-         *
-         * @see http://www.gamedev.net/reference/programming/features/2dcarphys/page4.asp
-         */
-        void applyWheelForce(float timestep) {
-
-            torque = spd;
-
-            Vec2 forwardv = getAbsDir(); // world forward vector size 1
-            Vec2 sidev = new Vec2(-forwardv.y, forwardv.x); // world side vector size 1
-
-
-            Vec2 wheelSpeed = forwardv.mul(-angvelocity);
-
-            Vec2 vel = body.getLinearVelocityFromLocalPoint(relPos).add(wheelSpeed);
-
-            float fwvel = Vec2.dot(vel, forwardv);
-
-            float sidevel = Vec2.dot(vel, sidev);
-
-            // lateral force - friction in opposite direction to motion
-            Vec2 responseForce = sidev.mul(-10f * sidevel);
-//
-            responseForce = responseForce.add(forwardv.mul(-fwvel)); // forward force
-////            responseForce = responseForce.add(forwardv.mul(spd)); // forward force
-
-
-//            float fricForce = maxFrictionForceMVTF(m, vel.normalize(), timestep, wheelFriction);
-//            Vec2 responseForce = vel.mul(fricForce);
-
-            torque += fwvel;
-//            torque += maxFrictionForceMVTF(m, fwvel, timestep, wheelFriction);
-
-            angvelocity += torque; //*timestep
-
-            // break force
-//            if (spd == 0) {
-//                float breakforce = 100;
-//                if (angvelocity > 0) {
-//                    angvelocity -= Math.min(angvelocity, breakforce); // damping
-//                }
-//                if (angvelocity < 0) {
-//                    angvelocity += Math.max(-angvelocity, -breakforce); // damping
-//                }
-//            }
-
-            Vec2 pos = getAbsPos(); // pos of event
-            body.applyForce(responseForce, pos);
-        }
-
-        void applyForce() {
-
-            Vec2 force = getAbsDir();
-            Vec2 pos = getAbsPos();
-
-            body.applyForce(force.mul(spd), pos);
-
-        }
-
-        Vec2 getAbsDir() {
-//            XForm xForm = body.getXForm();
-//            xForm.position = new Vec2();
-//
-//            return XForm.mul(xForm, relForward);
-            return body.getWorldVector(relForward);
-        }
-
-        Vec2 getAbsPos() {
-//            return XForm.mul(body.getXForm(), relPos);
-            return body.getWorldPoint(relPos);
-        }
-
-        void paintWheel(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g;
-
-            Stroke stroke = g2.getStroke();
-            g2.setStroke(new BasicStroke(0.01f));
-
-            Vec2 pos = getAbsPos();
-            Vec2 end = getAbsDir().mul(spd).add(getAbsPos());
-
-            g.setColor(Color.BLUE);
-
-            g2.draw(new Line2D.Float(pos.x, pos.y, end.x, end.y));
-
-            {
-                g.setColor(Color.RED);
-                Vec2 end2 = (getAbsPos().add(body.getLinearVelocityFromLocalPoint(relPos)));
-                g2.draw(new Line2D.Float(pos.x, pos.y, end2.x, end2.y));
-
-//                g.setColor(Color.GREEN);
-//                Point end3 = toPoint(getAbsPos().add(new Vec2(angvelocity,0)));
-//                g.drawLine(pos.x, pos.y, end3.x, end3.y);
-            }
-
-            g2.setStroke(stroke);
-
-//            Point pos = toPoint(getAbsPos());
-//            Point end = toPoint(getAbsDir().mul(spd).add(getAbsPos()));
-//
-//            g.setColor(Color.BLUE);
-//
-//            g.drawLine(pos.x, pos.y, end.x, end.y);
-//            g.drawLine(pos.x, pos.y, end.x, end.y);
-//
-//            {
-//                g.setColor(Color.RED);
-//                Point end2 = toPoint(getAbsPos().add(body.getLinearVelocityFromLocalPoint(relPos)));
-//                g.drawLine(pos.x, pos.y, end2.x, end2.y);
-//
-////                g.setColor(Color.GREEN);
-////                Point end3 = toPoint(getAbsPos().add(new Vec2(angvelocity,0)));
-////                g.drawLine(pos.x, pos.y, end3.x, end3.y);
-//            }
-        }
-
-        public void setSpeed(double speed) {
-            this.spd = (float) speed;
-        }
-
-        public void stop() {
-            setSpeed(0);
-        }
-    }
 }

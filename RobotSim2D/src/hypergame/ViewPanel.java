@@ -5,8 +5,7 @@
  */
 package hypergame;
 
-import java.awt.Frame;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.logging.Level;
@@ -64,7 +63,7 @@ public class ViewPanel extends javax.swing.JPanel {
 
     @Override
     public void paint(Graphics g) {
-        game.paint(g);
+        game.paint((Graphics2D)g);
     }
 
     public static void main(String[] args) {

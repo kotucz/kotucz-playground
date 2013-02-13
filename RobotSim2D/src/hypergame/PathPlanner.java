@@ -24,7 +24,7 @@ public class PathPlanner {
     public PathPlanner(Robot robot) {
         this.robot = robot;
     }
-    Vec2 tgt = new Vec2(0, 1);
+    Vec2 tgt = new Vec2(1, 1);
     Vec2 pos = new Vec2();
     Vec2 dir = new Vec2();
 
@@ -39,7 +39,7 @@ public class PathPlanner {
 //        float dist = tdir.normalize();
 //        robot.setSpeedsLR(dist, dist);
 
-        speed = Vec2.dot(dir, tdir)*0.1f;
+//        speed = Vec2.dot(dir, tdir)*0.1f;
         rot = Vec2.dot(rightdir, tdir)*0.1f;
 
         robot.setSpeedsLR(speed + rot, speed - rot);
@@ -131,10 +131,10 @@ public class PathPlanner {
 
         void setTo(Robot robot) {
             this.xform.set(robot.body.getTransform());
-            this.lwheelvel = robot.lwheel.angvelocity;
-            this.rwheelvel = robot.rwheel.angvelocity;
-            this.laccel = robot.lwheel.spd;
-            this.raccel = robot.rwheel.spd;
+            this.lwheelvel = robot.lwheel.angularVelocity;
+            this.rwheelvel = robot.rwheel.angularVelocity;
+            this.laccel = robot.lwheel.speed;
+            this.raccel = robot.rwheel.speed;
         }
 
         Vec2 getPosition() {
