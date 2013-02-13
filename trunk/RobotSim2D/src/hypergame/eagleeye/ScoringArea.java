@@ -1,19 +1,19 @@
-package hypergame;
+package hypergame.eagleeye;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+
 import org.jbox2d.common.Vec2;
 
 /**
  *
  * @author Kotuc
  */
-public class ScoringArea extends Entity {
+public class ScoringArea extends TableEntity {
 
     Team team;
-    Rectangle2D.Float rect = new Rectangle2D.Float(0, 0, 0.35f, 0.35f);
+    public Rectangle2D.Float rect = new Rectangle2D.Float(0, 0, 0.35f, 0.35f);
     boolean bonus = false;
 
     public ScoringArea(Team team) {
@@ -30,7 +30,7 @@ public class ScoringArea extends Entity {
     }
 
     @Override
-    void paint(Graphics2D g) {
+    public void paint(Graphics2D g) {
         Graphics2D g2 = (Graphics2D) g;
         switch (team) {
             case RED:

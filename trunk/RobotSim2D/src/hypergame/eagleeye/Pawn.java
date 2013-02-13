@@ -1,6 +1,7 @@
-package hypergame;
+package hypergame.eagleeye;
 
 import java.awt.Color;
+
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
@@ -8,7 +9,7 @@ import org.jbox2d.dynamics.Body;
  *
  * @author Kotuc
  */
-public class Pawn extends Entity {
+public class Pawn extends TableEntity {
 
     public Pawn(Body body) {
         super(body);
@@ -17,7 +18,7 @@ public class Pawn extends Entity {
     }
 
     @Override
-    void update(float timestep) {
+    public void update(float timestep) {
         body.m_force.setZero();
         applyFriction(timestep);
         color = Color.yellow;
