@@ -30,7 +30,7 @@ public class ScoringArea extends Entity {
     }
 
     @Override
-    void paint(Graphics g) {
+    void paint(Graphics2D g) {
         Graphics2D g2 = (Graphics2D) g;
         switch (team) {
             case RED:

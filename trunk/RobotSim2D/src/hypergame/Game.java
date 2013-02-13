@@ -128,7 +128,7 @@ public class Game {
         for (Entity entity : entities) {
             entity.update(0.01f);
         }
-        entities.get(67).body.m_force.addLocal(0.0f, 1f);
+//        entities.get(67).body.m_force.addLocal(0.0f, 1f);
         physWorld.step(0.01f, 10, 10);
 //        entities.get(67).body.m_xf.position.addLocal(0.0f, 0.01f);
     }
@@ -208,7 +208,7 @@ public class Game {
 
     }
 
-    void paint(Graphics g) {
+    void paint(Graphics2D g) {
 
         g.setColor(Color.white);
         g.fillRect(0, 0, 1000, 1000);

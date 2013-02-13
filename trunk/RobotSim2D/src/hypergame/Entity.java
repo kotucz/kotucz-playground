@@ -156,7 +156,7 @@ public class Entity {
         gl.glEnd();
     }
 
-    void paint(Graphics g) {
+    void paint(Graphics2D g) {
         Transform xf = body.getTransform();
         for (Fixture s = body.getFixtureList(); s != null; s = s.getNext()) {
             paintShape(g, s, xf);
@@ -173,7 +173,7 @@ public class Entity {
         return new Point((int) (vec.x * scale) + xoff, (int) (-vec.y * scale) + yoff);
     }
 
-    private void paintShape(Graphics g, Fixture shape, Transform xf) {
+    private void paintShape(Graphics2D g, Fixture shape, Transform xf) {
         Graphics2D g2 = (Graphics2D) g;
         g.setColor(color);
         if (shape.getType() == ShapeType.CIRCLE) {
