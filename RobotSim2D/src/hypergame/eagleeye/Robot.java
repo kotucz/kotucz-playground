@@ -1,5 +1,7 @@
-package hypergame;
+package hypergame.eagleeye;
 
+import hypergame.Entity;
+import hypergame.Game;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
@@ -10,10 +12,9 @@ import robot.output.DiffWheels;
 import java.awt.*;
 
 /**
- *
  * @author Kotuc
  */
-public class Robot extends Entity implements DiffWheels {
+public class Robot extends TableEntity implements DiffWheels {
 
     public static final boolean DRIVE_BY_KEYBOARD = true;
     public static final boolean DRIVE_AUTONOMOUSLY = true;
@@ -22,7 +23,7 @@ public class Robot extends Entity implements DiffWheels {
     Wheel lwheel = new Wheel(this, new Vec2(-0.12f, 0), new Vec2(0, 1));
     Wheel rwheel = new Wheel(this, new Vec2(0.12f, 0), new Vec2(0, 1));
     public Gripper gripper = new Gripper();
-    KeyboardDriving keyboard = new KeyboardDriving(this);
+    RobotKeyboardController keyboard = new RobotKeyboardController(this);
     PathPlanner pathPlanner = new PathPlanner(this);
 
     public Robot(Game game) {
@@ -34,7 +35,7 @@ public class Robot extends Entity implements DiffWheels {
     }
 
     @Override
-    void update(float timestep) {
+    public void update(float timestep) {
 
         if (DRIVE_BY_KEYBOARD) {
             keyboard.act();
@@ -64,7 +65,7 @@ public class Robot extends Entity implements DiffWheels {
     }
 
     @Override
-    void paint(Graphics2D g) {
+    public void paint(Graphics2D g) {
         super.paint(g);
         lwheel.paintWheel(g);
         rwheel.paintWheel(g);
@@ -161,7 +162,6 @@ public class Robot extends Entity implements DiffWheels {
 //                            } else {
                             //                              color = Color.PINK;
                             //                        }
-
 
 
 //                Contact contact = Contact.createContact(sensor, entity.body.m_shapeList);

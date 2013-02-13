@@ -1,16 +1,7 @@
 package hypergame;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
-import javax.media.opengl.GL2;
-
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.collision.shapes.ShapeType;
 import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Settings;
@@ -19,28 +10,19 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 
+import javax.media.opengl.GL2;
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
+
 /**
- *
  * @author Kotuc
  */
 public class Entity {
-    static final float g = 9.81F; // gravity m/s2
 
-    /**
-     * force in the direction of v - applying in opposite direction
-     */
-    static float maxFrictionForceMVTF(float m, float v, float timestep, float friction) {
-        //        f = m*a = m*v/t;
-        //        v = a*t;
-        float maxForce = -m * v / timestep; // force to stop
-        float frictionForce = -m * Robot.g * friction;
-        // not to accelerate in the opposite direction
-        return (Math.abs(maxForce) < Math.abs(frictionForce)) ? maxForce : frictionForce;
-    }
-
-    Game game;
-    Body body;
-    Color color = Color.gray;
+    protected Game game;
+    public Body body;
+    public Color color = Color.gray;
 
     public Entity() {
     }
@@ -49,10 +31,10 @@ public class Entity {
         this.body = body;
     }
 
-    void update(float timestep) {
+    public void update(float timestep) {
     }
 
-    void draw(GL2 gl) {
+    public void draw(GL2 gl) {
 
         Transform xf = body.getTransform();
         for (Fixture s = body.getFixtureList(); s != null; s = s.getNext()) {
@@ -66,7 +48,7 @@ public class Entity {
 //            } else if (body.isSleeping()) {
 //                drawShape(gl, s, xf, new Color3f(0.5f, 0.5f, 0.9f));
 //            } else {
-                drawShape(gl, s, xf, new Color3f(0.9f, 0.9f, 0.9f));
+            drawShape(gl, s, xf, new Color3f(0.9f, 0.9f, 0.9f));
 //            }
 
 
@@ -119,7 +101,7 @@ public class Entity {
 //            gl.glTexCoord2f(coords.right(), coords.bottom());
 //            gl.glColor3f(1, 0, 0);
             gl.glVertex3f(vertices[1].x, vertices[1].y, 0);
-//            gl.glTexCoord2f(coords.right(), coords.top());            
+//            gl.glTexCoord2f(coords.right(), coords.top());
 //            gl.glColor3f(0, 1, 0);
             gl.glVertex3f(vertices[2].x, vertices[2].y, 0);
 //            gl.glTexCoord2f(coords.left(), coords.top());
@@ -156,13 +138,13 @@ public class Entity {
         gl.glEnd();
     }
 
-    void paint(Graphics2D g) {
+    public void paint(Graphics2D g) {
         Transform xf = body.getTransform();
         for (Fixture s = body.getFixtureList(); s != null; s = s.getNext()) {
             paintShape(g, s, xf);
         }
     }
-//    final int scale = 200;
+    //    final int scale = 200;
 //    final int xoff = 350;
 //    final int yoff = 450;
     final int scale = 1;

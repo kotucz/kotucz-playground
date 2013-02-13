@@ -1,6 +1,7 @@
-package hypergame;
+package hypergame.eagleeye;
 
 
+import hypergame.Game;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.dynamics.Body;
@@ -59,11 +60,11 @@ public class Table {
 
     }
 
-    private Entity createMantinelMm(int minx, int miny, int maxx, int maxy) {
+    private TableEntity createMantinelMm(int minx, int miny, int maxx, int maxy) {
         return createMantinel((minx+maxx)/2000f, (miny+maxy)/2000f, Math.abs(maxx-minx)/2000f, Math.abs(maxy-miny)/2000f);
     }
 
-    private Entity createMantinel(float x, float y, float halfw, float halfh) {
+    private TableEntity createMantinel(float x, float y, float halfw, float halfh) {
         PolygonShape ps = new PolygonShape();
         ps.setAsBox(halfw, halfh);
 
@@ -76,7 +77,7 @@ public class Table {
         def.shape = ps;
         body.createFixture(def);
 
-        return new Entity(body);
+        return new TableEntity(body);
 
     }
 

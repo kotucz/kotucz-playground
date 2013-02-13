@@ -1,8 +1,9 @@
 package robot.input;
 
-import hypergame.Robot;
+import hypergame.eagleeye.Robot;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
+import org.jbox2d.common.Vec2;
 import robot.output.DiffWheels;
 
 /**
@@ -11,35 +12,30 @@ import robot.output.DiffWheels;
  */
 public class KeyboardDriving {
 
-    private final Controller keyboard;
-    private Component forwardKey;
-    private Component backwardKey;
-    private Component rightKey;
-    private Component leftKey;
-    private Component stopKey;
-    private Component gripperKey;
-    private final DiffWheels wheels;
-    Robot.Gripper gripper;
-    double factor = 0.2;
-    double speed = 0;
-    double steer = 0;
-    double left = 0;
-    double right = 0;
+    protected final Controller keyboard;
+    protected Component forwardKey;
+    protected Component backwardKey;
+    protected Component rightKey;
+    protected Component leftKey;
+    protected Component stopKey;
+    protected Component gripperKey;
+
+
+    protected double factor = 0.2;
+
+
+    private double upvalue;
+    private double rightvalue;
     // factor of influence of arrows on speed
 
-//    public KeyboardDriving(DiffWheels wheels) {
-    public KeyboardDriving(Robot robot) {
-//        this.wheels = wheels;
-        this.wheels = robot;
-        this.gripper = robot.gripper;
-        if (gripper == null) {
-            throw new NullPointerException("gripper");
-        }
+
+    public KeyboardDriving() {
         this.keyboard = ControllerTools.getKeyboard();
         findComponents();
         System.out.println("Keyboard driving ready.");
     }
 
+    //
     private void findComponents() {
 
         for (Component component : keyboard.getComponents()) {
@@ -66,44 +62,40 @@ public class KeyboardDriving {
 
     }
 
-    public boolean act() {
+    public Vec2 actPlayer() {
         keyboard.poll();
 
-        gripper.grip(gripperKey.getPollData()>0.5);
+        upvalue = (1 - factor) * upvalue + factor * (forwardKey.getPollData() - backwardKey.getPollData());
 
-        speed = (1 - factor) * speed + factor * (forwardKey.getPollData() - backwardKey.getPollData());
-
-        steer = (1 - factor) * steer + factor * (rightKey.getPollData() - leftKey.getPollData());
+        rightvalue = (1 - factor) * rightvalue + factor * (rightKey.getPollData() - leftKey.getPollData());
 
         if (stopKey.getPollData() > 0.5) {
-            wheels.stop();
-            speed = 0;
-            steer = 0;
+            upvalue = 0;
+            rightvalue = 0;
         } else {
 
-            if (Math.abs(speed) < 0.05) {
-                speed = 0;
+            if (Math.abs(upvalue) < 0.05) {
+                upvalue = 0;
             }
-            if (Math.abs(steer) < 0.05) {
-                steer = 0;
+            if (Math.abs(rightvalue) < 0.05) {
+                rightvalue = 0;
             }
-
-            left = speed + steer;
-            right = speed - steer;
 
             System.out.println("Keyboard " + forwardKey.getPollData() + " " + backwardKey.getPollData() + " "
                     + rightKey.getPollData() + " " +
                     leftKey.getPollData() + "; " +
-                    speed + " " + steer);
+                    upvalue + " " + rightvalue);
 
-            wheels.setSpeedsLR(left, right);
-
-//            wheels.setSpeed(speed);
-//        wheels.setSteer(steer * speed);
-//            wheels.setSteer(steer);
+//            wheels.setSpeed(upvalue);
+//        wheels.setSteer(rightvalue * upvalue);
+//            wheels.setSteer(rightvalue);
         }
-//            Logger.getLogger("XPadDriving").log(Level.INFO, "speed: " + speed + "; steer: " + steer);
-        return true;
+//            Logger.getLogger("XPadDriving").log(Level.INFO, "upvalue: " + upvalue + "; rightvalue: " + rightvalue);
+        return new Vec2((float)rightvalue, (float)upvalue);
 
     }
+
+
+
+
 }

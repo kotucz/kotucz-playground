@@ -1,5 +1,6 @@
-package hypergame;
+package hypergame.eagleeye;
 
+import hypergame.Entity;
 import org.jbox2d.common.Vec2;
 import robot.output.Motor;
 
@@ -31,8 +32,8 @@ class Wheel implements Motor {
     float m = 5;
 
     // gravity force applied 'kolmo' toward the surface
-    float fg = m * Entity.g;
-    private Robot robot;
+    float fg = m * TableEntity.g;
+    private hypergame.eagleeye.Robot robot;
 
     /**
      *
@@ -40,7 +41,7 @@ class Wheel implements Motor {
      * @param relPos position vector relative to the body
      * @param relForward forward vector relative to the body
      */
-    public Wheel(Robot robot, Vec2 relPos, Vec2 relForward) {
+    public Wheel(hypergame.eagleeye.Robot robot, Vec2 relPos, Vec2 relForward) {
         this.robot = robot;
         this.relPos = relPos;
         this.relForward = relForward;
