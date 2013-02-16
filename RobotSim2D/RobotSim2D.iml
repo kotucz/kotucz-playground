@@ -17,7 +17,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="gluegen-rt-cdc" level="project" />
     <orderEntry type="library" name="jbox2d-library-2.1.2.2" level="project" />
   </component>
 </module>

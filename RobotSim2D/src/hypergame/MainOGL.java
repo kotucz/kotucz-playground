@@ -12,8 +12,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * @author Kotuc
- */
+* @author Kotuc
+*/
 public class MainOGL {
 
 

@@ -1,7 +1,6 @@
 package hypergame;
 
 import hypergame.eagleeye.Table;
-import hypergame.eagleeye.TableEntity;
 import hypergame.platformer.LevelCreator;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Vec2;
@@ -9,7 +8,6 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
 
-import javax.media.opengl.GL2;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.LinkedList;

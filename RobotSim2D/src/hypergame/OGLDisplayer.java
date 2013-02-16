@@ -13,8 +13,8 @@ import org.jbox2d.dynamics.Fixture;
 import javax.media.opengl.GL2;
 
 /**
- * @author Kotuc
- */
+* @author Kotuc
+*/
 public class OGLDisplayer /* TODO implements Displayer */ {
 
 
