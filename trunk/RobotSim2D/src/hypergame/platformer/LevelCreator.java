@@ -19,9 +19,9 @@ import org.jbox2d.dynamics.*;
  */
 public class LevelCreator {
 
-    final float width = 3.0f;
-    final float height = 2.1f;
-    final float pawnRadius = 0.1f;
+//    final float width = 3.0f;
+//    final float height = 2.1f;
+//    final float pawnRadius = 0.1f;
     Game game;
 
     public LevelCreator(Game game) {
@@ -31,7 +31,7 @@ public class LevelCreator {
 
     public void create() {
 //        game.physWorld.setGravity(new Vec2(0, -9.81f));
-        game.physWorld.setGravity(new Vec2(0, -20f));
+        game.physWorld.setGravity(new Vec2(0, -15f));
         game.camera.scale = 30;
         game.camera.xoff = 1*game.camera.scale;
         game.camera.yoff = 10*game.camera.scale;
@@ -141,6 +141,8 @@ public class LevelCreator {
         game.addEntity(createPlatform(-3, 3, 0, -1)); // left
 
         game.addEntity(createPlatform(10, 3, 12, 0)); // left
+
+        game.addEntity(createPlatform(12, 0, 50, -1)); // floor
 //        game.addEntity(createMantinel(1.511f, 1.05f, 0.011f, 1.05f)); // right
 
 
@@ -188,6 +190,7 @@ public class LevelCreator {
 
         BodyDef bd = new BodyDef();
         bd.position.set((right+left)/2f, (top+bottom)/2f);
+//        bd.angle = 0.1f;
         Body body = game.createBody(bd);
         FixtureDef def = new FixtureDef();
         def.shape = ps;
@@ -208,7 +211,7 @@ public class LevelCreator {
         FixtureDef def = new FixtureDef();
         def.shape = ps;
         def.density = 1;
-        def.friction = 0.5f;
+//        def.friction = 0.5f;
         body.createFixture(def);
 
         return new TableEntity(body);

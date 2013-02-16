@@ -6,6 +6,7 @@ import hypergame.eagleeye.Pawn;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
+import org.jbox2d.collision.ManifoldPoint;
 import org.jbox2d.collision.WorldManifold;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -16,6 +17,7 @@ import org.jbox2d.dynamics.joints.Joint;
 import robot.input.KeyboardDriving;
 
 import java.awt.*;
+import java.util.Arrays;
 
 
 /**
@@ -55,12 +57,18 @@ public class Player extends Entity implements ContactListener {
 //            body.m_force.set(v.mul(10));
 //            body.applyForce( new Vec2(-10, 0), body.getWorldCenter());
 //        body.applyForce(v.mul(10), body.getWorldCenter());
-        body.applyForce(new Vec2(goDir.x * 10, 0), body.getWorldCenter());
+
 //        }
 
+        if (Math.abs(goDir.x) > 0.1) {
+            legsFixture.setFriction(0);
+        } else {
+            legsFixture.setFriction(0.2f);
+        }
         if (goDir.y > 0.1) {
             jumpIntention = true;
         }
+        System.out.println(body.isAwake());
 //        legsFixture.setSensor(v.y < 0.1);
 
 //        lwheel.applyForce((float)(Math.random()-0.5));
@@ -113,6 +121,7 @@ public class Player extends Entity implements ContactListener {
 
         body = world.createBody(bd);
         body.setBullet(true);
+        body.setSleepingAllowed(false);
         body.setType(BodyType.DYNAMIC);
         body.setFixedRotation(true);
 
@@ -124,7 +133,7 @@ public class Player extends Entity implements ContactListener {
             FixtureDef sd = new FixtureDef();
             sd.shape = ps;
             sd.density = 1f; // like watter
-            sd.friction = 0.5f;
+//            sd.friction = 0.5f;
 
             body.createFixture(sd);
         }
@@ -161,7 +170,6 @@ public class Player extends Entity implements ContactListener {
     }
 
 
-
 //    private boolean isPlayerGrounded(float deltaTime) {
 //        groundedPlatform = null;
 //        List<Contact> contactList = world.getContactList();
@@ -171,12 +179,12 @@ public class Player extends Entity implements ContactListener {
 //                    contact.getFixtureB() == legsFixture)) {
 //
 //                Vec2 pos = body.getPosition();
-//                WorldManifold manifold = contact.getWorldManifold();
+//                WorldManifold manifold = contact.getWorldManifold();WorldManifold();
 //                boolean below = true;
 //                for(int j = 0; j < manifold.points.length; j++) {
 //                    below &= (manifold.points[j].y < pos.y - 1.5f);
 //                }
-//
+
 //                if(below) {
 //                    if(contact.getFixtureA().getUserData() != null && contact.getFixtureA().getUserData().equals("p")) {
 //                        groundedPlatform = (MovingPlatform)contact.getFixtureA().getBody().getUserData();
@@ -198,44 +206,75 @@ public class Player extends Entity implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-        Fixture other;
-        if (contact.getFixtureA() == legsFixture) {
-            other = contact.getFixtureB();
-        } else if (contact.getFixtureB() ==  legsFixture) {
-            other = contact.getFixtureA();
-        } else {
-            return; // not interested
-        }
-        System.out.println("Contact legs begin "+contact.isTouching());
+//        Fixture other;
+//        if (contact.getFixtureA() == legsFixture) {
+//            other = contact.getFixtureB();
+//        } else if (contact.getFixtureB() == legsFixture) {
+//            other = contact.getFixtureA();
+//        } else {
+//            return; // not interested
+//        }
+//        System.out.println("Contact legs begin " + contact.isTouching());
 //        ground = other.getBody();
     }
 
     @Override
     public void endContact(Contact contact) {
-        Fixture other;
-        if (contact.getFixtureA() == legsFixture) {
-            other = contact.getFixtureB();
-        } else if (contact.getFixtureB() ==  legsFixture) {
-            other = contact.getFixtureA();
-        } else {
-            return; // not interested
-        }
-        System.out.println("Contact legs end "+contact.isTouching());
+//        Fixture other;
+//        if (contact.getFixtureA() == legsFixture) {
+//            other = contact.getFixtureB();
+//        } else if (contact.getFixtureB() == legsFixture) {
+//            other = contact.getFixtureA();
+//        } else {
+//            return; // not interested
+//        }
+//        System.out.println("Contact legs end " + contact.isTouching());
 //        ground = null;
     }
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
         Fixture other;
+//        if (contact.getFixtureA().getBody() == body) {
         if (contact.getFixtureA() == legsFixture) {
+            System.out.println("Contact legs A");
             other = contact.getFixtureB();
-        } else if (contact.getFixtureB() ==  legsFixture) {
+        } else if (contact.getFixtureB() == legsFixture) {
+//        } else if (contact.getFixtureB().getBody() == body) {
+            System.out.println("Contact legs B");
             other = contact.getFixtureA();
         } else {
             return; // not interested
         }
-        System.out.println("Contact legs "+contact);
+        System.out.println("Contact legs " + contact + " " + other);
         ground = other.getBody();
+
+        // walking
+
+
+        ManifoldPoint[] points = contact.getManifold().points;
+
+//        System.out.println("points " + Arrays.toString(points));
+        System.out.println("points ");
+
+        for (ManifoldPoint point : points) {
+            System.out.print(point.localPoint + ", ");
+        }
+
+
+        if (points.length > 0) {
+            Vec2 force = new Vec2(goDir.x * 20, 0);
+//            points[0].tangentImpulse = force.x;
+            body.applyForce(force, body.getWorldCenter());
+
+
+            // TODO when jbox2d release 2.3 use Contact.setTangentVelocity
+//            contact.setTan
+//            ground.applyForce(force.negate(), points[0].);
+            ground.applyForce(force.negate(), body.getWorldCenter());
+        }
+
+
         jump();
 
     }
