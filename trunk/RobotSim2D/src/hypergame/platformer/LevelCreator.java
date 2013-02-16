@@ -30,16 +30,21 @@ public class LevelCreator {
     }
 
     public void create() {
-        game.physWorld.setGravity(new Vec2(0, -9.81f));
-        game.camera.scale = 50;
+//        game.physWorld.setGravity(new Vec2(0, -9.81f));
+        game.physWorld.setGravity(new Vec2(0, -20f));
+        game.camera.scale = 30;
         game.camera.xoff = 1*game.camera.scale;
         game.camera.yoff = 10*game.camera.scale;
 //        createPhysSide();
 //        createPatches();
         createPlatforms();
-        createPawns();
+        game.addEntity(createBall(1, 1));
+        game.addEntity(createBall(2, 2));
+        game.addEntity(createBox(0, 3, 3, 2));
 //        game.addEntity(new Robot(game));
-        game.addEntity(new Player(game));
+        Player player = new Player(game);
+        game.addEntity(player);
+        game.physWorld.setContactListener(player);
     }
 
     private void createPhysSide() {
@@ -177,7 +182,7 @@ public class LevelCreator {
 
     }
 
-    private TableEntity createPlatform(float left, float top, float right, float bottom) {
+    private Entity createPlatform(float left, float top, float right, float bottom) {
         PolygonShape ps = new PolygonShape();
         ps.setAsBox((right-left)/2f, (top-bottom)/2f);
 
@@ -192,12 +197,30 @@ public class LevelCreator {
 
     }
 
+    private Entity createBox(float left, float top, float right, float bottom) {
+        PolygonShape ps = new PolygonShape();
+        ps.setAsBox((right-left)/2f, (top-bottom)/2f);
 
-    private Pawn createPawn(float x, float y) {
+        BodyDef bd = new BodyDef();
+        bd.type = BodyType.DYNAMIC;
+        bd.position.set((right+left)/2f, (top+bottom)/2f);
+        Body body = game.createBody(bd);
+        FixtureDef def = new FixtureDef();
+        def.shape = ps;
+        def.density = 1;
+        def.friction = 0.5f;
+        body.createFixture(def);
+
+        return new TableEntity(body);
+
+    }
+
+
+    private Pawn createBall(float x, float y) {
 //        PolygonDef sd = new PolygonDef();
 //        sd.setAsBox(, halfh);
         CircleShape cd = new CircleShape();
-        cd.m_radius = 0.1f;
+        cd.m_radius = 0.5f;
         FixtureDef sd = new FixtureDef();
         sd.shape = cd;
         sd.density = 10f;
@@ -234,44 +257,8 @@ public class LevelCreator {
         }
     }
 
-    private void createPawns() {
-//        game.addEntity(createPawn(1, 1));
 
-        // center
-        game.addEntity(createPawn(0, 3*0.35f));
 
-        putPawns(1, 1);
-        putPawns(1, 5);
 
-        putPawns(2, 2);
-        putPawns(2, 4);
-
-        putDispensePawns(1, 1);
-        putDispensePawns(2, 1);
-        putDispensePawns(3, 1);
-        putDispensePawns(4, 1);
-        putDispensePawns(5, 1);
-
-    }
-
-    private void putPawns(int line, int pos) {
-//        game.addEntity(createPawn(1, 1));
-
-        // center
-        game.addEntity(createPawn(line*0.35f, (6-pos)*0.35f));
-        game.addEntity(createPawn(-line*0.35f, (6-pos)*0.35f));
-
-    }
-
-    private void putDispensePawns(int pos, int type) {
-//        game.addEntity(createPawn(1, 1));
-
-        float offs = (float)(Math.random()*0.2f);
-
-        // center
-        game.addEntity(createPawn(3*0.35f+0.1f+offs, 0.01f+(pos)*0.28f));
-        game.addEntity(createPawn(-(3*0.35f+0.1f+offs), 0.01f+(pos)*0.28f));
-
-    }
 
 }

@@ -3,26 +3,32 @@ package hypergame.platformer;
 import hypergame.Entity;
 import hypergame.Game;
 import hypergame.eagleeye.Pawn;
+import org.jbox2d.callbacks.ContactImpulse;
+import org.jbox2d.callbacks.ContactListener;
+import org.jbox2d.collision.Manifold;
+import org.jbox2d.collision.WorldManifold;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
+import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.dynamics.joints.Joint;
 import robot.input.KeyboardDriving;
 
 import java.awt.*;
 
+
 /**
  * @author Kotuc
  */
-public class Player extends Entity {
+public class Player extends Entity implements ContactListener {
 
     public static final boolean DRIVE_BY_KEYBOARD = true;
 
     KeyboardDriving keyboard = new KeyboardDriving();
     private boolean jumpIntention;
-    private boolean grounded;
-    private Fixture playerSensorFixture;
+    private Fixture legsFixture;
+    private Vec2 goDir;
 
     public Player(Game game) {
         super();
@@ -30,7 +36,6 @@ public class Player extends Entity {
         color = new Color(0.8f, 1.0f, 0.8f);
         createPhysic(game.getPhysWorld());
 //        game.physWorld.;
-        grounded = true;
     }
 
     @Override
@@ -45,18 +50,18 @@ public class Player extends Entity {
 //        body.m_torque = 0;
 
 //        if (DRIVE_BY_KEYBOARD) {
-        Vec2 v = keyboard.actPlayer();
-        System.out.println("v " + v);
+        goDir = keyboard.actPlayer();
+        System.out.println("v " + goDir);
 //            body.m_force.set(v.mul(10));
 //            body.applyForce( new Vec2(-10, 0), body.getWorldCenter());
 //        body.applyForce(v.mul(10), body.getWorldCenter());
-        body.applyForce(new Vec2(v.x*10, 0), body.getWorldCenter());
+        body.applyForce(new Vec2(goDir.x * 10, 0), body.getWorldCenter());
 //        }
 
-        if (v.y > 0.1) {
+        if (goDir.y > 0.1) {
             jumpIntention = true;
-            jump();
         }
+//        legsFixture.setSensor(v.y < 0.1);
 
 //        lwheel.applyForce((float)(Math.random()-0.5));
 //        rwheel.applyForce((float)(Math.random()-0.5));
@@ -64,21 +69,36 @@ public class Player extends Entity {
 //        rwheel.applyForce((float)(0.09f));
 
 
+        if (grounded()) {
+            color = new Color(0.8f, 1.0f, 0.8f);
+        } else {
+            color = new Color(0.6f, .8f, 0.6f);
+        }
+
     }
 
     public void jump() {
         // jump, but only when grounded
         if (jumpIntention) {
             jumpIntention = false;
-            if (grounded) {
-                grounded = false;
+            if (grounded()) {
 //                player.setLinearVelocity(vel.x, 0);
+                // apply action
                 System.out.println("jump before: " + body.getLinearVelocity());
 //                player.setTransform(pos.x, pos.y + 0.01f, 0);
-                body.applyLinearImpulse(new Vec2(0, 20), body.getWorldCenter());
+                Vec2 impulse = new Vec2(0, 20);
+                body.applyLinearImpulse(impulse, body.getWorldCenter());
                 System.out.println("jump, " + body.getLinearVelocity());
+
+                // apply reaction
+                ground.applyLinearImpulse(impulse.negate(), body.getWorldCenter());
+//                ground = null;
             }
         }
+    }
+
+    private boolean grounded() {
+        return ground != null;
     }
 
 
@@ -87,7 +107,7 @@ public class Player extends Entity {
 
         BodyDef bd = new BodyDef();
 //        bd.position.set(-1, 1);
-        bd.position.set(5, 5f);
+        bd.position.set(5, 8f);
 //        bd.linearDamping = 2f;
 //        bd.angularDamping = 4f;
 
@@ -98,7 +118,7 @@ public class Player extends Entity {
 
         {
             PolygonShape ps = new PolygonShape();
-            ps.setAsBox(0.5f, 1f);
+            ps.setAsBox(0.5f, 0.5f);
 
 //        sd.radius = 0.1f;
             FixtureDef sd = new FixtureDef();
@@ -118,24 +138,111 @@ public class Player extends Entity {
 //        sd.radius = 0.1f;
             fd.density = 0f;
 //            gripper.sensor =
-                    body.createFixture(fd);
+            body.createFixture(fd);
         }
 
         {
             CircleShape circle = new CircleShape();
-            circle.m_radius= 0.45f;
-            circle.m_p.set(0, -1.4f);
+            circle.m_radius = 0.5f;
+            circle.m_p.set(0, -0.5f);
             FixtureDef fd = new FixtureDef();
             fd.shape = circle;
-            fd.isSensor = true;
+//            fd.isSensor = true;
+            fd.density = 1f;
 //        sd.radius = 0.1f;
-            playerSensorFixture = body.createFixture(fd);
+            legsFixture = body.createFixture(fd);
         }
 // TODO mass
 //     body.setMassFromShapes();
 //        body.resetMassData();
 //        body.m_mass = 10;
 
+
+    }
+
+
+
+//    private boolean isPlayerGrounded(float deltaTime) {
+//        groundedPlatform = null;
+//        List<Contact> contactList = world.getContactList();
+//        for(int i = 0; i < contactList.size(); i++) {
+//            Contact contact = contactList.get(i);
+//            if(contact.isTouching() && (contact.getFixtureA() == legsFixture ||
+//                    contact.getFixtureB() == legsFixture)) {
+//
+//                Vec2 pos = body.getPosition();
+//                WorldManifold manifold = contact.getWorldManifold();
+//                boolean below = true;
+//                for(int j = 0; j < manifold.points.length; j++) {
+//                    below &= (manifold.points[j].y < pos.y - 1.5f);
+//                }
+//
+//                if(below) {
+//                    if(contact.getFixtureA().getUserData() != null && contact.getFixtureA().getUserData().equals("p")) {
+//                        groundedPlatform = (MovingPlatform)contact.getFixtureA().getBody().getUserData();
+//                    }
+//
+//                    if(contact.getFixtureB().getUserData() != null && contact.getFixtureB().getUserData().equals("p")) {
+//                        groundedPlatform = (MovingPlatform)contact.getFixtureB().getBody().getUserData();
+//                    }
+//                    return true;
+//                }
+//
+//                return false;
+//            }
+//        }
+//        return false;
+//    }
+
+    Body ground = null;
+
+    @Override
+    public void beginContact(Contact contact) {
+        Fixture other;
+        if (contact.getFixtureA() == legsFixture) {
+            other = contact.getFixtureB();
+        } else if (contact.getFixtureB() ==  legsFixture) {
+            other = contact.getFixtureA();
+        } else {
+            return; // not interested
+        }
+        System.out.println("Contact legs begin "+contact.isTouching());
+//        ground = other.getBody();
+    }
+
+    @Override
+    public void endContact(Contact contact) {
+        Fixture other;
+        if (contact.getFixtureA() == legsFixture) {
+            other = contact.getFixtureB();
+        } else if (contact.getFixtureB() ==  legsFixture) {
+            other = contact.getFixtureA();
+        } else {
+            return; // not interested
+        }
+        System.out.println("Contact legs end "+contact.isTouching());
+//        ground = null;
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+        Fixture other;
+        if (contact.getFixtureA() == legsFixture) {
+            other = contact.getFixtureB();
+        } else if (contact.getFixtureB() ==  legsFixture) {
+            other = contact.getFixtureA();
+        } else {
+            return; // not interested
+        }
+        System.out.println("Contact legs "+contact);
+        ground = other.getBody();
+        jump();
+
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
 
@@ -170,11 +277,10 @@ public class Player extends Entity {
                                 hold = entity;
                                 break;
                             }
-                            */
 //                            } else {
                             //                              color = Color.PINK;
                             //                        }
-
+                                          */
 
 //                Contact contact = Contact.createContact(sensor, entity.body.m_shapeList);
 //                if (contact != null) {
