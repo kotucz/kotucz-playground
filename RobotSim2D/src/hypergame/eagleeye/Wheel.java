@@ -1,5 +1,6 @@
 package hypergame.eagleeye;
 
+import hypergame.Displayer;
 import hypergame.Entity;
 import org.jbox2d.common.Vec2;
 import robot.output.Motor;
@@ -8,8 +9,8 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 
 /**
-* @author Kotuc
-*/
+ * @author Kotuc
+ */
 class Wheel implements Motor {
 
     final Vec2 relPos;
@@ -36,9 +37,8 @@ class Wheel implements Motor {
     private hypergame.eagleeye.Robot robot;
 
     /**
-     *
      * @param robot
-     * @param relPos position vector relative to the body
+     * @param relPos     position vector relative to the body
      * @param relForward forward vector relative to the body
      */
     public Wheel(hypergame.eagleeye.Robot robot, Vec2 relPos, Vec2 relForward) {
@@ -48,7 +48,6 @@ class Wheel implements Motor {
     }
 
     /**
-     *
      * @see http://www.gamedev.net/reference/programming/features/2dcarphys/page4.asp
      */
     void applyWheelForce(float timestep) {
@@ -122,30 +121,30 @@ class Wheel implements Motor {
         return new Vec2(robot.body.getWorldPoint(relPos));
     }
 
-    void paintWheel(Graphics2D g) {
-        Graphics2D g2 = (Graphics2D) g;
+    void paintWheel(Displayer g2) {
 
-        Stroke stroke = g2.getStroke();
-        g2.setStroke(new BasicStroke(0.01f));
 
+//        Stroke stroke = g2.getStroke();
+//        g2.setStroke(new BasicStroke(0.01f));
         Vec2 pos = getAbsPos();
-        Vec2 end = getAbsDir().mul(speed).add(getAbsPos());
-
-        g.setColor(Color.BLUE);
-
-        g2.draw(new Line2D.Float(pos.x, pos.y, end.x, end.y));
-
         {
-            g.setColor(Color.RED);
-            Vec2 end2 = (getAbsPos().add(robot.body.getLinearVelocityFromLocalPoint(relPos)));
-            g2.draw(new Line2D.Float(pos.x, pos.y, end2.x, end2.y));
+            Vec2 vec1 = getAbsDir().mul(speed);
+
+            g2.setColor(Color.BLUE);
+
+            g2.drawVector(pos, vec1);
+        }
+        {
+            g2.setColor(Color.RED);
+            Vec2 vec2 = robot.body.getLinearVelocityFromLocalPoint(relPos);
+            g2.drawVector(pos, vec2);
 
 //                g.setColor(Color.GREEN);
 //                Point end3 = toPoint(getAbsPos().add(new Vec2(angularVelocity,0)));
 //                g.drawLine(pos.x, pos.y, end3.x, end3.y);
         }
 
-        g2.setStroke(stroke);
+//        g2.setStroke(stroke);
 
 //            Point pos = toPoint(getAbsPos());
 //            Point end = toPoint(getAbsDir().mul(speed).add(getAbsPos()));

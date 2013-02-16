@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import hypergame.Displayer;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -30,8 +31,7 @@ public class ScoringArea extends TableEntity {
     }
 
     @Override
-    public void paint(Graphics2D g) {
-        Graphics2D g2 = (Graphics2D) g;
+    public void paint(Displayer g) {
         switch (team) {
             case RED:
                 g.setColor(Color.RED);
@@ -46,10 +46,14 @@ public class ScoringArea extends TableEntity {
         }
 //        Point xy = toPoint(new Vec2(rect.x, rect.y));
 ////        Point xy = toPoint(new Vec2(rect.w, rect.getMaxX()));
-        g2.fill(rect);
+
+//        g.fill(rect); TODO
+
 //        g.fillRect(xy.x, xy.y, (int) (rect.width * scale), (int) (rect.height * scale));
         g.setColor(Color.BLACK);
 //        g.drawRect(xy.x, xy.y, (int) (rect.width * scale), (int) (rect.height * scale));
-        g2.draw(rect);
+
+//        g.draw(rect); TODO
+
     }
 }

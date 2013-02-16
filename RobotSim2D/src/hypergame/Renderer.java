@@ -131,7 +131,7 @@ public class Renderer implements GLEventListener {
 //            texture.bind();
 //            gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
 
-            game.draw(gl);
+//         TODO   game.draw(gl);
 
 //            texture.disable();
 //

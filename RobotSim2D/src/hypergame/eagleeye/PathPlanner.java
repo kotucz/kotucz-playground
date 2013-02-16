@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+
+import hypergame.Displayer;
 import org.jbox2d.common.Mat22;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
@@ -47,24 +49,22 @@ public class PathPlanner {
 
     }
 
-    void paint(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+    void paint(Displayer g2) {
 
-        Stroke stroke = g2.getStroke();
-        g2.setStroke(new BasicStroke(0.01f));
+//        Stroke stroke = g2.getStroke();
+//        g2.setStroke(new BasicStroke(0.01f));
 
-        g.setColor(Color.GREEN);
-        g2.draw(new Line2D.Float(pos.x, pos.y, tgt.x, tgt.y));
+        g2.setColor(Color.GREEN);
+        g2.drawLine(pos, tgt);
 
-        g.setColor(Color.PINK);
-        Vec2 dire = pos.add(dir);
-        g2.draw(new Line2D.Float(pos.x, pos.y, dire.x, dire.y));
+        g2.setColor(Color.PINK);
+        g2.drawVector(pos, dir);
 
-//        g.setFont(g.getFont().deriveFont(0.1f));
+//        g2.setFont(g2.getFont().deriveFont(0.1f));
         System.out.println("dot " + speed + " rot " + rot);
 
 
-        g2.setStroke(stroke);
+//        g2.setStroke(stroke);
 
         { // simulate numerical
 
@@ -73,39 +73,43 @@ public class PathPlanner {
             PoseState pose = new PoseState();
 //            pose.setTo(robot.body.getXForm());
             pose.setTo(robot);
-            gp.moveTo(pose.getPosition().x, pose.getPosition().y);
+
+            Vec2 posa = new Vec2(pose.getPosition());
+
+            g2.setColor(Color.RED);
 
             for (int i = 0; i < 1000; i++) {
                 pose.update(0.001f);
 //                pose.xform.position.x+=0.01;
-                gp.lineTo(pose.getPosition().x, pose.getPosition().y);
+                Vec2 posb = new Vec2(pose.getPosition());
+                g2.drawLine(posa, posb);
+                posa = posb;
             }
 
-            g2.setColor(Color.RED);
 
-            g2.draw(gp);
 
         }
 
         { // simulate absolute
 
-            GeneralPath gp = new GeneralPath();
 
             PoseState pose = new PoseState();
 //            pose.setTo(robot.body.getXForm());
             pose.setTo(robot);
-            gp.moveTo(pose.getPosition().x, pose.getPosition().y);
+
+            g2.setColor(Color.GREEN);
+
+            Vec2 posa = new Vec2(pose.getPosition());
 
             for (int i = 0; i < 100; i++) {
                 pose.setTo(robot);
                 pose.update(0.01f * i);
 //                pose.xform.position.x+=0.01;
-                gp.lineTo(pose.getPosition().x, pose.getPosition().y);
+                Vec2 posb = new Vec2(pose.getPosition());
+                g2.drawLine(posa, posb);
+                posa = posb;
             }
 
-            g2.setColor(Color.GREEN);
-
-            g2.draw(gp);
 
         }
 
