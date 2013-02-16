@@ -1,5 +1,7 @@
 package hypergame.eagleeye;
 
+import hypergame.AWTDisplayer;
+import hypergame.Displayer;
 import hypergame.Entity;
 import hypergame.Game;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -65,7 +67,7 @@ public class Robot extends TableEntity implements DiffWheels {
     }
 
     @Override
-    public void paint(Graphics2D g) {
+    public void paint(Displayer g) {
         super.paint(g);
         lwheel.paintWheel(g);
         rwheel.paintWheel(g);

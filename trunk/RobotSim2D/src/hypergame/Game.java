@@ -76,13 +76,11 @@ public class Game {
         }
     }
 
-    void draw(GL2 gl) {
-
-        for (Entity entity : entities) {
-            entity.draw(gl);
-        }
-
-    }
+//    void paint(Displayer gl) {
+//        for (Entity entity : entities) {
+//            entity.paint(gl);
+//        }
+//    }
 
     public Body createBody(BodyDef bd) {
         return physWorld.createBody(bd);
@@ -100,29 +98,29 @@ public class Game {
         g.setColor(Color.white);
         g.fillRect(0, 0, 1000, 1000);
 
-        Graphics2D g2 = (Graphics2D) g;
 
         RenderingHints rh = new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setRenderingHints(rh);
+        g.setRenderingHints(rh);
 
 
 //        g2.addRenderingHints();
 
 //        final int scale = 200;
 
-        g2.translate(camera.xoff, camera.yoff);
-        g2.scale(camera.scale, -camera.scale);
+        g.translate(camera.xoff, camera.yoff);
+        g.scale(camera.scale, -camera.scale);
 
         Stroke stroke = new BasicStroke(0.005f);
-        g2.setStroke(stroke);
+        g.setStroke(stroke);
 
+        AWTDisplayer g1 = new AWTDisplayer(g);
         for (Entity entity : entities) {
-            entity.paint(g);
+            entity.paint(g1);
         }
 
-        g2.setTransform(AffineTransform.getTranslateInstance(0, 0));
+        g.setTransform(AffineTransform.getTranslateInstance(0, 0));
 
         g.setColor(Color.black);
         g.drawString("" + getRunTime() / 100, 20, 20);

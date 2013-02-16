@@ -2,41 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="7999f793-f742-4f25-a888-1a60bc9a6a40" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/hypergame/eagleeye" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/hypergame/platformer" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/hypergame/platformer/LevelCreator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/hypergame/MainAWT.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/hypergame/MainOGL.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/hypergame/platformer/Player.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/hypergame/eagleeye/RobotKeyboardController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/hypergame/eagleeye/TableEntity.java" />
-      <change type="MOVED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\PathPlanner.java" afterPath="$PROJECT_DIR$/src/hypergame/eagleeye/PathPlanner.java" />
-      <change type="MOVED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\Pawn.java" afterPath="$PROJECT_DIR$/src/hypergame/eagleeye/Pawn.java" />
-      <change type="MOVED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\Robot.java" afterPath="$PROJECT_DIR$/src/hypergame/eagleeye/Robot.java" />
-      <change type="MOVED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\ScoringArea.java" afterPath="$PROJECT_DIR$/src/hypergame/eagleeye/ScoringArea.java" />
-      <change type="MOVED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\Table.java" afterPath="$PROJECT_DIR$/src/hypergame/eagleeye/Table.java" />
-      <change type="MOVED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\Team.java" afterPath="$PROJECT_DIR$/src/hypergame/eagleeye/Team.java" />
-      <change type="MOVED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\Wheel.java" afterPath="$PROJECT_DIR$/src/hypergame/eagleeye/Wheel.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/hypergame/AWTDisplayer.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/hypergame/Displayer.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/hypergame/OGLDisplayer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/Entity.java" afterPath="$PROJECT_DIR$/src/hypergame/Entity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/Game.java" afterPath="$PROJECT_DIR$/src/hypergame/Game.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/robot/input/KeyboardDriving.java" afterPath="$PROJECT_DIR$/src/robot/input/KeyboardDriving.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/ViewPanel.java" afterPath="$PROJECT_DIR$/src/hypergame/ViewPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/eagleeye/PathPlanner.java" afterPath="$PROJECT_DIR$/src/hypergame/eagleeye/PathPlanner.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/platformer/Player.java" afterPath="$PROJECT_DIR$/src/hypergame/platformer/Player.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/Renderer.java" afterPath="$PROJECT_DIR$/src/hypergame/Renderer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/eagleeye/Robot.java" afterPath="$PROJECT_DIR$/src/hypergame/eagleeye/Robot.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/eagleeye/ScoringArea.java" afterPath="$PROJECT_DIR$/src/hypergame/eagleeye/ScoringArea.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/eagleeye/Wheel.java" afterPath="$PROJECT_DIR$/src/hypergame/eagleeye/Wheel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="RobotSim2D.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/PathPlanner.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360782089470" ignored="false" />
-    <file path="/Entity.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360789830317" ignored="false" />
+    <file path="/PathPlanner.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1361028441950" ignored="false" />
+    <file path="/Entity.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1361028905962" ignored="false" />
     <file path="/Dummy.txt" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360698522086" ignored="false" />
     <file path="/fragment.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360792502808" ignored="false" />
-    <file path="/Robot.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360793098891" ignored="false" />
+    <file path="/Robot.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1361027272656" ignored="false" />
     <file path="/HyperGameApp.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360700363012" ignored="false" />
     <file path="/HyperGameView.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360700388647" ignored="false" />
     <file path="/Table.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360705004741" ignored="false" />
     <file path="/Pawn.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360789537426" ignored="false" />
-    <file path="/Game.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360791655937" ignored="false" />
-    <file path="/Wheel.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360789714826" ignored="false" />
-    <file path="/ScoringArea.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360789735051" ignored="false" />
+    <file path="/Game.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1361029103005" ignored="false" />
+    <file path="/Wheel.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1361028229304" ignored="false" />
+    <file path="/ScoringArea.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1361028591700" ignored="false" />
     <file path="/ViewPanel.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360783707738" ignored="false" />
     <file path="/a.dummy" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360785629250" ignored="false" />
     <file path="/Level.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360789050497" ignored="false" />
@@ -44,7 +36,11 @@
     <file path="/LevelCreator.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360793275774" ignored="false" />
     <file path="/KeyboardDriving.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360793198544" ignored="false" />
     <file path="/RobotKeyboardController.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360792917152" ignored="false" />
-    <file path="/Player.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1360794298990" ignored="false" />
+    <file path="/Player.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1361026700091" ignored="false" />
+    <file path="/AWTDisplayer.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1361029209253" ignored="false" />
+    <file path="/OGLDisplayer.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1361027857199" ignored="false" />
+    <file path="/Displayer.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1361028183432" ignored="false" />
+    <file path="/Renderer.java" changelist="7999f793-f742-4f25-a888-1a60bc9a6a40" time="1361028629796" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +55,6 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -94,6 +89,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -103,22 +99,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Robot.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/Robot.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="27" selection-start="741" selection-end="741" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Game.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/hypergame/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="62" column="0" selection-start="1563" selection-end="1563" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#610#618#0" expanded="true" />
-              </folding>
+            <state line="110" column="19" selection-start="2715" selection-end="2715" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -126,67 +111,7 @@
       <file leaf-file-name="Entity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/hypergame/Entity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="0" selection-start="712" selection-end="712" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LevelCreator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hypergame/platformer/LevelCreator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="30" selection-start="1044" selection-end="1044" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Player.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/hypergame/platformer/Player.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="38" selection-start="1142" selection-end="1142" vertical-scroll-proportion="0.366">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Vec2.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/common/Vec2.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="64" column="0" selection-start="2791" selection-end="2791" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="KeyboardDriving.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/robot/input/KeyboardDriving.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="93" column="49" selection-start="2893" selection-end="2893" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RobotKeyboardController.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/RobotKeyboardController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="11" selection-start="388" selection-end="388" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DiffWheels.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/robot/output/DiffWheels.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="9" selection-start="90" selection-end="90" vertical-scroll-proportion="0.0">
+            <state line="6" column="3" selection-start="77" selection-end="77" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -195,8 +120,82 @@
       <file leaf-file-name="Body.java" pinned="false" current="false" current-in-tab="false">
         <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/dynamics/Body.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="471" column="0" selection-start="12364" selection-end="12364" vertical-scroll-proportion="0.0">
+            <state line="1041" column="0" selection-start="27099" selection-end="27099" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="n#!!doc" expanded="false" />
+                <element signature="imports" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PathPlanner.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/PathPlanner.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="102" column="10" selection-start="2327" selection-end="2327" vertical-scroll-proportion="0.0">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ScoringArea.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/ScoringArea.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="56" column="10" selection-start="1589" selection-end="1589" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Player.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hypergame/platformer/Player.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="31" selection-start="423" selection-end="423" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Renderer.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hypergame/Renderer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="100" column="31" selection-start="2483" selection-end="2483" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Wheel.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/Wheel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="76" column="35" selection-start="2276" selection-end="2276" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Displayer.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hypergame/Displayer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="11" selection-start="281" selection-end="281" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AWTDisplayer.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/hypergame/AWTDisplayer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="94" column="23" selection-start="3115" selection-end="3115" vertical-scroll-proportion="0.4243028">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -211,22 +210,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/hypergame/MainAWT.java" />
-        <option value="$PROJECT_DIR$/src/hypergame/MainOGL.java" />
-        <option value="$PROJECT_DIR$/src/hypergame/Level.java" />
-        <option value="$PROJECT_DIR$/src/hypergame/platformer/Level.java" />
-        <option value="$PROJECT_DIR$/src/hypergame/eagleeye/Pawn.java" />
         <option value="$PROJECT_DIR$/src/hypergame/TableEntity.java" />
-        <option value="$PROJECT_DIR$/src/hypergame/eagleeye/Wheel.java" />
-        <option value="$PROJECT_DIR$/src/hypergame/eagleeye/ScoringArea.java" />
-        <option value="$PROJECT_DIR$/src/hypergame/Entity.java" />
         <option value="$PROJECT_DIR$/src/hypergame/eagleeye/TableEntity.java" />
-        <option value="$PROJECT_DIR$/src/hypergame/Game.java" />
         <option value="$PROJECT_DIR$/src/hypergame/eagleeye/RobotKeyboardController.java" />
-        <option value="$PROJECT_DIR$/src/hypergame/eagleeye/Robot.java" />
         <option value="$PROJECT_DIR$/src/robot/input/KeyboardDriving.java" />
         <option value="$PROJECT_DIR$/src/hypergame/platformer/LevelCreator.java" />
+        <option value="$PROJECT_DIR$/src/hypergame/eagleeye/Robot.java" />
+        <option value="$PROJECT_DIR$/src/hypergame/OGLDisplayer.java" />
+        <option value="$PROJECT_DIR$/src/hypergame/Displayer.java" />
+        <option value="$PROJECT_DIR$/src/hypergame/eagleeye/Wheel.java" />
+        <option value="$PROJECT_DIR$/src/hypergame/eagleeye/PathPlanner.java" />
+        <option value="$PROJECT_DIR$/src/hypergame/eagleeye/ScoringArea.java" />
         <option value="$PROJECT_DIR$/src/hypergame/platformer/Player.java" />
+        <option value="$PROJECT_DIR$/src/hypergame/Renderer.java" />
+        <option value="$PROJECT_DIR$/src/hypergame/Entity.java" />
+        <option value="$PROJECT_DIR$/src/hypergame/Game.java" />
+        <option value="$PROJECT_DIR$/src/hypergame/AWTDisplayer.java" />
       </list>
     </option>
   </component>
@@ -356,50 +355,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RobotSim2D" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RobotSim2D" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hypergame" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="platformer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RobotSim2D" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RobotSim2D" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hypergame" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="eagleeye" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane" />
@@ -409,6 +364,7 @@
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="project.structure.last.edited" value="Modules" />
+    <property name="OverrideImplement.combined" value="false" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
@@ -489,19 +445,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -527,6 +470,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -681,7 +637,7 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32844242" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40632054" sideWeight="0.9982379" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4040632" sideWeight="0.9982379" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -690,7 +646,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.5936795" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.5959368" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3227991" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -758,91 +714,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/hypergame/Renderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="133" column="0" selection-start="3486" selection-end="3486" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/Table.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="74" column="28" selection-start="2415" selection-end="2415" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/Pawn.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="32" selection-start="178" selection-end="178" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/Wheel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="25" selection-start="671" selection-end="671" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/ScoringArea.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="11" selection-start="762" selection-end="762" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/TableEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="14" selection-start="376" selection-end="376" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/RobotKeyboardController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="11" selection-start="388" selection-end="388" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/Robot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="27" selection-start="741" selection-end="741" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/robot/input/KeyboardDriving.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="93" column="49" selection-start="2893" selection-end="2893" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/platformer/LevelCreator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="30" selection-start="1044" selection-end="1044" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/Entity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="0" selection-start="712" selection-end="712" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/robot/output/DiffWheels.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="9" selection-start="90" selection-end="90" vertical-scroll-proportion="0.0">
@@ -850,32 +721,118 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/Game.java">
+    <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/dynamics/Filter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="62" column="0" selection-start="1563" selection-end="1563" vertical-scroll-proportion="0.0">
+        <state line="31" column="13" selection-start="1657" selection-end="1657" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hypergame/platformer/LevelCreator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="31" selection-start="1045" selection-end="1045" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/Robot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="73" column="23" selection-start="1873" selection-end="1873" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hypergame/OGLDisplayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="57" selection-start="483" selection-end="483" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#610#618#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/common/Vec2.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="0" selection-start="2791" selection-end="2791" vertical-scroll-proportion="0.0">
+        <state line="94" column="22" selection-start="3359" selection-end="3359" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/dynamics/Body.java">
+    <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/Wheel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="471" column="0" selection-start="12364" selection-end="12364" vertical-scroll-proportion="0.0">
+        <state line="76" column="35" selection-start="2276" selection-end="2276" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/PathPlanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="102" column="10" selection-start="2327" selection-end="2327" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hypergame/eagleeye/ScoringArea.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="56" column="10" selection-start="1589" selection-end="1589" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hypergame/Renderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="100" column="31" selection-start="2483" selection-end="2483" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/hypergame/platformer/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="38" selection-start="1142" selection-end="1142" vertical-scroll-proportion="0.366">
+        <state line="17" column="31" selection-start="423" selection-end="423" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hypergame/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="110" column="19" selection-start="2715" selection-end="2715" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/dynamics/Body.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1041" column="0" selection-start="27099" selection-end="27099" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hypergame/Entity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="3" selection-start="77" selection-end="77" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hypergame/Displayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="11" selection-start="281" selection-end="281" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hypergame/AWTDisplayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="94" column="23" selection-start="3115" selection-end="3115" vertical-scroll-proportion="0.4243028">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
