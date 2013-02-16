@@ -62,12 +62,23 @@ public class KeyboardDriving {
 
     }
 
+
+    boolean previousup = false;
+
     public Vec2 actPlayer() {
         keyboard.poll();
 
         upvalue = (1 - factor) * upvalue + factor * (forwardKey.getPollData() - backwardKey.getPollData());
 
         rightvalue = (1 - factor) * rightvalue + factor * (rightKey.getPollData() - leftKey.getPollData());
+
+        float jump = 0;
+
+        boolean up = forwardKey.getPollData() > 0.5;
+        if (up && !previousup) {
+            jump = 1;
+        }
+        previousup = up;
 
         if (stopKey.getPollData() > 0.5) {
             upvalue = 0;
@@ -81,17 +92,18 @@ public class KeyboardDriving {
                 rightvalue = 0;
             }
 
-            System.out.println("Keyboard " + forwardKey.getPollData() + " " + backwardKey.getPollData() + " "
-                    + rightKey.getPollData() + " " +
-                    leftKey.getPollData() + "; " +
-                    upvalue + " " + rightvalue);
+//            System.out.println("Keyboard " + forwardKey.getPollData() + " " + backwardKey.getPollData() + " "
+//                    + rightKey.getPollData() + " " +
+//                    leftKey.getPollData() + "; " +
+//                    upvalue + " " + rightvalue);
 
 //            wheels.setSpeed(upvalue);
 //        wheels.setSteer(rightvalue * upvalue);
 //            wheels.setSteer(rightvalue);
         }
 //            Logger.getLogger("XPadDriving").log(Level.INFO, "upvalue: " + upvalue + "; rightvalue: " + rightvalue);
-        return new Vec2((float)rightvalue, (float)upvalue);
+//        return new Vec2((float)rightvalue, (float)upvalue);
+        return new Vec2((float)rightvalue, (float)jump);
 
     }
 

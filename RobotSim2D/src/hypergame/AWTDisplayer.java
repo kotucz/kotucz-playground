@@ -37,7 +37,8 @@ public class AWTDisplayer extends Displayer {
             CircleShape circles = (CircleShape) shape.getShape();
 
 //          TODO  Vec2 cent = Transform.mul(xf, circles.getLocalPosition());
-            Vec2 cent = Transform.mul(xf, shape.getBody().getLocalCenter().add(circles.m_p));
+//            Vec2 cent = Transform.mul(xf, shape.getBody().getLocalCenter().add(circles.m_p));
+            Vec2 cent = Transform.mul(xf, circles.m_p);
 
             {
 //                Point a = toPoint(cent.add(xf.R.col1.mul(circles.getRadius())));
