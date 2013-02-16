@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="7999f793-f742-4f25-a888-1a60bc9a6a40" name="Default" comment="">
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\MainOGL.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\OGLDisplayer.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\src\hypergame\Renderer.java" afterPath="" />
       <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\JBox2D\.settings" afterPath="" />
       <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\JBox2D" afterPath="" />
       <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\JBox2D\doc\org\jbox2d\util\blob" afterPath="" />
@@ -52,11 +55,6 @@
       <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\JBox2D\src\org\jbox2d\testbed\tests" afterPath="" />
       <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\JBox2D\doc\org\jbox2d\util" afterPath="" />
       <change type="DELETED" beforePath="C:\Users\Kotuc\Projects\KotuczPlaygroudGoogleCode\RobotSim2D\JBox2D\src\org\jbox2d\util" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/Game.java" afterPath="$PROJECT_DIR$/src/hypergame/Game.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/platformer/LevelCreator.java" afterPath="$PROJECT_DIR$/src/hypergame/platformer/LevelCreator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/MainOGL.java" afterPath="$PROJECT_DIR$/src/hypergame/MainOGL.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/OGLDisplayer.java" afterPath="$PROJECT_DIR$/src/hypergame/OGLDisplayer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hypergame/platformer/Player.java" afterPath="$PROJECT_DIR$/src/hypergame/platformer/Player.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RobotSim2D.iml" afterPath="$PROJECT_DIR$/RobotSim2D.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/jbox2d_library_2_1_2_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/jbox2d_library_2_1_2_2.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -195,42 +193,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="World.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="World.java" pinned="false" current="true" current-in-tab="true">
         <entry file="jar://$PROJECT_DIR$/libs/jbox2d/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/dynamics/World.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="141" column="30" selection-start="5082" selection-end="5082" vertical-scroll-proportion="0.0">
+            <state line="1353" column="16" selection-start="36228" selection-end="36228" vertical-scroll-proportion="0.045774646">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainOGL.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/hypergame/MainOGL.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="29" selection-start="49" selection-end="49" vertical-scroll-proportion="0.059859157">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OGLDisplayer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hypergame/OGLDisplayer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="13" selection-start="0" selection-end="4300" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Renderer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hypergame/Renderer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="20" selection-start="800" selection-end="800" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -707,13 +674,13 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3295711" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3295711" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295711" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.6704289" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.6704289" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.6704289" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3227991" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -815,13 +782,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/libs/jbox2d/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/dynamics/World.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="141" column="30" selection-start="5082" selection-end="5082" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/libs/jbox2d/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/dynamics/contacts/ContactSolver.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="133" column="45" selection-start="5235" selection-end="5235" vertical-scroll-proportion="0.3321617">
@@ -871,27 +831,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/OGLDisplayer.java">
+    <entry file="jar://$PROJECT_DIR$/libs/jbox2d/jbox2d-library-2.1.2.2-sources.jar!/org/jbox2d/dynamics/World.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="13" selection-start="0" selection-end="4300" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/Renderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="20" selection-start="800" selection-end="800" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hypergame/MainOGL.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="29" selection-start="49" selection-end="49" vertical-scroll-proportion="0.059859157">
+        <state line="1353" column="16" selection-start="36228" selection-end="36228" vertical-scroll-proportion="0.045774646">
           <folding />
         </state>
       </provider>
