@@ -8,10 +8,7 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,7 +27,7 @@ public class Game {
 
     public final List<GameBehavior> behaviors = new ArrayList<GameBehavior>();
     public ViewPanel panel;
-    private AffineTransform camTransform;
+    private final AffineTransform camTransform = new AffineTransform();
     private LevelCreator level;
 
     public Game() {
@@ -58,6 +55,8 @@ public class Game {
             level.create();
 
         }
+
+
 
 //        table.create();
 //        createPhysSide();
@@ -112,8 +111,12 @@ public class Game {
 
     void paint(Graphics2D g) {
 
+        int width = panel.getWidth();
+        int height = panel.getHeight();
+
+
         g.setColor(Color.white);
-        g.fillRect(0, 0, 10000, 10000);
+        g.fillRect(0, 0, width, height);
 
         RenderingHints rh = new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
@@ -125,12 +128,15 @@ public class Game {
 
 //        final int scale = 200;
 
-        camTransform = new AffineTransform();
+        ensureVisible(width, height, new Rectangle2D.Double(-4, -2, 20, 20));
+
+//        camTransform = new AffineTransform();
 
 //        g.translate(camera.xoff, camera.yoff);
 //        g.scale(camera.scale, -camera.scale);
-        camTransform.translate(camera.xoff, camera.yoff);
-        camTransform.scale(camera.scale, -camera.scale);
+//        camTransform.translate(camera.xoff, camera.yoff);
+//        camTransform.scale(camera.scale, -camera.scale);
+
 
         g.setTransform(camTransform);
 
@@ -199,6 +205,17 @@ public class Game {
             throw new RuntimeException(e);
         }
     }
+
+    public void ensureVisible(int width, int height, Rectangle2D visible) {
+
+        double scale = Math.min(width/visible.getWidth() ,  height/ visible.getHeight());
+
+        camTransform.setToIdentity();
+
+        camTransform.scale(scale, -scale);
+        camTransform.translate(-visible.getMinX(), -visible.getMaxY());
+    }
+
 
 
 }
