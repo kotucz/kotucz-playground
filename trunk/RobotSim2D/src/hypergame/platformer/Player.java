@@ -32,11 +32,11 @@ public class Player extends Entity implements ContactListener {
     private Fixture legsFixture;
     private Vec2 goDir = new Vec2();
 
-    public Player(Game game) {
+    public Player(Game game, Vec2 pos) {
         super();
         this.game = game;
         color = new Color(0.8f, 1.0f, 0.8f);
-        createPhysic(game.getPhysWorld());
+        createPhysic(game.getPhysWorld(), pos);
 //        game.physWorld.;
     }
 
@@ -110,12 +110,12 @@ public class Player extends Entity implements ContactListener {
     }
 
 
-    private void createPhysic(World world) {
+    private void createPhysic(World world, Vec2 pos) {
         //CircleDef sd = new CircleDef();
 
         BodyDef bd = new BodyDef();
 //        bd.position.set(-1, 1);
-        bd.position.set(5, 8f);
+        bd.position.set(pos);
 //        bd.linearDamping = 2f;
 //        bd.angularDamping = 4f;
 
@@ -127,7 +127,7 @@ public class Player extends Entity implements ContactListener {
 
         {
             PolygonShape ps = new PolygonShape();
-            ps.setAsBox(0.5f, 0.5f);
+            ps.setAsBox(0.45f, 0.5f);
 
 //        sd.radius = 0.1f;
             FixtureDef sd = new FixtureDef();

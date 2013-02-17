@@ -52,16 +52,7 @@ public class AWTDisplayer extends Displayer {
 //                g.drawOval(c.x - r, c.y - r, 2 * r, 2 * r);
 //                g.drawLine(c.x, c.y, a.x, a.y);
             }
-            {
-                double r = circles.m_radius;
-                Ellipse2D.Double circle = new Ellipse2D.Double(cent.x - r, cent.y - r, 2 * r, 2 * r);
-
-                g2.fill(circle);
-                Color color = g2.getColor();
-                setColor(Color.black);
-                g2.draw(circle);
-                setColor(color);
-            }
+            drawCircle(cent, circles.m_radius);
 
 //    			drawSolidCircle(center, radius, axis, color);
 //
@@ -112,6 +103,18 @@ public class AWTDisplayer extends Displayer {
             }
 
         }
+    }
+
+    public void drawCircle(Vec2 cent, float m_radius) {
+
+        double r = m_radius;
+        Ellipse2D.Double circle = new Ellipse2D.Double(cent.x - r, cent.y - r, 2 * r, 2 * r);
+
+        g2.fill(circle);
+        Color color = g2.getColor();
+        setColor(Color.black);
+        g2.draw(circle);
+        setColor(color);
     }
 
 
