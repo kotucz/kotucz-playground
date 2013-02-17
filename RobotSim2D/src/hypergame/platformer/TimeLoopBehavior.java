@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * Time loop behavior
  *
  * @author Kotuc
@@ -44,7 +43,15 @@ public class TimeLoopBehavior extends GameBehavior {
 
         player0.setTimeFrame(timeFrame);
 
-        player2.setTimeFrame(timeFrame);
+        // paralelly
+//        player2.setTimeFrame(timeFrame);
+
+        { // later by 10 sec
+            int histFrameid = frameid - 1000;
+            if (0 <= histFrameid && histFrameid < frames.size()) {
+                player2.setTimeFrame(frames.get(histFrameid));
+            }
+        }
 
         frameid++;
     }

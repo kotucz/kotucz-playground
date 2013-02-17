@@ -24,6 +24,7 @@ public class ViewPanel extends javax.swing.JPanel {
      */
     public ViewPanel(Game game) {
         this.game = game;
+        game.panel = this;
         initComponents();
     }
 

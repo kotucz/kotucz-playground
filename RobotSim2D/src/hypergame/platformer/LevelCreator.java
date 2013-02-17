@@ -3,10 +3,8 @@ package hypergame.platformer;
 
 import hypergame.Entity;
 import hypergame.Game;
-import hypergame.GameBehavior;
 import hypergame.eagleeye.TableEntity;
 import hypergame.eagleeye.Pawn;
-import hypergame.eagleeye.Robot;
 import hypergame.eagleeye.ScoringArea;
 import hypergame.eagleeye.Team;
 import org.jbox2d.callbacks.ContactImpulse;
@@ -18,6 +16,8 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.Contact;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +30,7 @@ public class LevelCreator {
 //    final float height = 2.1f;
 //    final float pawnRadius = 0.1f;
     Game game;
+    public final Vec2 mousePointer = new Vec2();
 
     public LevelCreator(Game game) {
         this.game = game;
@@ -58,17 +59,24 @@ public class LevelCreator {
 
 
 //        game.addEntity(new Robot(game));
-        Player player = new Player(game);
+        Player player = new Player(game, new Vec2(5, 8));
         listener.listeners.add(player);
         game.addEntity(player);
 
 
-        Player player2 = new Player(game);
+        Player player2 = new Player(game, new Vec2(5, 50));
+//        player2.body.getPosition().addLocal(0, 100);
         listener.listeners.add(player2);
         game.addEntity(player2);
 
 
         game.behaviors.add(new TimeLoopBehavior(game, player, player2));
+
+
+        game.panel.addMouseListener(mouseListener);
+        game.panel.addMouseMotionListener(mouseListener);
+        game.panel.addMouseWheelListener(mouseListener);
+
 
     }
 
@@ -333,6 +341,15 @@ public class LevelCreator {
             }
         }
     }
+
+    final MouseAdapter mouseListener = new MouseAdapter() {
+        @Override
+        public void mouseMoved(MouseEvent e) {
+            super.mouseMoved(e);
+            mousePointer.set(game.screenToGame(e.getX(), e.getY()));
+
+        }
+    };
 
 
 }

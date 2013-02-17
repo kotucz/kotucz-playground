@@ -17,6 +17,8 @@ public class MainAWT {
 
         final ViewPanel viewPanel = new ViewPanel(game);
 
+        game.initGame();
+
         Frame frame = new Frame("AWT Window Test");
         frame.setSize(700, 600);
         frame.add(viewPanel);

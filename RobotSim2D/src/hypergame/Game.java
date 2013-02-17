@@ -9,6 +9,9 @@ import org.jbox2d.dynamics.World;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,16 +29,23 @@ public class Game {
     public Camera camera = new Camera();
 
     public final List<GameBehavior> behaviors = new ArrayList<GameBehavior>();
+    public ViewPanel panel;
+    private AffineTransform camTransform;
+    private LevelCreator level;
 
     public Game() {
-
-//        AABB aabb = new AABB(new Vec2(-10, -10), new Vec2(10, 10));
+        //        AABB aabb = new AABB(new Vec2(-10, -10), new Vec2(10, 10));
 //        Vec2 grav = new Vec2(0, -10);
         Vec2 grav = new Vec2(0, 0);
 //        this.physWorld = new World(aabb, grav, true);
 //        this.physWorld = new World(grav, false);
         this.physWorld = new World(grav, true);
 //        physWorld.
+
+
+    }
+
+    void initGame() {
 
         // TODO load table or level
         if (LOAD_TABLE) {
@@ -44,7 +54,7 @@ public class Game {
             camera.xoff = 350;
             camera.yoff = 450;
         } else {
-            LevelCreator level = new LevelCreator(this);
+            level = new LevelCreator(this);
             level.create();
 
         }
@@ -60,12 +70,11 @@ public class Game {
 
     void update() {
 
-        final float timestepdt = 10f/1024f;
+        final float timestepdt = 10f / 1024f;
 
         for (GameBehavior behavior : behaviors) {
             behavior.update(timestepdt);
         }
-
 
         for (Entity entity : entities) {
             entity.update(timestepdt);
@@ -104,8 +113,7 @@ public class Game {
     void paint(Graphics2D g) {
 
         g.setColor(Color.white);
-        g.fillRect(0, 0, 1000, 1000);
-
+        g.fillRect(0, 0, 10000, 10000);
 
         RenderingHints rh = new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
@@ -117,15 +125,31 @@ public class Game {
 
 //        final int scale = 200;
 
-        g.translate(camera.xoff, camera.yoff);
-        g.scale(camera.scale, -camera.scale);
+        camTransform = new AffineTransform();
+
+//        g.translate(camera.xoff, camera.yoff);
+//        g.scale(camera.scale, -camera.scale);
+        camTransform.translate(camera.xoff, camera.yoff);
+        camTransform.scale(camera.scale, -camera.scale);
+
+        g.setTransform(camTransform);
 
         Stroke stroke = new BasicStroke(0.005f);
         g.setStroke(stroke);
 
+        drawGrid(g);
+
         AWTDisplayer g1 = new AWTDisplayer(g);
+
+
+
         for (Entity entity : entities) {
             entity.paint(g1);
+        }
+
+        {
+            // show mouse position
+            g1.drawCircle(level.mousePointer, 0.5f);
         }
 
         g.setTransform(AffineTransform.getTranslateInstance(0, 0));
@@ -133,6 +157,20 @@ public class Game {
         g.setColor(Color.black);
         g.drawString("" + getRunTime() / 100, 20, 20);
 
+
+    }
+
+    private void drawGrid(Graphics2D g) {
+        g.setColor(new Color(0xFFbbbbbb));
+
+        Line2D.Double hor = new Line2D.Double();
+        Line2D.Double ver = new Line2D.Double();
+        for (int i = 0; i < 100; i++) {
+            hor.setLine(0, i, 1000, i);
+            g.draw(hor);
+            ver.setLine(i, 0, i, 1000);
+            g.draw(ver);
+        }
 
     }
 
@@ -151,5 +189,16 @@ public class Game {
         }
         return filtered;
     }
+
+    public Vec2 screenToGame(int x, int y) {
+        try {
+            Point2D point2D = camTransform.inverseTransform(new Point2D.Double(x, y), null);
+            return new Vec2((float) point2D.getX(), (float) point2D.getY());
+        } catch (NoninvertibleTransformException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }
