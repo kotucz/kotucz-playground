@@ -3,6 +3,7 @@ package hypergame.platformer;
 
 import hypergame.Entity;
 import hypergame.Game;
+import hypergame.GameBehavior;
 import hypergame.eagleeye.TableEntity;
 import hypergame.eagleeye.Pawn;
 import hypergame.eagleeye.Robot;
@@ -41,10 +42,18 @@ public class LevelCreator {
         game.addEntity(createBall(1, 1));
         game.addEntity(createBall(2, 2));
         game.addEntity(createBox(0, 3, 3, 2));
+
+//        game.addEntity(createEdge(BodyType.STATIC, 14, 3, 16, 4, 0));
+
+        game.addEntity(new MovingPlatform(game, 14, 3, 1.5f, 0.5f, 1, 0, 5));
+
 //        game.addEntity(new Robot(game));
         Player player = new Player(game);
         game.addEntity(player);
         game.physWorld.setContactListener(player);
+
+        game.behaviors.add(new GameBehavior());
+
     }
 
     private void createPhysSide() {
@@ -130,6 +139,21 @@ public class LevelCreator {
 
             game.addEntity(new Entity(body));
         }
+    }
+
+
+    private Entity createEdge(BodyType type, float x1, float y1, float x2, float y2, float density) {
+        BodyDef def = new BodyDef();
+        def.type = type;
+        Body box = game.physWorld.createBody(def);
+
+        PolygonShape poly = new PolygonShape();
+        poly.setAsEdge(new Vec2(0, 0), new Vec2(x2 - x1, y2 - y1));
+        box.createFixture(poly, density);
+        box.setTransform(new Vec2(x1, y1), 0);
+//        poly.dispose();
+
+        return new Entity(box);
     }
 
     private void createPlatforms() {

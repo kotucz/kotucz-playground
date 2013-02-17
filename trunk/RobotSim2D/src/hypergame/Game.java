@@ -2,7 +2,6 @@ package hypergame;
 
 import hypergame.eagleeye.Table;
 import hypergame.platformer.LevelCreator;
-import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
@@ -10,6 +9,7 @@ import org.jbox2d.dynamics.World;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,9 +25,11 @@ public class Game {
 
     public Camera camera = new Camera();
 
+    public final List<GameBehavior> behaviors = new ArrayList<GameBehavior>();
+
     public Game() {
 
-        AABB aabb = new AABB(new Vec2(-10, -10), new Vec2(10, 10));
+//        AABB aabb = new AABB(new Vec2(-10, -10), new Vec2(10, 10));
 //        Vec2 grav = new Vec2(0, -10);
         Vec2 grav = new Vec2(0, 0);
 //        this.physWorld = new World(aabb, grav, true);
@@ -140,13 +142,6 @@ public class Game {
             }
         }
         return filtered;
-    }
-
-    public class Camera {
-
-        public double scale = 200;
-        public double xoff = 350;
-        public double yoff = 450;
     }
 
 }
