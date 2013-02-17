@@ -59,11 +59,19 @@ public class Game {
 
 
     void update() {
+
+        final float timestepdt = 10f/1024f;
+
+        for (GameBehavior behavior : behaviors) {
+            behavior.update(timestepdt);
+        }
+
+
         for (Entity entity : entities) {
-            entity.update(0.01f);
+            entity.update(timestepdt);
         }
 //        entities.get(67).body.m_force.addLocal(0.0f, 1f);
-        physWorld.step(0.01f, 10, 10);
+        physWorld.step(timestepdt, 10, 10);
 //        entities.get(67).body.m_xf.position.addLocal(0.0f, 0.01f);
     }
 

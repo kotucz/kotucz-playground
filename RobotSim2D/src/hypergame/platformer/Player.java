@@ -27,10 +27,10 @@ public class Player extends Entity implements ContactListener {
 
     public static final boolean DRIVE_BY_KEYBOARD = true;
 
-    KeyboardDriving keyboard = new KeyboardDriving();
+
     private boolean jumpIntention;
     private Fixture legsFixture;
-    private Vec2 goDir;
+    private Vec2 goDir = new Vec2();
 
     public Player(Game game) {
         super();
@@ -52,7 +52,7 @@ public class Player extends Entity implements ContactListener {
 //        body.m_torque = 0;
 
 //        if (DRIVE_BY_KEYBOARD) {
-        goDir = keyboard.actPlayer();
+
         System.out.println("v " + goDir);
 //            body.m_force.set(v.mul(10));
 //            body.applyForce( new Vec2(-10, 0), body.getWorldCenter());
@@ -68,7 +68,7 @@ public class Player extends Entity implements ContactListener {
         if (goDir.y > 0.1) {
             jumpIntention = true;
         }
-        System.out.println(body.isAwake());
+//        System.out.println(body.isAwake());
 //        legsFixture.setSensor(v.y < 0.1);
 
 //        lwheel.applyForce((float)(Math.random()-0.5));
@@ -282,6 +282,10 @@ public class Player extends Entity implements ContactListener {
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setTimeFrame(TimeFrame timeFrame) {
+        this.goDir.set(timeFrame.goVec);
     }
 
 
