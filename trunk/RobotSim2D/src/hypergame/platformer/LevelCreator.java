@@ -9,18 +9,24 @@ import hypergame.eagleeye.Pawn;
 import hypergame.eagleeye.Robot;
 import hypergame.eagleeye.ScoringArea;
 import hypergame.eagleeye.Team;
+import org.jbox2d.callbacks.ContactImpulse;
+import org.jbox2d.callbacks.ContactListener;
+import org.jbox2d.collision.Manifold;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
+import org.jbox2d.dynamics.contacts.Contact;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- *
  * @author Kotuc
  */
 public class LevelCreator {
 
-//    final float width = 3.0f;
+    //    final float width = 3.0f;
 //    final float height = 2.1f;
 //    final float pawnRadius = 0.1f;
     Game game;
@@ -34,8 +40,8 @@ public class LevelCreator {
 //        game.physWorld.setGravity(new Vec2(0, -9.81f));
         game.physWorld.setGravity(new Vec2(0, -15f));
         game.camera.scale = 30;
-        game.camera.xoff = 1*game.camera.scale;
-        game.camera.yoff = 10*game.camera.scale;
+        game.camera.xoff = 1 * game.camera.scale;
+        game.camera.yoff = 10 * game.camera.scale;
 //        createPhysSide();
 //        createPatches();
         createPlatforms();
@@ -47,14 +53,59 @@ public class LevelCreator {
 
         game.addEntity(new MovingPlatform(game, 14, 3, 1.5f, 0.5f, 1, 0, 5));
 
+        ContactMultiplexer listener = new ContactMultiplexer();
+        game.physWorld.setContactListener(listener);
+
+
 //        game.addEntity(new Robot(game));
         Player player = new Player(game);
+        listener.listeners.add(player);
         game.addEntity(player);
-        game.physWorld.setContactListener(player);
 
-        game.behaviors.add(new GameBehavior());
+
+        Player player2 = new Player(game);
+        listener.listeners.add(player2);
+        game.addEntity(player2);
+
+
+        game.behaviors.add(new TimeLoopBehavior(game, player, player2));
 
     }
+
+    class ContactMultiplexer implements ContactListener {
+
+        final List<ContactListener> listeners = new ArrayList<ContactListener>();
+
+        @Override
+        public void beginContact(Contact contact) {
+            for (ContactListener listener : listeners) {
+                listener.beginContact(contact);
+            }
+
+        }
+
+        @Override
+        public void endContact(Contact contact) {
+            for (ContactListener listener : listeners) {
+                listener.endContact(contact);
+            }
+        }
+
+        @Override
+        public void preSolve(Contact contact, Manifold oldManifold) {
+            for (ContactListener listener : listeners) {
+                listener.preSolve(contact, oldManifold);
+            }
+        }
+
+        @Override
+        public void postSolve(Contact contact, ContactImpulse impulse) {
+            for (ContactListener listener : listeners) {
+                listener.postSolve(contact, impulse);
+            }
+        }
+    }
+
 
     private void createPhysSide() {
 //        AABB aabb = new AABB(new Vec2(-1000, -1000), new Vec2(1000, 1000));
@@ -161,7 +212,7 @@ public class LevelCreator {
         game.addEntity(createPlatform(0, 0, 10, -1)); // floor
 
         game.addEntity(createPlatform(5f, 4f, 8f, 3)); // bottom
-        
+
         game.addEntity(createPlatform(-3, 3, 0, -1)); // left
 
         game.addEntity(createPlatform(10, 3, 12, 0)); // left
@@ -188,13 +239,12 @@ public class LevelCreator {
     }
 
     private TableEntity createMantinelMm(int minx, int miny, int maxx, int maxy) {
-        return createMantinel((minx+maxx)/2000f, (miny+maxy)/2000f, Math.abs(maxx-minx)/2000f, Math.abs(maxy-miny)/2000f);
+        return createMantinel((minx + maxx) / 2000f, (miny + maxy) / 2000f, Math.abs(maxx - minx) / 2000f, Math.abs(maxy - miny) / 2000f);
     }
 
     private TableEntity createMantinel(float x, float y, float halfw, float halfh) {
         PolygonShape ps = new PolygonShape();
         ps.setAsBox(halfw, halfh);
-
 
 
         BodyDef bd = new BodyDef();
@@ -210,10 +260,10 @@ public class LevelCreator {
 
     private Entity createPlatform(float left, float top, float right, float bottom) {
         PolygonShape ps = new PolygonShape();
-        ps.setAsBox((right-left)/2f, (top-bottom)/2f);
+        ps.setAsBox((right - left) / 2f, (top - bottom) / 2f);
 
         BodyDef bd = new BodyDef();
-        bd.position.set((right+left)/2f, (top+bottom)/2f);
+        bd.position.set((right + left) / 2f, (top + bottom) / 2f);
 //        bd.angle = 0.1f;
         Body body = game.createBody(bd);
         FixtureDef def = new FixtureDef();
@@ -226,11 +276,11 @@ public class LevelCreator {
 
     private Entity createBox(float left, float top, float right, float bottom) {
         PolygonShape ps = new PolygonShape();
-        ps.setAsBox((right-left)/2f, (top-bottom)/2f);
+        ps.setAsBox((right - left) / 2f, (top - bottom) / 2f);
 
         BodyDef bd = new BodyDef();
         bd.type = BodyType.DYNAMIC;
-        bd.position.set((right+left)/2f, (top+bottom)/2f);
+        bd.position.set((right + left) / 2f, (top + bottom) / 2f);
         Body body = game.createBody(bd);
         FixtureDef def = new FixtureDef();
         def.shape = ps;
@@ -276,16 +326,13 @@ public class LevelCreator {
     private void createPatches() {
         for (int x = 0; x < 6; x++) {
             for (int y = 0; y < 6; y++) {
-                ScoringArea patch = new ScoringArea((((x^y)&1)==1)?Team.BLUE:Team.RED);
-                patch.rect.x = (x-3)*0.35f;
-                patch.rect.y = (y)*0.35f;
+                ScoringArea patch = new ScoringArea((((x ^ y) & 1) == 1) ? Team.BLUE : Team.RED);
+                patch.rect.x = (x - 3) * 0.35f;
+                patch.rect.y = (y) * 0.35f;
                 game.addEntity(patch);
             }
         }
     }
-
-
-
 
 
 }
